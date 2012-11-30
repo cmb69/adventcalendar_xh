@@ -1,2 +1,5 @@
+Version 1beta2 - released 2012-11-30
+cmb     activated all doors in admin mode
+
 Version 1beta1 - released 2012-11-30
 cmb	initial release
