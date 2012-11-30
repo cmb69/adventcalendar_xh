@@ -13,7 +13,12 @@ if (!defined('CMSIMPLE_XH_VERSION')) {
 }
 
 
-define('ADVENTCALENDAR_VERSION', '1beta1');
+define('ADVENTCALENDAR_VERSION', '1beta2');
+
+
+if (!defined('XH_ADM')) {
+    define('XH_ADM', $adm);
+}
 
 
 /**
@@ -103,11 +108,14 @@ function Adventcalendar_js()
  */
 function Adventcalendar($cal)
 {
-    global $pth, $u, $plugin_cf;
+    global $adm, $pth, $u, $plugin_cf;
     
     $pcf = $plugin_cf['adventcalendar'];
-    $day = intval(floor((time() - $pcf['time_start']) / 86400)) + 1;
-    //$day = 24; // for testing
+    if (XH_ADM) {
+        $day = 24;
+    } else {
+        $day = intval(floor((time() - $pcf['time_start']) / 86400)) + 1;
+    }
     $data = unserialize(file_get_contents(Adventcalendar_dataFolder() . $cal . '.dat'));
     $src = Adventcalendar_dataFolder() . $cal . '+.jpg';
     $n = Adventcalendar_pageIndex($cal);
