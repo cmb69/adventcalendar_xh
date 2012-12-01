@@ -13,7 +13,7 @@ if (!defined('CMSIMPLE_XH_VERSION')) {
 }
 
 
-define('ADVENTCALENDAR_VERSION', '1beta2');
+define('ADVENTCALENDAR_VERSION', '1beta3');
 
 
 if (!defined('XH_ADM')) {
@@ -119,7 +119,7 @@ function Adventcalendar($cal)
     $data = unserialize(file_get_contents(Adventcalendar_dataFolder() . $cal . '.dat'));
     $src = Adventcalendar_dataFolder() . $cal . '+.jpg';
     $n = Adventcalendar_pageIndex($cal);
-    $pages = Adventcalendar_childPages($n);
+    $pages = Adventcalendar_childPages($n, false);
     Adventcalendar_js();
     $o = tag('img src="' . $src . '" usemap="#adventcalendar"')
         . '<map name="adventcalendar">';
