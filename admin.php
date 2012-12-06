@@ -164,7 +164,8 @@ function Adventcalendar_prepare($cal)
         fclose($fh);
     }
 
-    return Adventcalendar_adminMain();
+    return '<div id="adventcalendar_admin" class="plugineditcaption">Adventcalendar</div>'
+        . tag('img src="' . "$dn$cal+.jpg" . '" width="100%" alt=""');
 }
 
 
