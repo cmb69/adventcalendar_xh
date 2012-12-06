@@ -13,7 +13,7 @@ if (!defined('CMSIMPLE_XH_VERSION')) {
 }
 
 
-define('ADVENTCALENDAR_VERSION', '1beta3');
+define('ADVENTCALENDAR_VERSION', '1beta4');
 
 
 if (!defined('XH_ADM')) {
