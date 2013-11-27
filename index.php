@@ -92,7 +92,7 @@ function Adventcalendar_js()
     global $pth, $plugin_cf;
     
     $href = "{$pth['folder']['plugins']}adventcalendar/css/colorbox.css";
-    include "{$pth['folder']['plugins']}jquery/jquery.inc.php";
+    include_once "{$pth['folder']['plugins']}jquery/jquery.inc.php";
     include_jQuery();
     $js = "{$pth['folder']['plugins']}adventcalendar/colorbox/jquery.colorbox-min.js";
     include_jQueryPlugin('colorbox', $js);
