@@ -1,106 +1,136 @@
 <?php
 
 /**
- * Back-end of Adventcalendar_XH.
+ * Administration of Adventcalendar_XH.
  *
- * Copyright (c) 2012 Christoph M. Becker (see license.txt)
+ * PHP versions 4 and 5
+ *
+ * @category  CMSimple_XH
+ * @package   Adventcalendar
+ * @author    Christoph M. Becker <cmbecker69@gmx.de>
+ * @copyright 2012-2013 Christoph M. Becker <http://3-magi.net>
+ * @license   http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
+ * @version   SVN: $Id$
+ * @link      http://3-magi.net/?CMSimple_XH/Adventcalendar_XH
  */
 
-
+/*
+ * Prevent direct access.
+ */
 if (!defined('CMSIMPLE_XH_VERSION')) {
     header('HTTP/1.0 403 Forbidden');
     exit;
 }
 
-
 /**
  * Returns the version information view.
  *
- * @return string  The (X)HTML.
+ * @return string (X)HTML.
+ *
+ * @global array The paths of system files and folders.
  */
 function Adventcalendar_version()
 {
     global $pth;
 
-    return '<h1><a href="http://3-magi.net/?CMSimple_XH/Adventcalendar_XH">Adventcalendar_XH</a></h1>'
-        . tag('img style="float: left; margin-right: 10px" src="' . $pth['folder']['plugins'] . 'adventcalendar/adventcalendar.png" alt="Plugin icon"')
+    return '<h1><a href="http://3-magi.net/?CMSimple_XH/Adventcalendar_XH">'
+        . 'Adventcalendar_XH</a></h1>'
+        . tag(
+            'img style="float: left; margin-right: 10px" src="'
+            . $pth['folder']['plugins'] . 'adventcalendar/adventcalendar.png"'
+            . ' alt="Plugin icon"'
+        )
         . '<p>Version: ' . ADVENTCALENDAR_VERSION . '</p>'
-        . '<p>Copyright &copy; 2012 <a href="http://3-magi.net/">Christoph M. Becker</a></p>'
-        . '<p style="text-align:justify">This program is free software: you can redistribute it and/or modify'
+        . '<p>Copyright &copy; 2012-2013 <a href="http://3-magi.net/">'
+        . 'Christoph M. Becker</a></p>'
+        . '<p style="text-align:justify">This program is free software:'
+        . ' you can redistribute it and/or modify'
         . ' it under the terms of the GNU General Public License as published by'
         . ' the Free Software Foundation, either version 3 of the License, or'
         . ' (at your option) any later version.</p>'
-        . '<p style="text-align:justify">This program is distributed in the hope that it will be useful,'
+        . '<p style="text-align:justify">This program is distributed'
+        . ' in the hope that it will be useful,'
         . ' but WITHOUT ANY WARRANTY; without even the implied warranty of'
         . ' MERCHAN&shy;TABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the'
         . ' GNU General Public License for more details.</p>'
-        . '<p style="text-align:justify">You should have received a copy of the GNU General Public License'
-        . ' along with this program.  If not, see'
-        . ' <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.</p>';
+        . '<p style="text-align:justify">You should have received a copy of the'
+        . ' GNU General Public License along with this program.  If not, see'
+        . ' <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/'
+        . '</a>.</p>';
 }
-
 
 /**
  * Returns the requirements information view.
  *
- * @return string  The (X)HTML.
+ * @return string  (X)HTML.
+ *
+ * @global array The paths of system files and folders.
+ * @global array The localization of the core.
+ * @global array The localization of the plugins.
  */
-function Adventcalendar_systemCheck() // RELEASE-TODO
+function Adventcalendar_systemCheck()
 {
     global $pth, $tx, $plugin_tx;
 
-    define('ADVENTCALENDAR_PHP_VERSION', '4.3.0');
+    $requiredVersion = '4.3.0';
     $ptx = $plugin_tx['adventcalendar'];
     $imgdir = $pth['folder']['plugins'] . 'adventcalendar/images/';
     $ok = tag('img src="' . $imgdir . 'ok.png" alt="ok"');
     $warn = tag('img src="' . $imgdir . 'warn.png" alt="warning"');
     $fail = tag('img src="' . $imgdir . 'fail.png" alt="failure"');
     $o = '<h4>' . $ptx['syscheck_title'] . '</h4>'
-        . (version_compare(PHP_VERSION, ADVENTCALENDAR_PHP_VERSION) >= 0 ? $ok : $fail)
-        . '&nbsp;&nbsp;' . sprintf($ptx['syscheck_phpversion'], ADVENTCALENDAR_PHP_VERSION)
+        . (version_compare(PHP_VERSION, $requiredVersion) >= 0 ? $ok : $fail)
+        . '&nbsp;&nbsp;'
+        . sprintf($ptx['syscheck_phpversion'], ADVENTCALENDAR_PHP_VERSION)
         . tag('br');
     foreach (array('gd') as $ext) {
-	$o .= (extension_loaded($ext) ? $ok : $fail)
-            . '&nbsp;&nbsp;' . sprintf($ptx['syscheck_extension'], $ext) . tag('br');
+        $o .= (extension_loaded($ext) ? $ok : $fail)
+            . '&nbsp;&nbsp;' . sprintf($ptx['syscheck_extension'], $ext)
+            . tag('br');
     }
     $o .= (!get_magic_quotes_runtime() ? $ok : $fail)
-	. '&nbsp;&nbsp;' . $ptx['syscheck_magic_quotes'] . tag('br') . tag('br');
+        . '&nbsp;&nbsp;' . $ptx['syscheck_magic_quotes'] . tag('br') . tag('br');
     $o .= (strtoupper($tx['meta']['codepage']) == 'UTF-8' ? $ok : $warn)
-	. '&nbsp;&nbsp;' . $ptx['syscheck_encoding'] . tag('br');
-    $o .= (file_exists($pth['folder']['plugins'] . 'jquery/jquery.inc.php') ? $ok : $fail)
-	. '&nbsp;&nbsp;' . $ptx['syscheck_jquery'] . tag('br') . tag('br');
+        . '&nbsp;&nbsp;' . $ptx['syscheck_encoding'] . tag('br');
+    $check = file_exists($pth['folder']['plugins'] . 'jquery/jquery.inc.php');
+    $o .= ($check ? $ok : $fail) . '&nbsp;&nbsp;' . $ptx['syscheck_jquery']
+        . tag('br') . tag('br');
     foreach (array('config/', 'css/', 'languages/') as $folder) {
-	$folders[] = $pth['folder']['plugins'] . 'adventcalendar/' . $folder;
+        $folders[] = $pth['folder']['plugins'] . 'adventcalendar/' . $folder;
     }
     $folders[] = Adventcalendar_dataFolder();
     foreach ($folders as $folder) {
-	$o .= (is_writable($folder) ? $ok : $warn)
-	    . '&nbsp;&nbsp;' . sprintf($ptx['syscheck_writable'], $folder) . tag('br');
+        $o .= (is_writable($folder) ? $ok : $warn) . '&nbsp;&nbsp;'
+            . sprintf($ptx['syscheck_writable'], $folder) . tag('br');
     }
     return $o;
 }
 
-
 /**
  * Returns an allocated color.
  *
- * @param  resource $im
- * @param  string $col  A 24-bit RGB hexadecimal.
+ * @param resource $im  A GD image.
+ * @param string   $col A 24-bit hexadecimal RGB value.
+ * 
  * @return int
  */
 function Adventcalendar_color($im, $col)
 {
     $c = base_convert($col, 16, 10);
-    $r = $c >> 16; $g = ($c & 0xffff) >> 8; $b = $c & 0xff;
+    $r = $c >> 16;
+    $g = ($c & 0xffff) >> 8;
+    $b = $c & 0xff;
     return imagecolorallocate($im, $r, $g, $b);
 }
-
 
 /**
  * Prepares an image as advent calendar.
  *
- * @param  string $cal  The image file name.
+ * @param string $cal An image file name.
+ * 
  * @return void
+ *
+ * @global array The configuration of the plugins.
  */
 function Adventcalendar_prepare($cal)
 {
@@ -111,7 +141,7 @@ function Adventcalendar_prepare($cal)
     
     if (($im = imagecreatefromjpeg($dn . $cal . '.jpg')) === false) {
         e('cntopen', 'file', "$dn$cal.jpg");
-        return Adventcalendar_adminMain();
+        return Adventcalendar_administration();
     }
     $w = imagesx($im);
     $h = imagesy($im);
@@ -153,28 +183,30 @@ function Adventcalendar_prepare($cal)
     
     if (!imagejpeg($im, "$dn$cal+.jpg")) {
         e('cntsave', 'file', "$dn$cal+.jpg");
-        return Adventcalendar_adminMain();
+        return Adventcalendar_administration();
     }
     if (($fh = fopen("$dn$cal.dat", 'wb')) === false
-        || fwrite($fh, serialize($doors)) === false)
-    {
+        || fwrite($fh, serialize($doors)) === false
+    ) {
         e('cntsave', 'file', "$dn$cal.dat");
     }
     if ($fh !== false) {
         fclose($fh);
     }
 
-    return '<div id="adventcalendar_admin" class="plugineditcaption">Adventcalendar</div>'
+    return '<div id="adventcalendar_admin" class="plugineditcaption">'
+        . 'Adventcalendar</div>'
         . tag('img src="' . "$dn$cal+.jpg" . '" width="100%" alt=""');
 }
-
 
 /**
  * Returns the main administration view.
  *
- * @return string  The (X)HTML.
+ * @return string (X)HTML.
+ *
+ * @global array The localization of the plugins.
  */
-function Adventcalendar_adminMain()
+function Adventcalendar_administration()
 {
     global $plugin_tx;
     
@@ -184,19 +216,24 @@ function Adventcalendar_adminMain()
     $dh = opendir($dn);
     while (($fn = readdir($dh)) !== false) {
         if (pathinfo($dn . $fn, PATHINFO_EXTENSION) == 'jpg'
-            && strpos($bn = basename($fn, '.jpg'), '+') != strlen($bn) - 1) {
+            && strpos($bn = basename($fn, '.jpg'), '+') != strlen($bn) - 1
+        ) {
             $cals[] = $fn;
         }
     }
     closedir($dh);
     
-    $o = '<div id="adventcalendar_admin" class="plugineditcaption">Adventcalendar</div><ul>';
+    $o = '<div id="adventcalendar_admin" class="plugineditcaption">'
+        . 'Adventcalendar</div><ul>';
     foreach ($cals as $cal) {
         $o .= '<li>' . $cal
             . '<form action="?adventcalendar" method="POST" style="display: inline">'
             . tag('input type="hidden" name="admin" value="plugin_main"')
             . tag('input type="hidden" name="action" value="prepare"')
-            . tag('input type="hidden" name="adventcalendar_name" value="' . basename($cal, '.jpg') . '"')
+            . tag(
+                'input type="hidden" name="adventcalendar_name" value="'
+                . basename($cal, '.jpg') . '"'
+            )
             . ' '
             . tag('input type="submit" value="' . $ptx['prepare_cover'] . '"')
             . '</form>' . '</li>';
@@ -204,7 +241,6 @@ function Adventcalendar_adminMain()
     $o .= '</ul>';
     return $o;
 }
-
 
 /*
  * Handle the plugin administration.
@@ -221,7 +257,7 @@ if (isset($adventcalendar) && $adventcalendar == 'true') {
             $o .= Adventcalendar_prepare(stsl($_POST['adventcalendar_name']));
             break;
         default:
-            $o .= Adventcalendar_adminMain();
+            $o .= Adventcalendar_administration();
         }
         break;
     default:
