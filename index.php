@@ -144,7 +144,7 @@ function adventcalendar($cal)
     if (XH_ADM) {
         $day = 24;
     } else {
-        $day = intval(floor((time() - $pcf['time_start']) / 86400)) + 1;
+        $day = intval(floor((time() - strtotime($pcf['date_start'])) / 86400)) + 1;
     }
     $filename = Adventcalendar_dataFolder() . $cal . '.dat';
     if (!is_readable($filename)) {
