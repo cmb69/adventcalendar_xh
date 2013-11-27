@@ -81,7 +81,7 @@ function Adventcalendar_systemCheck()
     $o = '<h4>' . $ptx['syscheck_title'] . '</h4>'
         . (version_compare(PHP_VERSION, $requiredVersion) >= 0 ? $ok : $fail)
         . '&nbsp;&nbsp;'
-        . sprintf($ptx['syscheck_phpversion'], ADVENTCALENDAR_PHP_VERSION)
+        . sprintf($ptx['syscheck_phpversion'], $requiredVersion)
         . tag('br');
     foreach (array('gd') as $ext) {
         $o .= (extension_loaded($ext) ? $ok : $fail)
