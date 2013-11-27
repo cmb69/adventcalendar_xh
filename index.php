@@ -146,27 +146,38 @@ function adventcalendar($cal)
     } else {
         $day = intval(floor((time() - $pcf['time_start']) / 86400)) + 1;
     }
-    $contents = file_get_contents(Adventcalendar_dataFolder() . $cal . '.dat');
+    $filename = Adventcalendar_dataFolder() . $cal . '.dat';
+    if (!is_readable($filename)) {
+        e('missing', 'file', $filename);
+        return false;
+    }
+    $contents = file_get_contents($filename);
     $data = unserialize($contents);
     $src = Adventcalendar_dataFolder() . $cal . '+.jpg';
-    $n = Adventcalendar_pageIndex($cal);
-    $pages = Adventcalendar_childPages($n, false);
-    Adventcalendar_js();
-    $o = tag('img src="' . $src . '" usemap="#adventcalendar"')
-        . '<map name="adventcalendar">';
-    for ($i = 0; $i < $day; $i++) {
-        if (array_key_exists($i, $pages)) {
-            $coords = $data[$i];
-            $href = $u[$pages[$i]] . '&amp;print';
-            $o .= tag(
-                'area shape="rect" coords="' . implode(',', $coords)
-                . '" href="?' . $href
-                . '" onclick="jQuery.colorbox({maxWidth:\'80%\',href:\'?'
-                . $href . '\'}); return false"'
-            );
-        }
+    if (!file_exists($src)) {
+        e('missing', 'file', $src);
+        return false;
     }
-    $o .= '</map>';
+    $n = Adventcalendar_pageIndex($cal);
+    if (isset($n)) {
+        $pages = Adventcalendar_childPages($n, false);
+        Adventcalendar_js();
+        $o = tag('img src="' . $src . '" usemap="#adventcalendar"')
+            . '<map name="adventcalendar">';
+        for ($i = 0; $i < $day; $i++) {
+            if (array_key_exists($i, $pages)) {
+                $coords = $data[$i];
+                $href = $u[$pages[$i]] . '&amp;print';
+                $o .= tag(
+                    'area shape="rect" coords="' . implode(',', $coords)
+                    . '" href="?' . $href
+                    . '" onclick="jQuery.colorbox({maxWidth:\'80%\',href:\'?'
+                    . $href . '\'}); return false"'
+                );
+            }
+        }
+        $o .= '</map>';
+    }
         
     return $o;
 }
