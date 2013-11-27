@@ -1,0 +1,12 @@
+Version 1beta4 - released 2012-12-06
+cmb     made minor improvements to user interface and manual (suggested by Old)
+cmb     added Russian translation and user manual (contributed by Old)
+
+Version 1beta3 - released 2012-12-01
+cmb     fixed bug where hidden pages could not be used as secrets
+
+Version 1beta2 - released 2012-11-30
+cmb     activated all doors in admin mode
+
+Version 1beta1 - released 2012-11-30
+cmb	initial release
