@@ -188,10 +188,10 @@ function adventcalendar($cal)
         $pages = Adventcalendar_childPages($n, false);
         Adventcalendar_js();
         $o = tag(
-                'img src="' . $src . '" usemap="#adventcalendar" alt="'
-                . $ptx['adventcalendar'] . '"'
-            )
-            . '<map name="adventcalendar">';
+            'img src="' . $src . '" usemap="#adventcalendar" alt="'
+            . $ptx['adventcalendar'] . '"'
+        );
+        $o .= '<map name="adventcalendar">';
         for ($i = 0; $i < $day; $i++) {
             if (array_key_exists($i, $pages)) {
                 $coords = $data[$i];
