@@ -115,7 +115,12 @@ function Adventcalendar_dataFolder()
 function Adventcalendar_js()
 {
     global $pth, $plugin_cf, $hjs;
+    static $again = false;
     
+    if ($again) {
+        return;
+    }
+    $again = true;
     $pcf = $plugin_cf['adventcalendar'];
     include_once $pth['folder']['plugins'] . 'jquery/jquery.inc.php';
     include_jQuery();
