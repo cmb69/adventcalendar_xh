@@ -124,13 +124,16 @@ function Adventcalendar_js()
     include_jQueryPlugin('colorbox', $filename);
     $hjs .= <<<EOS
 <script type="text/javascript">/* <![CDATA[ */
-function Advancedform_lightbox(elt) {
-    jQuery.colorbox({
-        iframe: true, maxWidth: "100%", maxHeight: "100%",
-        width: "70%", height: "70%",
-        href: elt.href
-    })
-}
+jQuery(function () {
+    jQuery("area.adventcalendar").click(function (event) {
+            jQuery.colorbox({
+                iframe: true, maxWidth: "100%", maxHeight: "100%",
+                width: "70%", height: "70%",
+                href: this.href
+            });
+            event.preventDefault();
+    });
+});
 /* ]]> */</script>
 
 EOS;
@@ -182,9 +185,8 @@ function adventcalendar($cal)
                 $coords = $data[$i];
                 $href = $u[$pages[$i]] . '&amp;print';
                 $o .= tag(
-                    'area shape="rect" coords="' . implode(',', $coords)
-                    . '" href="?' . $href
-                    . '" onclick="Advancedform_lightbox(this); return false"'
+                    'area class="adventcalendar" shape="rect" coords="'
+                    . implode(',', $coords) . '" href="?' . $href . '"'
                 );
             }
         }
