@@ -25,7 +25,7 @@ products etc.)</p>
 <li><a href="#settings">Settings</a></li>
 <li><a href="#usage">Usage</a>
 <ul>
-<li><a href="#usage-quickstart">Quick Start</a></li>
+<li><a href="#usage-quickstart">Quick Start Guide</a></li>
 <li><a href="#usage-cover">Prepare the Cover</a></li>
 <li><a href="#usage-secrets">Prepare the Secrets</a></li>
 <li><a href="#usage-display">Display the Calendar</a></li>
@@ -61,7 +61,7 @@ CMSimple_XH wiki</a> for further details.</p>
 <li>Unzip the distribution on your computer.</li>
 <li>Upload the whole directory adventcalendar/ to your server into CMSimple_XH's
 plugins directory.</li>
-<li>Set write permissions to the subdirectories config/, css/, and languages/
+<li>Set write permissions to the subdirectories config/, css/, languages/
 and the data folder of the plugin.</li>
 <li>Switch to "Adventcalendar" in the back-end to check if all requirements are
 fulfilled.</li>
@@ -89,7 +89,7 @@ according to the configuration option "Date" &rarr; "Start". When you're logged
 in as administrator you can access all doors for testing purposes.</p>
 <div class="toplink"><a href="#">back to top</a></div>
 
-<h3 id="usage-quickstart">Quick Start</h3>
+<h3 id="usage-quickstart">Quick Start Guide</h3>
 <p>To quickly set up a working demo, just follow these steps:</p>
 <ol>
 <li>Browse to "Plugins" &rarr; "Adventcalendar" &rarr; "Main Settings" and press
@@ -122,22 +122,24 @@ like the chosen order, just prepare the image again.</p>
 
 <h3 id="usage-secrets">Prepare the Secrets</h3>
 <p>Create a new CMSimple page with the name of the advent calendar as heading
-(the menu level of the page doesn't matter).
-Create a sub page for each day (the 1st sub page is for day 1, the 2nd for day 2 etc.)
-You can fill the pages with any contents you like,
-even plugin calls are possible.
-Typically you will want to
-<a href="http://www.cmsimple-xh.org/wiki/doku.php/cmsimple_scripting#show_in_menu">hide</a>
-all these pages from the menu.
-If you want to use an already existing page as secret behind a door,
-just <a href="http://www.cmsimple-xh.org/wiki/doku.php/cmsimple_scripting#redirect_page">redirect</a>
-the respective sub page to the existing one and append "&amp;print" to the URL.</p>
+(the menu level of the page doesn't matter). Create a sub page for each day (the
+1st sub page is for day 1, the 2nd for day 2 etc.) You can fill the pages with
+any contents you like, even plugin calls are possible. Typically you will want
+to <a
+href="http://www.cmsimple-xh.org/wiki/doku.php/cmsimple_scripting#show_in_menu">hide</a>
+all these pages from the menu. If you want to use an already existing page as
+secret behind a door, just <a
+href="http://www.cmsimple-xh.org/wiki/doku.php/cmsimple_scripting#redirect_page">redirect</a>
+the respective sub page to the existing one and append "&amp;print" to the
+URL.</p>
 <div class="toplink"><a href="#">back to top</a></div>
 
 <h3 id="usage-display">Display the Calendar</h3>
-<p>Display the advent calendar on any CMSimple_XH page by calling the plugin:</p>
+<p>Display the advent calendar on any CMSimple_XH page by calling the
+plugin:</p>
 <pre>{{{PLUGIN:Adventcalendar('name_of_the_calendar');}}}</pre>
-<p>Of course "name_of_the_calendar" must be replaced with the actual name of your advent calendar.</p>
+<p>Of course "name_of_the_calendar" must be replaced with the actual name of
+your advent calendar.</p>
 <div class="toplink"><a href="#">back to top</a></div>
 
 <h2 id="limitations">Limitations</h2>
