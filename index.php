@@ -116,19 +116,22 @@ function Adventcalendar_js()
 {
     global $pth, $plugin_cf, $hjs;
     
-    include_once "{$pth['folder']['plugins']}jquery/jquery.inc.php";
+    $pcf = $plugin_cf['adventcalendar'];
+    include_once $pth['folder']['plugins'] . 'jquery/jquery.inc.php';
     include_jQuery();
     $filename = $pth['folder']['plugins']
         . 'adventcalendar/colorbox/jquery.colorbox-min.js';
     include_jQueryPlugin('colorbox', $filename);
+    $width = $pcf['lightbox_width'];
+    $height = $pcf['lightbox_height'];
     $hjs .= <<<EOS
 <script type="text/javascript">/* <![CDATA[ */
 jQuery(function () {
     jQuery("area.adventcalendar").click(function (event) {
             jQuery.colorbox({
-                iframe: true, maxWidth: "100%", maxHeight: "100%",
-                width: "70%", height: "70%",
-                href: this.href
+                iframe: true, href: this.href,
+                maxWidth: "100%", maxHeight: "100%",
+                innerWidth: "$width", innerHeight: "$height"
             });
             event.preventDefault();
     });
