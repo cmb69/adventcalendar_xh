@@ -1,3 +1,18 @@
+Version 1beta5 - released 2013-11-28
+cmb     fixed bug, where jQuery4CMSimple could be included more than once (reported by Korvell, solved by Holger)
+cmb     fixed bug, where the contents of the lightbox could interfere with the page (reported by Korvell)
+cmb     fixed bug, where map coordinates were not integer numbers
+cmb     changed config option time_start to date_start in ISO date format
+cmb     updated to Colorbox 1.4.33
+cmb     revised manuals
+cmb     added config options lightbox_width and lightbox_height
+cmb     added config option folder_data
+cmb     catered for multiple calendars on the same page
+cmb     established accessibility of the calendars
+cmb     added version.nfo
+cmb     added some error handling (inspired by Korvell)
+cmb     improved QA (Phing, PHP_CI, CodeSniffer, PHPDoc)
+
 Version 1beta4 - released 2012-12-06
 cmb     made minor improvements to user interface and manual (suggested by Old)
 cmb     added Russian translation and user manual (contributed by Old)
