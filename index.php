@@ -110,10 +110,11 @@ function Adventcalendar_dataFolder()
  *
  * @global array The paths of system files and folders.
  * @global array The configuration of the plugins.
+ * @global string The (X)HTML fragment to insert into the HEAD element.
  */
 function Adventcalendar_js()
 {
-    global $pth, $plugin_cf;
+    global $pth, $plugin_cf, $hjs;
     
     $href = "{$pth['folder']['plugins']}adventcalendar/css/colorbox.css"; // FIXME
     include_once "{$pth['folder']['plugins']}jquery/jquery.inc.php";
@@ -121,6 +122,18 @@ function Adventcalendar_js()
     $filename = $pth['folder']['plugins']
         . 'adventcalendar/colorbox/jquery.colorbox-min.js';
     include_jQueryPlugin('colorbox', $filename);
+    $hjs .= <<<EOS
+<script type="text/javascript">/* <![CDATA[ */
+function Advancedform_lightbox(elt) {
+    jQuery.colorbox({
+        iframe: true, maxWidth: "100%", maxHeight: "100%",
+        width: "70%", height: "70%",
+        href: elt.href
+    })
+}
+/* ]]> */</script>
+
+EOS;
 }
 
 /**
@@ -171,8 +184,7 @@ function adventcalendar($cal)
                 $o .= tag(
                     'area shape="rect" coords="' . implode(',', $coords)
                     . '" href="?' . $href
-                    . '" onclick="jQuery.colorbox({maxWidth:\'80%\',href:\'?'
-                    . $href . '\'}); return false"'
+                    . '" onclick="Advancedform_lightbox(this); return false"'
                 );
             }
         }
