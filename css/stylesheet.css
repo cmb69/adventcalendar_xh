@@ -1,11 +1,4 @@
 /*
- * The <div> surroundig the page contents.
- * Apply any styles you would normally apply to <body>.
- * That does only work for the light box, i.e. if JS is enabled in the visitors browser.
- */
-#cboxLoadedContent {}
-
-/*
     Colorbox Core Style:
     The following CSS is consistent between example themes and should not be altered.
 */
