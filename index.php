@@ -116,7 +116,6 @@ function Adventcalendar_js()
 {
     global $pth, $plugin_cf, $hjs;
     
-    $href = "{$pth['folder']['plugins']}adventcalendar/css/colorbox.css"; // FIXME
     include_once "{$pth['folder']['plugins']}jquery/jquery.inc.php";
     include_jQuery();
     $filename = $pth['folder']['plugins']
