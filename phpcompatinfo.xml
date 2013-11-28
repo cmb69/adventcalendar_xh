@@ -9,7 +9,7 @@
                verbose="false">
 
     <excludes>
-        <exclude id="advancedform">
+        <exclude id="adventcalendar">
             <directory name="colorbox"/>
             <directory name="config"/>
             <directory name="css"/>
@@ -17,6 +17,9 @@
             <directory name="help"/>
             <directory name="images"/>
             <directory name="languages"/>
+            
+            <!-- we're using the $recursive parameter -->
+            <function name="mkdir"/>
         </exclude>
     </excludes>
 </phpcompatinfo>

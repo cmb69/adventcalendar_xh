@@ -88,19 +88,37 @@ function Adventcalendar_pageIndex($heading)
 }
 
 /**
- * Returns the path of the data folder.
+ * Returns the path of the data folder.  Tries to create it, if necessary.
  *
  * @return string
  *
  * @global array The paths of system files and folders.
- *
- * @todo: Create the folder, if it doesn't exist?
+ * @global array The configuration of the plugins.
  */
 function Adventcalendar_dataFolder()
 {
-    global $pth;
-    
-    return "{$pth['folder']['plugins']}adventcalendar/data/";
+    global $pth, $plugin_cf;
+
+    $pcf = $plugin_cf['adventcalendar'];
+
+    if ($pcf['folder_data'] == '') {
+        $fn = $pth['folder']['plugins'] . 'adventcalendar/data/';
+    } else {
+        $fn = $pth['folder']['base'] . $pcf['folder_data'];
+    }
+    if (substr($fn, -1) != '/') {
+        $fn .= '/';
+    }
+    if (file_exists($fn)) {
+        if (!is_dir($fn)) {
+            e('cntopen', 'folder', $fn);
+        }
+    } else {
+        if (!mkdir($fn, 0777, true)) {
+            e('cntwriteto', 'folder', $fn);
+        }
+    }
+    return $fn;
 }
 
 /**

@@ -12,6 +12,7 @@ $plugin_tx['adventcalendar']['syscheck_magic_quotes']="Magic quotes runtime off"
 $plugin_tx['adventcalendar']['syscheck_jquery']="<a href=\"http://www.cmsimple-xh.com/wiki/doku.php/plugins:jquery4cmsimple\">jQuery4CMSimple-Plugin</a> installiert";
 $plugin_tx['adventcalendar']['syscheck_writable']="Ordner '%s' beschreibbar";
 
+$plugin_tx['adventcalendar']['cf_folder_data']="Pfad zu einem Ordner relativ zu CMSimple_XHs Wurzelverzeichnis, wo die Plugin-Daten gespeichert werden sollen. Z.B. \"userfiles/adventcalendar/\". Lassen Sie diesen Eintrag leer, um in den data/ Ordner des Plugins zu speichern.";
 $plugin_tx['adventcalendar']['cf_date_start']="Der Start-Tag des Adventskalenders im Format JJJJ-MM-TT.";
 $plugin_tx['adventcalendar']['cf_door_width']="Die Breite der Türchen in Pixeln.";
 $plugin_tx['adventcalendar']['cf_door_height']="Die Höhe der Türchen in Pixeln.";
