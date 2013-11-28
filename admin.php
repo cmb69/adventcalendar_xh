@@ -165,7 +165,7 @@ function Adventcalendar_prepare($cal)
         for ($j = 0; $j < $doorsPerCol; $j++) {
             $y1 = ($j + 1) * $dy + $j * $dh;
             $y2 = $y1 + $dh;
-            $doors[] = array($x1, $y1, $x2, $y2);
+            $doors[] = array(round($x1), round($y1), round($x2), round($y2));
         }
     }
     shuffle($doors);
