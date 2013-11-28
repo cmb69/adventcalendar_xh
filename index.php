@@ -156,14 +156,16 @@ EOS;
  * @global array The paths of system files and folders.
  * @global array The URLs of the pages.
  * @global array The configuration of the plugins.
+ * @global array The localization of the plugins.
  * 
  * @access public
  */
 function adventcalendar($cal)
 {
-    global $pth, $u, $plugin_cf;
+    global $pth, $u, $plugin_cf, $plugin_tx;
     
     $pcf = $plugin_cf['adventcalendar'];
+    $ptx = $plugin_tx['adventcalendar'];
     if (XH_ADM) {
         $day = 24;
     } else {
@@ -185,7 +187,10 @@ function adventcalendar($cal)
     if (isset($n)) {
         $pages = Adventcalendar_childPages($n, false);
         Adventcalendar_js();
-        $o = tag('img src="' . $src . '" usemap="#adventcalendar"')
+        $o = tag(
+                'img src="' . $src . '" usemap="#adventcalendar" alt="'
+                . $ptx['adventcalendar'] . '"'
+            )
             . '<map name="adventcalendar">';
         for ($i = 0; $i < $day; $i++) {
             if (array_key_exists($i, $pages)) {
@@ -193,7 +198,8 @@ function adventcalendar($cal)
                 $href = $u[$pages[$i]] . '&amp;print';
                 $o .= tag(
                     'area class="adventcalendar" shape="rect" coords="'
-                    . implode(',', $coords) . '" href="?' . $href . '"'
+                    . implode(',', $coords) . '" href="?' . $href . '" alt="'
+                    . sprintf($ptx['day_n'], $i + 1) . '"'
                 );
             }
         }

@@ -1,5 +1,7 @@
 <?php
 
+$plugin_tx['adventcalendar']['adventcalendar']="Adventskalender";
+$plugin_tx['adventcalendar']['day_n']="Tag %d";
 $plugin_tx['adventcalendar']['prepare_cover']="Umschlag vorbereiten";
 
 $plugin_tx['adventcalendar']['syscheck_title']="System-Prüfung";
