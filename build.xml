@@ -1,35 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<!-- $Id$ -->
-
-<project name="Adventcalendar" default="default">
-
-    <!-- Filesets -->
+<project name="Adventcalendar" default="help">
 
     <fileset id="php-sources" dir=".">
         <include name="admin.php"/>
         <include name="index.php"/>
     </fileset>
 
-    <!-- Checks -->
+    <target name="help" description="lists available targets">
+        <exec command="phing -l" outputProperty="help"/>
+        <echo>${help}</echo>
+    </target>
 
-    <target name="sniff">
+    <target name="sniff" description="checks adherence to PEAR CS">
         <phpcodesniffer standard="PEAR">
             <fileset refid="php-sources"/>
         </phpcodesniffer>
     </target>
 
-    <target name="compat">
-        <exec command="phpcompatinfo --configuration phpcompatinfo.xml print --exclude-pattern adventcalendar ."
+    <target name="compat2" description="checks compatibility with PHP_CompatInfo 2">
+        <exec command="C:\xampp\php\phpcompatinfo --configuration phpcompatinfo.xml print --exclude-pattern adventcalendar ."
               logoutput="true"/>
     </target>
 
-    <!-- Documentation -->
+    <target name="compat" description="checks compatibility with PHP_CompatInfo 3">
+        <exec command="phpcompatinfo analyser:run ." logoutput="true"/>
+    </target>
 
     <target name="php-doc">
         <phpdoc title="Adventcalendar_XH Developer Documentation" destdir="doc/php"
-                output="HTML:frames:default" defaultpackagename="Adventcalendar"
-                defaultcategoryname="Adventcalendar_XH">
+                output="HTML:Smarty:HandS" defaultpackagename="Adventcalendar"
+                defaultcategoryname="CMSimple_XH">
             <fileset refid="php-sources"/>
             <projdocfileset dir=".">
                <include name="README"/>
@@ -38,15 +39,10 @@
         </phpdoc>
     </target>
 
-<!--    <target name="js-doc">
-        <exec command="jsdoc -destination doc/js pagemanager.js" checkreturn="true"/>
-    </target>
--->
-    <target name="doc" depends="php-doc"/>
+    <target name="doc" depends="php-doc"
+            description="generates developer documentation"/>
 
-    <!-- Build -->
-
-    <target name="build">
+    <target name="build" description="builds distributable ZIP archive">
         <fail unless="version" message="version is not defined!"/>
         <svnexport revision="" repositoryurl="." todir="export"/>
         <move todir="dist">
@@ -64,6 +60,7 @@
             <fileset dir="export">
                 <exclude name="adventcalendar.komodoproject"/>
                 <exclude name="build.xml"/>
+                <exclude name="composer.*"/>
                 <exclude name="phpcompatinfo.xml"/>
             </fileset>
         </move>
