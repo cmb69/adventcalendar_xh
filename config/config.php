@@ -1,7 +1,7 @@
 <?php
 
 $plugin_cf['adventcalendar']['folder_data']="";
-$plugin_cf['adventcalendar']['date_start']="2013-12-01";
+$plugin_cf['adventcalendar']['date_start']="2014-12-01";
 $plugin_cf['adventcalendar']['door_width']="50";
 $plugin_cf['adventcalendar']['door_height']="50";
 $plugin_cf['adventcalendar']['color_door']="888888";
