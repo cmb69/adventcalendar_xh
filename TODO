@@ -1,2 +1,5 @@
 * add CSRF protection
 * refactor to MVC
+* XH_wantsPluginAdministration, XH_registerStandardPluginMenutItems
+* require XH 1.6?
+* access protection of data folder
