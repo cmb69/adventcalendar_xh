@@ -31,9 +31,26 @@ EOT
 }
 
 /**
- * The plugin controller.
+ * Autoloads a plugin class.
+ *
+ * @param string $class A class name.
+ *
+ * @return void
+ *
+ * @global array The paths of system files and folders.
  */
-require_once $pth['folder']['plugin_classes'] . 'Controller.php';
+function Adventcalendar_autoload($class)
+{
+    global $pth;
+
+    $parts = explode('_', $class, 2);
+    if ($parts[0] == 'Adventcalendar') {
+        include_once $pth['folder']['plugins'] . 'adventcalendar/classes/'
+            . $parts[1] . '.php';
+    }
+}
+
+spl_autoload_register('Adventcalendar_autoload');
 
 /**
  * The plugin's version number.
