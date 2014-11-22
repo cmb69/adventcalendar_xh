@@ -26,62 +26,6 @@
 class Adventcalendar_Controller
 {
     /**
-     * Returns the index of the first page with a certain heading, <var>null</var>
-     * if no such page exists.
-     *
-     * @param string $heading A heading.
-     *
-     * @return int
-     *
-     * @global int   The number of pages.
-     * @global array The headings of the pages.
-     */
-    protected static function pageIndex($heading)
-    {
-        global $cl, $h;
-
-        for ($i = 0; $i < $cl; $i++) {
-            if ($h[$i] == $heading) {
-                return $i;
-            }
-        }
-        return null;
-    }
-
-    /**
-     * Returns an array of indexes of the direct children of a page.
-     *
-     * @param int  $n            A page index.
-     * @param bool $ignoreHidden Whether hidden pages should be ignored.
-     *
-     * @return array
-     *
-     * @global int   The number of pages.
-     * @global array The levels of the pages.
-     * @global array The configuration of the core.
-     */
-    protected static function childPages($n, $ignoreHidden = true)
-    {
-        global $cl, $l, $cf;
-
-        $res = array();
-        $ll = $cf['menu']['levelcatch'];
-        for ($i = $n + 1; $i < $cl; $i++) {
-            if ($ignoreHidden && hide($i)) {
-                continue;
-            }
-            if ($l[$i] <= $l[$n]) {
-                break;
-            }
-            if ($l[$i] <= $ll) {
-                $res[] = $i;
-                $ll = $l[$i];
-            }
-        }
-        return $res;
-    }
-
-    /**
      * Returns the path of the data folder.  Tries to create it, if necessary.
      *
      * @return string
@@ -171,13 +115,12 @@ class Adventcalendar_Controller
      * @return string (X)HTML.
      *
      * @global array The paths of system files and folders.
-     * @global array The URLs of the pages.
      * @global array The configuration of the plugins.
      * @global array The localization of the plugins.
      */
     public static function main($cal)
     {
-        global $pth, $u, $plugin_cf, $plugin_tx;
+        global $pth, $plugin_cf, $plugin_tx;
 
         $pcf = $plugin_cf['adventcalendar'];
         $ptx = $plugin_tx['adventcalendar'];
@@ -186,37 +129,36 @@ class Adventcalendar_Controller
         } else {
             $day = (int) floor((time() - strtotime($pcf['date_start'])) / 86400) + 1;
         }
-        $filename = self::dataFolder() . $cal . '.dat';
-        if (!is_readable($filename)) {
-            e('missing', 'file', $filename);
+        $calendar = Adventcalendar_Calendar::findByName($cal);
+        $data = $calendar->getDoors();
+        if (!isset($data)) {
+            e('missing', 'file', $cal); // TODO: "Calendar $cal is not prepared!"
             return false;
         }
-        $contents = file_get_contents($filename);
-        $data = unserialize($contents);
         $src = self::dataFolder() . $cal . '+.jpg';
         if (!file_exists($src)) {
             e('missing', 'file', $src);
             return false;
         }
-        $n = self::pageIndex($cal);
-        if (isset($n)) {
-            $pages = self::childPages($n, false);
+        $page = Adventcalendar_Page::getByHeading($cal);
+        if (isset($page)) {
             self::js();
             $o = tag(
                 'img src="' . $src . '" usemap="#adventcalendar" alt="'
                 . $ptx['adventcalendar'] . '"'
             );
             $o .= '<map name="adventcalendar">';
-            for ($i = 0; $i < $day; $i++) {
-                if (array_key_exists($i, $pages)) {
-                    $coords = $data[$i];
-                    $href = $u[$pages[$i]] . '&amp;print';
-                    $o .= tag(
-                        'area class="adventcalendar" shape="rect" coords="'
-                        . implode(',', $coords) . '" href="?' . $href . '" alt="'
-                        . sprintf($ptx['day_n'], $i + 1) . '"'
-                    );
+            foreach ($page->getChildren() as $i => $page) {
+                if ($i >= $day) {
+                    break;
                 }
+                $coords = $data[$i];
+                $href = $page->getURL() . '&amp;print';
+                $o .= tag(
+                    'area class="adventcalendar" shape="rect" coords="'
+                    . implode(',', $coords) . '" href="?' . $href . '" alt="'
+                    . sprintf($ptx['day_n'], $i + 1) . '"'
+                );
             }
             $o .= '</map>';
         }
@@ -279,29 +221,19 @@ EOS;
         global $plugin_tx;
 
         $ptx = $plugin_tx['adventcalendar'];
-        $cals = array();
-        $dn = self::dataFolder();
-        $dh = opendir($dn);
-        while (($fn = readdir($dh)) !== false) {
-            if (pathinfo($dn . $fn, PATHINFO_EXTENSION) == 'jpg'
-                && strpos($bn = basename($fn, '.jpg'), '+') != strlen($bn) - 1
-            ) {
-                $cals[] = $fn;
-            }
-        }
-        closedir($dh);
+        $cals = Adventcalendar_Calendar::getAll();
 
         $o = '<div id="adventcalendar_admin" class="plugineditcaption">'
             . 'Adventcalendar</div><ul>';
         foreach ($cals as $cal) {
-            $o .= '<li>' . $cal
+            $o .= '<li>' . $cal->getName() . '.jpg'
                 . '<form action="?adventcalendar" method="POST"'
                 . ' style="display: inline">'
                 . tag('input type="hidden" name="admin" value="plugin_main"')
                 . tag('input type="hidden" name="action" value="prepare"')
                 . tag(
                     'input type="hidden" name="adventcalendar_name" value="'
-                    . basename($cal, '.jpg') . '"'
+                    . $cal->getName() . '"'
                 )
                 . ' '
                 . tag('input type="submit" value="' . $ptx['prepare_cover'] . '"')
@@ -409,39 +341,19 @@ EOS;
         global $plugin_cf;
 
         $pcf = $plugin_cf['adventcalendar'];
-        $dn = self::dataFolder();
 
-        if (($im = imagecreatefromjpeg($dn . $cal . '.jpg')) === false) {
-            e('cntopen', 'file', "$dn$cal.jpg");
+        $dn = self::dataFolder();
+        $calendar = Adventcalendar_Calendar::findByName($cal);
+        $im = $calendar->getImage();
+        if (!$im) {
+            e('cntopen', 'file', $cal); // TODO "Calendar image not readable"
             return self::administration();
         }
-        $w = imagesx($im);
-        $h = imagesy($im);
-        if ($w >= $h) {
-            $doorsPerRow = 6; $doorsPerCol = 4;
-        } else {
-            $doorsPerRow = 4; $doorsPerCol = 6;
-        }
-        $dw = $pcf['door_width'];
-        $dh = $pcf['door_height'];
-        $dx = ($w - $doorsPerRow * $dw) / ($doorsPerRow + 1);
-        $dy = ($h - $doorsPerCol * $dh) / ($doorsPerCol + 1);
+        $calendar->calculateDoors(imagesx($im), imagesy($im));
+        $doors = $calendar->getDoors();
         $dc = self::color($im, $pcf['color_door']);
         $fc = self::color($im, $pcf['color_font']);
         $sc = self::color($im, $pcf['color_fringe']);
-
-        $doors = array();
-        for ($i = 0; $i < $doorsPerRow; $i++) {
-            $x1 = ($i + 1) * $dx + $i * $dw;
-            $x2 = $x1 + $dw;
-            for ($j = 0; $j < $doorsPerCol; $j++) {
-                $y1 = ($j + 1) * $dy + $j * $dh;
-                $y2 = $y1 + $dh;
-                $doors[] = array(round($x1), round($y1), round($x2), round($y2));
-            }
-        }
-        shuffle($doors);
-
         for ($i = 0; $i < 24; $i++) {
             list($x1, $y1, $x2, $y2) = $doors[$i];
             imagerectangle($im, $x1, $y1, $x2, $y2, $dc);
@@ -457,13 +369,8 @@ EOS;
             e('cntsave', 'file', "$dn$cal+.jpg");
             return self::administration();
         }
-        if (($fh = fopen("$dn$cal.dat", 'wb')) === false
-            || fwrite($fh, serialize($doors)) === false
-        ) {
-            e('cntsave', 'file', "$dn$cal.dat");
-        }
-        if ($fh !== false) {
-            fclose($fh);
+        if (!$calendar->save()) {
+            e('cntsave', 'file', $cal); // TODO
         }
 
         return '<div id="adventcalendar_admin" class="plugineditcaption">'
