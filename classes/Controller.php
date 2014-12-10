@@ -67,8 +67,29 @@ class Adventcalendar_Controller
     public static function dispatch()
     {
         if (XH_ADM) {
-            self::handleAdministration();
+            if (function_exists('XH_registerStandardPluginMenuItems')) {
+                XH_registerStandardPluginMenuItems(true);
+            }
+            if (self::isAdministrationRequested()) {
+                self::handleAdministration();
+            }
         }
+    }
+
+    /**
+     * Returns whether the plugin administration is requested.
+     *
+     * @return bool
+     *
+     * @global string Whether the plugin administration has been requested.
+     */
+    protected static function isAdministrationRequested()
+    {
+        global $adventcalendar;
+
+        return function_exists('XH_wantsPluginAdministration')
+            && XH_wantsPluginAdministration('adventcalendar')
+            || isset($adventcalendar) && $adventcalendar == 'true';
     }
 
     /**
@@ -76,34 +97,31 @@ class Adventcalendar_Controller
      *
      * @return void
      *
-     * @global string Whether the plugin administration has been requested.
      * @global string The value of the <var>admin</var> GP parameter.
      * @global string The value of the <var>action</var> GP parameter.
      * @global string The (X)HTML fragment of the contents area.
      */
     protected static function handleAdministration()
     {
-        global $adventcalendar, $admin, $action, $o;
+        global $admin, $action, $o;
 
-        if (isset($adventcalendar) && $adventcalendar == 'true') {
-            $o .= print_plugin_admin('on');
-            switch ($admin) {
-            case '':
-                $o .= self::version() . tag('hr')
-                    . self::systemCheck();
-                break;
-            case 'plugin_main':
-                switch ($action) {
-                case 'prepare':
-                    $o .= self::prepare(stsl($_POST['adventcalendar_name']));
-                    break;
-                default:
-                    $o .= self::administration();
-                }
+        $o .= print_plugin_admin('on');
+        switch ($admin) {
+        case '':
+            $o .= self::version() . tag('hr')
+                . self::systemCheck();
+            break;
+        case 'plugin_main':
+            switch ($action) {
+            case 'prepare':
+                $o .= self::prepare(stsl($_POST['adventcalendar_name']));
                 break;
             default:
-                $o .= plugin_admin_common($action, $admin, 'adventcalendar');
+                $o .= self::administration();
             }
+            break;
+        default:
+            $o .= plugin_admin_common($action, $admin, 'adventcalendar');
         }
     }
 
