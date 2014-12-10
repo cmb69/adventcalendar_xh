@@ -124,11 +124,6 @@ class Adventcalendar_Controller
 
         $pcf = $plugin_cf['adventcalendar'];
         $ptx = $plugin_tx['adventcalendar'];
-        if (XH_ADM) {
-            $day = 24;
-        } else {
-            $day = (int) floor((time() - strtotime($pcf['date_start'])) / 86400) + 1;
-        }
         $calendar = Adventcalendar_Calendar::findByName($cal);
         $data = $calendar->getDoors();
         if (!isset($data)) {
@@ -149,7 +144,7 @@ class Adventcalendar_Controller
             );
             $o .= '<map name="adventcalendar">';
             foreach ($page->getChildren() as $i => $page) {
-                if ($i >= $day) {
+                if ($i >= self::getCurrentDay()) {
                     break;
                 }
                 $coords = $data[$i];
@@ -164,6 +159,25 @@ class Adventcalendar_Controller
         }
 
         return $o;
+    }
+
+    /**
+     * Returns the current day.
+     *
+     * @return int
+     *
+     * @global array The configuration of the plugins.
+     */
+    protected static function getCurrentDay()
+    {
+        global $plugin_cf;
+
+        if (XH_ADM) {
+            return 24;
+        } else {
+            $start = strtotime($plugin_cf['adventcalendar']['date_start']);
+            return (int) floor((time() - $start) / 86400) + 1;
+        }
     }
 
     /**
@@ -193,18 +207,18 @@ class Adventcalendar_Controller
         $width = $pcf['lightbox_width'];
         $height = $pcf['lightbox_height'];
         $hjs .= <<<EOS
-<script type="text/javascript">/* <![CDATA[ */
-jQuery(function () {
-    jQuery("area.adventcalendar").click(function (event) {
-            jQuery.colorbox({
-                iframe: true, href: this.href,
-                maxWidth: "100%", maxHeight: "100%",
-                innerWidth: "$width", innerHeight: "$height"
+            <script type="text/javascript">/* <![CDATA[ */
+            jQuery(function () {
+                jQuery("area.adventcalendar").click(function (event) {
+                        jQuery.colorbox({
+                            iframe: true, href: this.href,
+                            maxWidth: "100%", maxHeight: "100%",
+                            innerWidth: "$width", innerHeight: "$height"
+                        });
+                        event.preventDefault();
+                });
             });
-            event.preventDefault();
-    });
-});
-/* ]]> */</script>
+            /* ]]> */</script>
 
 EOS;
     }
@@ -333,37 +347,19 @@ EOS;
      * @param string $cal An image file name.
      *
      * @return void
-     *
-     * @global array The configuration of the plugins.
      */
     protected static function prepare($cal)
     {
-        global $plugin_cf;
-
-        $pcf = $plugin_cf['adventcalendar'];
-
         $dn = self::dataFolder();
         $calendar = Adventcalendar_Calendar::findByName($cal);
         $im = $calendar->getImage();
         if (!$im) {
             e('cntopen', 'file', $cal); // TODO "Calendar image not readable"
-            return self::administration();
+            return 'wurst'.self::administration();
         }
         $calendar->calculateDoors(imagesx($im), imagesy($im));
-        $doors = $calendar->getDoors();
-        $dc = self::color($im, $pcf['color_door']);
-        $fc = self::color($im, $pcf['color_font']);
-        $sc = self::color($im, $pcf['color_fringe']);
-        for ($i = 0; $i < 24; $i++) {
-            list($x1, $y1, $x2, $y2) = $doors[$i];
-            imagerectangle($im, $x1, $y1, $x2, $y2, $dc);
-            for ($j = $x1 + 1; $j <= $x1 + 3; $j++) {
-                for ($k = $y1; $k <= $y1 + 2; $k++) {
-                    imagestring($im, 5, $j, $k, $i + 1, $sc);
-                }
-            }
-            imagestring($im, 5, $x1 + 2, $y1 + 1, $i + 1, $fc);
-        }
+        $image = new Adventcalendar_Image($im);
+        $image->drawDoors($calendar->getDoors());
 
         if (!imagejpeg($im, "$dn$cal+.jpg")) {
             e('cntsave', 'file', "$dn$cal+.jpg");
@@ -376,23 +372,6 @@ EOS;
         return '<div id="adventcalendar_admin" class="plugineditcaption">'
             . 'Adventcalendar</div>'
             . tag('img src="' . "$dn$cal+.jpg" . '" width="100%" alt=""');
-    }
-
-    /**
-     * Returns an allocated color.
-     *
-     * @param resource $im  A GD image.
-     * @param string   $col A 24-bit hexadecimal RGB value.
-     *
-     * @return int
-     */
-    protected static function color($im, $col)
-    {
-        $c = base_convert($col, 16, 10);
-        $r = $c >> 16;
-        $g = ($c & 0xffff) >> 8;
-        $b = $c & 0xff;
-        return imagecolorallocate($im, $r, $g, $b);
     }
 }
 
