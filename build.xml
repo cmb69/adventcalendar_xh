@@ -58,7 +58,6 @@
         </move>
         <move todir="dist">
             <fileset dir="export">
-                <exclude name="adventcalendar.komodoproject"/>
                 <exclude name="build.xml"/>
                 <exclude name="composer.*"/>
                 <exclude name="phpcompatinfo.*"/>
