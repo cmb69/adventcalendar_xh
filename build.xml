@@ -61,7 +61,7 @@
                 <exclude name="adventcalendar.komodoproject"/>
                 <exclude name="build.xml"/>
                 <exclude name="composer.*"/>
-                <exclude name="phpcompatinfo.xml"/>
+                <exclude name="phpcompatinfo.*"/>
             </fileset>
         </move>
         <delete dir="export"/>
