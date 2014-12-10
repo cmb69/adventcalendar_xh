@@ -228,11 +228,12 @@ EOS;
      *
      * @return string (X)HTML.
      *
-     * @global array The localization of the plugins.
+     * @global array             The localization of the plugins.
+     * @global XH_CSRFProtection The CSRF protector.
      */
     protected static function administration()
     {
-        global $plugin_tx;
+        global $plugin_tx, $_XH_csrfProtection;
 
         $ptx = $plugin_tx['adventcalendar'];
         $cals = Adventcalendar_Calendar::getAll();
@@ -243,6 +244,7 @@ EOS;
             $o .= '<li>' . $cal->getName() . '.jpg'
                 . '<form action="?adventcalendar" method="POST"'
                 . ' style="display: inline">'
+                . $_XH_csrfProtection->tokenInput()
                 . tag('input type="hidden" name="admin" value="plugin_main"')
                 . tag('input type="hidden" name="action" value="prepare"')
                 . tag(
@@ -347,9 +349,14 @@ EOS;
      * @param string $cal An image file name.
      *
      * @return void
+     *
+     * @global XH_CSRFProtection The CSRF protector.
      */
     protected static function prepare($cal)
     {
+        global $_XH_csrfProtection;
+
+        $_XH_csrfProtection->check();
         $dn = self::dataFolder();
         $calendar = Adventcalendar_Calendar::findByName($cal);
         $im = $calendar->getImage();
