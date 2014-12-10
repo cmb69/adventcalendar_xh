@@ -4,6 +4,8 @@ $plugin_tx['adventcalendar']['adventcalendar']="Advent calendar";
 $plugin_tx['adventcalendar']['day_n']="Day %d";
 $plugin_tx['adventcalendar']['prepare_cover']="Prepare Cover";
 
+$plugin_tx['adventcalendar']['message_missing_page']="The page \"%s\" does not exist!";
+
 $plugin_tx['adventcalendar']['syscheck_title']="System check";
 $plugin_tx['adventcalendar']['syscheck_phpversion']="PHP version &ge; %s";
 $plugin_tx['adventcalendar']['syscheck_extension']="Extension '%s' loaded";

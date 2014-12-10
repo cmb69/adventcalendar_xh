@@ -153,28 +153,30 @@ class Adventcalendar_Controller
             return false;
         }
         $page = Adventcalendar_Page::getByHeading($cal);
-        if (isset($page)) {
-            self::js();
-            $o = tag(
-                'img src="' . $src . '" usemap="#adventcalendar" alt="'
-                . $ptx['adventcalendar'] . '"'
+        if (!isset($page)) {
+            return XH_message(
+                'fail', sprintf($ptx['message_missing_page'], $cal)
             );
-            $o .= '<map name="adventcalendar">';
-            foreach ($page->getChildren() as $i => $page) {
-                if ($i >= self::getCurrentDay()) {
-                    break;
-                }
-                $coords = $data[$i];
-                $href = $page->getURL() . '&amp;print';
-                $o .= tag(
-                    'area class="adventcalendar" shape="rect" coords="'
-                    . implode(',', $coords) . '" href="?' . $href . '" alt="'
-                    . sprintf($ptx['day_n'], $i + 1) . '"'
-                );
-            }
-            $o .= '</map>';
         }
-
+        self::js();
+        $o = tag(
+            'img src="' . $src . '" usemap="#adventcalendar" alt="'
+            . $ptx['adventcalendar'] . '"'
+        );
+        $o .= '<map name="adventcalendar">';
+        foreach ($page->getChildren() as $i => $page) {
+            if ($i >= self::getCurrentDay()) {
+                break;
+            }
+            $coords = $data[$i];
+            $href = $page->getURL() . '&amp;print';
+            $o .= tag(
+                'area class="adventcalendar" shape="rect" coords="'
+                . implode(',', $coords) . '" href="?' . $href . '" alt="'
+                . sprintf($ptx['day_n'], $i + 1) . '"'
+            );
+        }
+        $o .= '</map>';
         return $o;
     }
 
