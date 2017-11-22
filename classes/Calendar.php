@@ -15,20 +15,9 @@
 
 namespace Adventcalendar;
 
-/**
- * The calendars.
- *
- * @category CMSimple_XH
- * @package  Adventcalendar
- * @author   Christoph M. Becker <cmbecker69@gmx.de>
- * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
- * @link     http://3-magi.net/?CMSimple_XH/Adventcalendar_XH
- */
 class Calendar
 {
     /**
-     * Returns an array of all calendars.
-     *
      * @return array<self>
      */
     public static function getAll()
@@ -49,10 +38,7 @@ class Calendar
     }
 
     /**
-     * Finds and returns a calendar with a certain name.
-     *
-     * @param string $name A name.
-     *
+     * @param string $name
      * @return self
      */
     public static function findByName($name)
@@ -61,12 +47,7 @@ class Calendar
     }
 
     /**
-     * Returns the path of the data folder.  Tries to create it, if necessary.
-     *
      * @return string
-     *
-     * @global array The paths of system files and folders.
-     * @global array The configuration of the plugins.
      */
     protected static function dataFolder()
     {
@@ -95,23 +76,17 @@ class Calendar
     }
 
     /**
-     * The name.
-     *
      * @var string
      */
     protected $name;
 
     /**
-     * The doors.
-     *
      * @var array<array<int>>
      */
     protected $doors;
 
     /**
-     * Initializes a new instance.
-     *
-     * @param string $name A calendar name.
+     * @param string $name
      */
     public function __construct($name)
     {
@@ -119,8 +94,6 @@ class Calendar
     }
 
     /**
-     * Returns the name.
-     *
      * @return string
      */
     public function getName()
@@ -129,8 +102,6 @@ class Calendar
     }
 
     /**
-     * Returns the doors.
-     *
      * @return array<array<int>>
      */
     public function getDoors()
@@ -147,8 +118,6 @@ class Calendar
     }
 
     /**
-     * Returns the image.
-     *
      * @return resource
      */
     public function getImage()
@@ -159,14 +128,9 @@ class Calendar
     }
 
     /**
-     * Calculates the doors.
-     *
-     * @param int $width  A width.
-     * @param int $height A height.
-     *
+     * @param int $width
+     * @param int $height
      * @return void
-     *
-     * @global array The configuration of the plugins.
      */
     public function calculateDoors($width, $height)
     {
@@ -199,8 +163,6 @@ class Calendar
     }
 
     /**
-     * Saves the calendar, and returns whether that succeeded.
-     *
      * @return bool
      */
     public function save()

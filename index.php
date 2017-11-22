@@ -29,17 +29,11 @@ EOT
     );
 }
 
-/**
- * The plugin's version number.
- */
 define('ADVENTCALENDAR_VERSION', '@ADVENTCALENDAR_VERSION@');
 
 /**
- * Returns the advent calendar view.
- *
- * @param string $cal A calendar name.
- *
- * @return string (X)HTML.
+ * @param string $cal
+ * @return string
  */
 function adventcalendar($cal)
 {

@@ -16,43 +16,24 @@
  * @link      http://3-magi.net/?CMSimple_XH/Adventcalendar_XH
  */
 
-/**
- * A test case to actually check the CSRF protection.
- *
- * @category Testing
- * @package  Adventcalendar
- * @author   Christoph M. Becker <cmbecker69@gmx.de>
- * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
- * @link     http://3-magi.net/?CMSimple_XH/Adventcalendar_XH
- */
 class CSRFAttackTest extends PHPUnit_Framework_TestCase
 {
     /**
-     * The URL of the installation.
-     *
      * @var string
      */
     protected $url;
 
     /**
-     * The cURL handle.
-     *
      * @var resource
      */
     protected $curlHandle;
 
     /**
-     * The path of the cookie file.
-     *
      * @var string
      */
     protected $cookieFile;
 
     /**
-     * Sets up the test fixture.
-     *
-     * Log in to back-end and store cookies in a temp file.
-     *
      * @return void
      */
     public function setUp()
@@ -68,10 +49,7 @@ class CSRFAttackTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Sets the cURL options.
-     *
-     * @param array $fields An array of POST fields.
-     *
+     * @param array $fields
      * @return void
      */
     protected function setCurlOptions($fields)
@@ -87,8 +65,6 @@ class CSRFAttackTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Returns data for testAttack().
-     *
      * @return array
      */
     public function dataForAttack()
@@ -106,13 +82,9 @@ class CSRFAttackTest extends PHPUnit_Framework_TestCase
     }
 
     /**
-     * Tests the attacks.
-     *
-     * @param array  $fields      An array of POST fields.
-     * @param string $queryString A query string.
-     *
      * @dataProvider dataForAttack
-     *
+     * @param array  $fields
+     * @param string $queryString
      * @return void
      */
     public function testAttack($fields, $queryString = null)

@@ -15,24 +15,10 @@
 
 namespace Adventcalendar;
 
-/**
- * The controller.
- *
- * @category CMSimple_XH
- * @package  Adventcalendar
- * @author   Christoph M. Becker <cmbecker69@gmx.de>
- * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
- * @link     http://3-magi.net/?CMSimple_XH/Adventcalendar_XH
- */
 class Controller
 {
     /**
-     * Returns the path of the data folder.  Tries to create it, if necessary.
-     *
      * @return string
-     *
-     * @global array The paths of system files and folders.
-     * @global array The configuration of the plugins.
      */
     protected static function dataFolder()
     {
@@ -61,8 +47,6 @@ class Controller
     }
 
     /**
-     * Dispatches on plugin related requests.
-     *
      * @return void
      */
     public static function dispatch()
@@ -76,13 +60,7 @@ class Controller
     }
 
     /**
-     * Handles the plugin administration.
-     *
      * @return void
-     *
-     * @global string The value of the <var>admin</var> GP parameter.
-     * @global string The value of the <var>action</var> GP parameter.
-     * @global string The (X)HTML fragment of the contents area.
      */
     protected static function handleAdministration()
     {
@@ -109,15 +87,8 @@ class Controller
     }
 
     /**
-     * Returns the advent calendar view.
-     *
-     * @param string $cal A calendar name.
-     *
-     * @return string (X)HTML.
-     *
-     * @global array The paths of system files and folders.
-     * @global array The configuration of the plugins.
-     * @global array The localization of the plugins.
+     * @param string $cal
+     * @return string
      */
     public static function main($cal)
     {
@@ -163,11 +134,7 @@ class Controller
     }
 
     /**
-     * Returns the current day.
-     *
      * @return int
-     *
-     * @global array The configuration of the plugins.
      */
     protected static function getCurrentDay()
     {
@@ -182,13 +149,7 @@ class Controller
     }
 
     /**
-     * Emits the required scripts to the HEAD element.
-     *
      * @return void
-     *
-     * @global array The paths of system files and folders.
-     * @global array The configuration of the plugins.
-     * @global string The (X)HTML fragment to insert into the HEAD element.
      */
     protected static function js()
     {
@@ -225,12 +186,7 @@ EOS;
     }
 
     /**
-     * Returns the main administration view.
-     *
-     * @return string (X)HTML.
-     *
-     * @global array             The localization of the plugins.
-     * @global XH_CSRFProtection The CSRF protector.
+     * @return string
      */
     protected static function administration()
     {
@@ -261,11 +217,7 @@ EOS;
     }
 
     /**
-     * Returns the version information view.
-     *
-     * @return string (X)HTML.
-     *
-     * @global array The paths of system files and folders.
+     * @return string
      */
     protected static function version()
     {
@@ -298,13 +250,7 @@ EOS;
     }
 
     /**
-     * Returns the requirements information view.
-     *
-     * @return string  (X)HTML.
-     *
-     * @global array The paths of system files and folders.
-     * @global array The localization of the core.
-     * @global array The localization of the plugins.
+     * @return string
      */
     protected static function systemCheck()
     {
@@ -345,13 +291,8 @@ EOS;
     }
 
     /**
-     * Prepares an image as advent calendar.
-     *
-     * @param string $cal An image file name.
-     *
+     * @param string $cal
      * @return void
-     *
-     * @global XH_CSRFProtection The CSRF protector.
      */
     protected static function prepare($cal)
     {

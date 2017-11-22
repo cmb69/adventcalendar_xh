@@ -15,26 +15,11 @@
 
 namespace Adventcalendar;
 
-/**
- * The pages.
- *
- * @category CMSimple_XH
- * @package  Adventcalendar
- * @author   Christoph M. Becker <cmbecker69@gmx.de>
- * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
- * @link     http://3-magi.net/?CMSimple_XH/Adventcalendar_XH
- */
 class Page
 {
     /**
-     * Returns the first page with a certain heading,
-     * <var>null</var> if no such page exists.
-     *
-     * @param string $heading A heading.
-     *
-     * @return Page
-     *
-     * @global array The headings of the pages.
+     * @param string $heading
+     * @return ?Page
      */
     public static function getByHeading($heading)
     {
@@ -49,16 +34,12 @@ class Page
     }
 
     /**
-     * The page index.
-     *
      * @var int
      */
     protected $index;
 
     /**
-     * Initializes a new instance.
-     *
-     * @param int $index A page index.
+     * @param int $index
      */
     protected function __construct($index)
     {
@@ -66,11 +47,7 @@ class Page
     }
 
     /**
-     * Returns the page URL.
-     *
      * @return string
-     *
-     * @global array The URLs of the pages.
      */
     public function getURL()
     {
@@ -80,13 +57,7 @@ class Page
     }
 
     /**
-     * Returns an array of the direct child pages.
-     *
      * @return array<self>
-     *
-     * @global int   The number of pages.
-     * @global array The levels of the pages.
-     * @global array The configuration of the core.
      */
     public function getChildren()
     {

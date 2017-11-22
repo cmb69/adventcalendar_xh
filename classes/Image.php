@@ -15,28 +15,15 @@
 
 namespace Adventcalendar;
 
-/**
- * The images.
- *
- * @category CMSimple_XH
- * @package  Adventcalendar
- * @author   Christoph M. Becker <cmbecker69@gmx.de>
- * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
- * @link     http://3-magi.net/?CMSimple_XH/Adventcalendar_XH
- */
 class Image
 {
     /**
-     * The image.
-     *
      * @var resource
      */
     protected $image;
 
     /**
-     * Initializes a new instance.
-     *
-     * @param resource $image A GD image.
+     * @param resource $image
      */
     public function __construct($image)
     {
@@ -44,10 +31,7 @@ class Image
     }
 
     /**
-     * Draws the doors.
-     *
-     * @param array<array<int>> $doors An array of door coordinates.
-     *
+     * @param array<array<int>> $doors
      * @return void
      */
     public function drawDoors($doors)
@@ -60,16 +44,11 @@ class Image
     }
 
     /**
-     * Draws the stamp.
-     *
-     * @param int $x1 An x-coordinate.
-     * @param int $y1 An y-coordinate.
-     * @param int $x2 An x-coordinate.
-     * @param int $y2 An y-coordinate.
-     *
+     * @param int $x1
+     * @param int $y1
+     * @param int $x2
+     * @param int $y2
      * @return void
-     *
-     * @global array The configuration of the plugins.
      */
     protected function drawStamp($x1, $y1, $x2, $y2)
     {
@@ -80,15 +59,10 @@ class Image
     }
 
     /**
-     * Draws the number.
-     *
-     * @param int $x      An x-coordinate.
-     * @param int $y      An y-coordinate.
-     * @param int $number A day number.
-     *
+     * @param int $x
+     * @param int $y
+     * @param int $number
      * @return void
-     *
-     * @global array The configuration of the plugins.
      */
     protected function drawNumber($x, $y, $number)
     {
@@ -100,15 +74,10 @@ class Image
     }
 
     /**
-     * Draws the fringe.
-     *
-     * @param int $x      An x-coordinate.
-     * @param int $y      An y-coordinate.
-     * @param int $number A day number.
-     *
+     * @param int $x
+     * @param int $y
+     * @param int $number
      * @return void
-     *
-     * @global array The configuration of the plugins.
      */
     protected function drawFringe($x, $y, $number)
     {
@@ -125,10 +94,7 @@ class Image
     }
 
     /**
-     * Allocates and returns a color.
-     *
-     * @param string $hexcolor A 24-bit hexadecimal RGB value.
-     *
+     * @param string $hexcolor
      * @return int
      */
     protected function allocateColor($hexcolor)
