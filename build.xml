@@ -13,16 +13,6 @@
         <include name="*Test.php"/>
     </fileset>
 
-    <target name="attack-tests" description="runs all attack tests">
-        <fail unless="env.CMSIMPLEDIR" message="CMSIMPLEDIR undefined!"/>
-        <phpunit haltonerror="true" haltonfailure="true">
-            <formatter type="plain" usefile="false"/>
-            <batchtest>
-                <fileset refid="attack-tests"/>
-            </batchtest>
-        </phpunit>
-    </target>
-
     <target name="build" description="builds distributable ZIP archive">
         <fail unless="version" message="version is not defined!"/>
         <svnexport revision="" repositoryurl="." todir="export"/>
