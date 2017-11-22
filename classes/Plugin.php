@@ -23,6 +23,8 @@ namespace Adventcalendar;
 
 class Plugin
 {
+    const VERSION = '@ADVENTCALENDAR_VERSION@';
+
     /**
      * @return string
      */
@@ -236,7 +238,7 @@ EOS;
                 . $pth['folder']['plugins'] . 'adventcalendar/adventcalendar.png"'
                 . ' alt="Plugin icon"'
             )
-            . '<p>Version: ' . ADVENTCALENDAR_VERSION . '</p>'
+            . '<p>Version: ' . Plugin::VERSION . '</p>'
             . '<p>Copyright &copy; 2012-2017 <a href="http://3-magi.net/">'
             . 'Christoph M. Becker</a></p>'
             . '<p style="text-align:justify">This program is free software:'

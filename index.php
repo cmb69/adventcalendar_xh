@@ -35,8 +35,6 @@ EOT
     );
 }
 
-define('ADVENTCALENDAR_VERSION', '@ADVENTCALENDAR_VERSION@');
-
 /**
  * @param string $cal
  * @return string
