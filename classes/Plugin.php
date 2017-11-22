@@ -100,9 +100,8 @@ class Plugin
      */
     public static function main($cal)
     {
-        global $pth, $plugin_cf, $plugin_tx;
+        global $plugin_tx;
 
-        $pcf = $plugin_cf['adventcalendar'];
         $ptx = $plugin_tx['adventcalendar'];
         $calendar = Calendar::findByName($cal);
         $data = $calendar->getDoors();
