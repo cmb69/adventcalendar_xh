@@ -21,7 +21,7 @@
 
 namespace Adventcalendar;
 
-class Controller
+class Plugin
 {
     /**
      * @return string

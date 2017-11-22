@@ -43,7 +43,7 @@ define('ADVENTCALENDAR_VERSION', '@ADVENTCALENDAR_VERSION@');
  */
 function adventcalendar($cal)
 {
-    return Adventcalendar\Controller::main($cal);
+    return Adventcalendar\Plugin::main($cal);
 }
 
-Adventcalendar\Controller::dispatch();
+Adventcalendar\Plugin::dispatch();
