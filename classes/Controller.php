@@ -328,7 +328,7 @@ EOS;
     {
         global $pth, $tx, $plugin_tx;
 
-        $requiredVersion = '4.3.0';
+        $requiredVersion = '5.4.0';
         $ptx = $plugin_tx['adventcalendar'];
         $imgdir = $pth['folder']['plugins'] . 'adventcalendar/images/';
         $ok = tag('img src="' . $imgdir . 'ok.png" alt="ok"');
