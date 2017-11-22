@@ -13,6 +13,8 @@
  * @link      http://3-magi.net/?CMSimple_XH/Adventcalendar_XH
  */
 
+namespace Adventcalendar;
+
 /**
  * The controller.
  *
@@ -22,7 +24,7 @@
  * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
  * @link     http://3-magi.net/?CMSimple_XH/Adventcalendar_XH
  */
-class Adventcalendar_Controller
+class Controller
 {
     /**
      * Returns the path of the data folder.  Tries to create it, if necessary.
@@ -141,7 +143,7 @@ class Adventcalendar_Controller
 
         $pcf = $plugin_cf['adventcalendar'];
         $ptx = $plugin_tx['adventcalendar'];
-        $calendar = Adventcalendar_Calendar::findByName($cal);
+        $calendar = Calendar::findByName($cal);
         $data = $calendar->getDoors();
         if (!isset($data)) {
             e('missing', 'file', $cal); // TODO: "Calendar $cal is not prepared!"
@@ -152,7 +154,7 @@ class Adventcalendar_Controller
             e('missing', 'file', $src);
             return false;
         }
-        $page = Adventcalendar_Page::getByHeading($cal);
+        $page = Page::getByHeading($cal);
         if (!isset($page)) {
             return XH_message(
                 'fail', sprintf($ptx['message_missing_page'], $cal)
@@ -255,7 +257,7 @@ EOS;
         global $plugin_tx, $_XH_csrfProtection;
 
         $ptx = $plugin_tx['adventcalendar'];
-        $cals = Adventcalendar_Calendar::getAll();
+        $cals = Calendar::getAll();
 
         $o = '<div id="adventcalendar_admin" class="plugineditcaption">'
             . 'Adventcalendar</div><ul>';
@@ -377,14 +379,14 @@ EOS;
 
         $_XH_csrfProtection->check();
         $dn = self::dataFolder();
-        $calendar = Adventcalendar_Calendar::findByName($cal);
+        $calendar = Calendar::findByName($cal);
         $im = $calendar->getImage();
         if (!$im) {
             e('cntopen', 'file', $cal); // TODO "Calendar image not readable"
             return 'wurst'.self::administration();
         }
         $calendar->calculateDoors(imagesx($im), imagesy($im));
-        $image = new Adventcalendar_Image($im);
+        $image = new Image($im);
         $image->drawDoors($calendar->getDoors());
 
         if (!imagejpeg($im, "$dn$cal+.jpg")) {

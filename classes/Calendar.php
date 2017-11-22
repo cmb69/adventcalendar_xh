@@ -13,6 +13,8 @@
  * @link      http://3-magi.net/?CMSimple_XH/Adventcalendar_XH
  */
 
+namespace Adventcalendar;
+
 /**
  * The calendars.
  *
@@ -22,7 +24,7 @@
  * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
  * @link     http://3-magi.net/?CMSimple_XH/Adventcalendar_XH
  */
-class Adventcalendar_Calendar
+class Calendar
 {
     /**
      * Returns an array of all calendars.

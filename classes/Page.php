@@ -13,6 +13,8 @@
  * @link      http://3-magi.net/?CMSimple_XH/Adventcalendar_XH
  */
 
+namespace Adventcalendar;
+
 /**
  * The pages.
  *
@@ -22,7 +24,7 @@
  * @license  http://www.gnu.org/licenses/gpl-3.0.en.html GNU GPLv3
  * @link     http://3-magi.net/?CMSimple_XH/Adventcalendar_XH
  */
-class Adventcalendar_Page
+class Page
 {
     /**
      * Returns the first page with a certain heading,
@@ -30,7 +32,7 @@ class Adventcalendar_Page
      *
      * @param string $heading A heading.
      *
-     * @return Adventcalendar_Page
+     * @return Page
      *
      * @global array The headings of the pages.
      */

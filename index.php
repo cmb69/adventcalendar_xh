@@ -42,7 +42,7 @@ function Adventcalendar_autoload($class)
 {
     global $pth;
 
-    $parts = explode('_', $class, 2);
+    $parts = explode('\\', $class, 2);
     if ($parts[0] == 'Adventcalendar') {
         include_once $pth['folder']['plugins'] . 'adventcalendar/classes/'
             . $parts[1] . '.php';
@@ -65,9 +65,9 @@ define('ADVENTCALENDAR_VERSION', '@ADVENTCALENDAR_VERSION@');
  */
 function adventcalendar($cal)
 {
-    return Adventcalendar_Controller::main($cal);
+    return Adventcalendar\Controller::main($cal);
 }
 
-Adventcalendar_Controller::dispatch();
+Adventcalendar\Controller::dispatch();
 
 ?>
