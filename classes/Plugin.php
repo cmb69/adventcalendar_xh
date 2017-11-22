@@ -23,7 +23,7 @@ namespace Adventcalendar;
 
 class Plugin
 {
-    const VERSION = '@ADVENTCALENDAR_VERSION@';
+    const VERSION = '@PLUGIN_VERSION@';
 
     /**
      * @return string
