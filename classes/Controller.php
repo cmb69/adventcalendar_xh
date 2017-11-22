@@ -68,29 +68,11 @@ class Controller
     public static function dispatch()
     {
         if (XH_ADM) {
-            if (function_exists('XH_registerStandardPluginMenuItems')) {
-                XH_registerStandardPluginMenuItems(true);
-            }
-            if (self::isAdministrationRequested()) {
+            XH_registerStandardPluginMenuItems(true);
+            if (XH_wantsPluginAdministration('adventcalendar')) {
                 self::handleAdministration();
             }
         }
-    }
-
-    /**
-     * Returns whether the plugin administration is requested.
-     *
-     * @return bool
-     *
-     * @global string Whether the plugin administration has been requested.
-     */
-    protected static function isAdministrationRequested()
-    {
-        global $adventcalendar;
-
-        return function_exists('XH_wantsPluginAdministration')
-            && XH_wantsPluginAdministration('adventcalendar')
-            || isset($adventcalendar) && $adventcalendar == 'true';
     }
 
     /**
