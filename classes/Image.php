@@ -75,10 +75,8 @@ class Image
     {
         global $plugin_cf;
 
-        imagerectangle(
-            $this->image, $x1, $y1, $x2, $y2,
-            $this->allocateColor($plugin_cf['adventcalendar']['color_door'])
-        );
+        $color = $this->allocateColor($plugin_cf['adventcalendar']['color_door']);
+        imagerectangle($this->image, $x1, $y1, $x2, $y2, $color);
     }
 
     /**
@@ -97,10 +95,8 @@ class Image
         global $plugin_cf;
 
         $this->drawFringe($x, $y, $number);
-        imagestring(
-            $this->image, 5, $x, $y, $number,
-            $this->allocateColor($plugin_cf['adventcalendar']['color_font'])
-        );
+        $color = $this->allocateColor($plugin_cf['adventcalendar']['color_font']);
+        imagestring($this->image, 5, $x, $y, $number, $color);
     }
 
     /**
@@ -120,12 +116,10 @@ class Image
 
         for ($i = $x - 1; $i <= $x + 1; $i++) {
             for ($j = $y - 1; $j <= $y + 1; $j++) {
-                imagestring(
-                    $this->image, 5, $i, $j, $number,
-                    $this->allocateColor(
-                        $plugin_cf['adventcalendar']['color_fringe']
-                    )
+                $color = $this->allocateColor(
+                    $plugin_cf['adventcalendar']['color_fringe']
                 );
+                imagestring($this->image, 5, $i, $j, $number, $color);
             }
         }
     }
@@ -146,5 +140,3 @@ class Image
         return imagecolorallocate($this->image, $red, $green, $blue);
     }
 }
-
-?>

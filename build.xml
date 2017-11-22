@@ -13,13 +13,6 @@
         <include name="*Test.php"/>
     </fileset>
 
-    <target name="sniff" description="checks adherence to PEAR CS">
-        <phpcodesniffer standard="PEAR">
-            <fileset refid="php-sources"/>
-            <fileset refid="attack-tests"/>
-        </phpcodesniffer>
-    </target>
-
     <target name="compat2" description="checks compatibility with PHP_CompatInfo 2">
         <exec command="C:\xampp\php\phpcompatinfo --configuration phpcompatinfo.xml print --exclude-pattern adventcalendar ."
               logoutput="true"/>

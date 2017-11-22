@@ -38,7 +38,7 @@ define('ADVENTCALENDAR_VERSION', '@ADVENTCALENDAR_VERSION@');
  * Returns the advent calendar view.
  *
  * @param string $cal A calendar name.
- * 
+ *
  * @return string (X)HTML.
  */
 function adventcalendar($cal)
@@ -47,5 +47,3 @@ function adventcalendar($cal)
 }
 
 Adventcalendar\Controller::dispatch();
-
-?>

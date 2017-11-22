@@ -108,21 +108,21 @@ class Controller
 
         $o .= print_plugin_admin('on');
         switch ($admin) {
-        case '':
-            $o .= self::version() . tag('hr')
-                . self::systemCheck();
-            break;
-        case 'plugin_main':
-            switch ($action) {
-            case 'prepare':
-                $o .= self::prepare(stsl($_POST['adventcalendar_name']));
+            case '':
+                $o .= self::version() . tag('hr')
+                    . self::systemCheck();
+                break;
+            case 'plugin_main':
+                switch ($action) {
+                    case 'prepare':
+                        $o .= self::prepare(stsl($_POST['adventcalendar_name']));
+                        break;
+                    default:
+                        $o .= self::administration();
+                }
                 break;
             default:
-                $o .= self::administration();
-            }
-            break;
-        default:
-            $o .= plugin_admin_common($action, $admin, 'adventcalendar');
+                $o .= plugin_admin_common($action, $admin, 'adventcalendar');
         }
     }
 
@@ -156,9 +156,7 @@ class Controller
         }
         $page = Page::getByHeading($cal);
         if (!isset($page)) {
-            return XH_message(
-                'fail', sprintf($ptx['message_missing_page'], $cal)
-            );
+            return XH_message('fail', sprintf($ptx['message_missing_page'], $cal));
         }
         self::js();
         $o = tag(
@@ -402,5 +400,3 @@ EOS;
             . tag('img src="' . "$dn$cal+.jpg" . '" width="100%" alt=""');
     }
 }
-
-?>

@@ -173,9 +173,11 @@ class Calendar
         global $plugin_cf;
 
         if ($width >= $height) {
-            $doorsPerRow = 6; $doorsPerCol = 4;
+            $doorsPerRow = 6;
+            $doorsPerCol = 4;
         } else {
-            $doorsPerRow = 4; $doorsPerCol = 6;
+            $doorsPerRow = 4;
+            $doorsPerCol = 6;
         }
         $dw = $plugin_cf['adventcalendar']['door_width'];
         $dh = $plugin_cf['adventcalendar']['door_height'];
@@ -207,5 +209,3 @@ class Calendar
         return (bool) file_put_contents($filename, serialize($this->doors));
     }
 }
-
-?>

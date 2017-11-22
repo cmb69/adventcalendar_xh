@@ -106,5 +106,3 @@ class Page
         return $children;
     }
 }
-
-?>
