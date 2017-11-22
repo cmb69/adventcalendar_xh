@@ -2,6 +2,8 @@
 
 <project name="Adventcalendar" default="help">
 
+    <import file="../pfw/build.xml"/>
+
     <fileset id="php-sources" dir=".">
         <include name="classes/*.php"/>
         <include name="index.php"/>
@@ -10,11 +12,6 @@
     <fileset id="attack-tests" dir="tests/attack">
         <include name="*Test.php"/>
     </fileset>
-
-    <target name="help" description="lists available targets">
-        <exec command="phing -l" outputProperty="help"/>
-        <echo>${help}</echo>
-    </target>
 
     <target name="sniff" description="checks adherence to PEAR CS">
         <phpcodesniffer standard="PEAR">
