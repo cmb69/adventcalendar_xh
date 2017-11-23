@@ -89,8 +89,10 @@ class Plugin
                         $o .= self::prepare($_POST['adventcalendar_name']);
                         break;
                     default:
-                        $o .= self::administration();
-                }
+                        ob_start();
+                        (new MainAdminController)->defaultAction();
+                        $o .= ob_get_clean();
+                    }
                 break;
             default:
                 $o .= plugin_admin_common($action, $admin, 'adventcalendar');
@@ -189,16 +191,6 @@ class Plugin
             /* ]]> */</script>
 
 EOS;
-    }
-
-    /**
-     * @return string
-     */
-    protected static function administration()
-    {
-        ob_start();
-        (new MainAdminController)->defaultAction();
-        return ob_get_clean();
     }
 
     /**
