@@ -25,7 +25,7 @@ use Pfw\Url;
 use Pfw\View\HtmlString;
 use Pfw\View\View;
 
-class MainAdminController
+class MainAdminController extends Controller
 {
     /**
      * @return void
@@ -39,7 +39,7 @@ class MainAdminController
             ->data([
                 'url' => Url::getCurrent()->with('action', 'prepare'),
                 'csrfTokenInput' => new HtmlString($_XH_csrfProtection->tokenInput()),
-                'calendars' => Calendar::getAll()
+                'calendars' => Calendar::getAll($this->dataFolder())
             ])
             ->render();
     }
@@ -53,8 +53,8 @@ class MainAdminController
 
         $_XH_csrfProtection->check();
         $cal = $_POST['adventcalendar_name'];
-        $dn = Plugin::dataFolder();
-        $calendar = Calendar::findByName($cal);
+        $dn = $this->dataFolder();
+        $calendar = Calendar::findByName($cal, $this->dataFolder());
         $im = $calendar->getImage();
         if (!$im) {
             echo XH_message('fail', $plugin_tx['adventcalendar']['error_read'], "$dn$cal.jpg");
@@ -83,7 +83,7 @@ class MainAdminController
      */
     public function viewAction()
     {
-        $dn = Plugin::dataFolder();
+        $dn = $this->dataFolder();
         $cal = $_GET['adventcalendar_name'];
         (new View('adventcalendar'))
             ->template('view')

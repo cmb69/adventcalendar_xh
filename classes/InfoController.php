@@ -24,7 +24,7 @@ namespace Adventcalendar;
 use Pfw\SystemCheckService;
 use Pfw\View\View;
 
-class InfoController
+class InfoController extends Controller
 {
     /**
      * @return void
@@ -47,7 +47,7 @@ class InfoController
                     ->writable("{$pth['folder']['plugins']}adventcalendar/config/")
                     ->writable("{$pth['folder']['plugins']}adventcalendar/css/")
                     ->writable("{$pth['folder']['plugins']}adventcalendar/languages/")
-                    ->writable(Plugin::dataFolder())
+                    ->writable($this->dataFolder())
                     ->getChecks()
             ])
             ->render();

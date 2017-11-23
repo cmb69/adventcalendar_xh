@@ -24,19 +24,20 @@ namespace Adventcalendar;
 class Calendar
 {
     /**
+     * @param string $dataFolder
      * @return array<self>
      */
-    public static function getAll()
+    public static function getAll($dataFolder)
     {
         $result = array();
-        $folder = self::dataFolder();
+        $folder = $dataFolder;
         $dir = opendir($folder);
         while (($entry = readdir($dir)) !== false) {
             $name = basename($entry, '.jpg');
             if (pathinfo($folder . $entry, PATHINFO_EXTENSION) == 'jpg'
                 && strpos($name, '+') != strlen($name) - 1
             ) {
-                $result[] = new self($name);
+                $result[] = new self($name, $dataFolder);
             }
         }
         closedir($dir);
@@ -45,40 +46,12 @@ class Calendar
 
     /**
      * @param string $name
+     * @param string $dataFolder
      * @return self
      */
-    public static function findByName($name)
+    public static function findByName($name, $dataFolder)
     {
-        return new self($name);
-    }
-
-    /**
-     * @return string
-     */
-    protected static function dataFolder()
-    {
-        global $pth, $plugin_cf;
-
-        $pcf = $plugin_cf['adventcalendar'];
-
-        if ($pcf['folder_data'] == '') {
-            $fn = $pth['folder']['plugins'] . 'adventcalendar/data/';
-        } else {
-            $fn = $pth['folder']['base'] . $pcf['folder_data'];
-        }
-        if (substr($fn, -1) != '/') {
-            $fn .= '/';
-        }
-        if (file_exists($fn)) {
-            if (!is_dir($fn)) {
-                e('cntopen', 'folder', $fn);
-            }
-        } else {
-            if (!mkdir($fn, 0777, true)) {
-                e('cntwriteto', 'folder', $fn);
-            }
-        }
-        return $fn;
+        return new self($name, $dataFolder);
     }
 
     /**
@@ -87,16 +60,23 @@ class Calendar
     protected $name;
 
     /**
+     * @var string
+     */
+    private $dataFolder;
+
+    /**
      * @var array<array<int>>
      */
     protected $doors;
 
     /**
      * @param string $name
+     * @param string $dataFolder
      */
-    public function __construct($name)
+    public function __construct($name, $dataFolder)
     {
         $this->name = $name;
+        $this->dataFolder = (string) $dataFolder;
     }
 
     /**
@@ -113,7 +93,7 @@ class Calendar
     public function getDoors()
     {
         if (!isset($this->doors)) {
-            $filename = self::dataFolder() . $this->name . '.dat';
+            $filename = $this->dataFolder . $this->name . '.dat';
             if (!is_readable($filename)) {
                 return null;
             }
@@ -128,7 +108,7 @@ class Calendar
      */
     public function getImage()
     {
-        $filename = self::dataFolder() . $this->name . '.jpg';
+        $filename = $this->dataFolder . $this->name . '.jpg';
         $image = imagecreatefromjpeg($filename);
         return $image ? $image : null;
     }
@@ -173,7 +153,7 @@ class Calendar
      */
     public function save()
     {
-        $filename = self::dataFolder() . $this->name . '.dat';
+        $filename = $this->dataFolder . $this->name . '.dat';
         return (bool) file_put_contents($filename, serialize($this->doors));
     }
 }

@@ -23,7 +23,7 @@ namespace Adventcalendar;
 
 use Pfw\View\View;
 
-class MainController
+class MainController extends Controller
 {
     /**
      * @var string
@@ -46,13 +46,13 @@ class MainController
         global $plugin_tx;
 
         $ptx = $plugin_tx['adventcalendar'];
-        $calendar = Calendar::findByName($this->calendarName);
+        $calendar = Calendar::findByName($this->calendarName, $this->dataFolder());
         $data = $calendar->getDoors();
         if (!isset($data)) {
-            echo XH_message('fail', $ptx['error_read'], Plugin::dataFolder() . $this->calendarName . '.dat');
+            echo XH_message('fail', $ptx['error_read'], $this->dataFolder() . $this->calendarName . '.dat');
             return;
         }
-        $src = Plugin::dataFolder() . $this->calendarName . '+.jpg';
+        $src = $this->dataFolder() . $this->calendarName . '+.jpg';
         if (!file_exists($src)) {
             echo XH_message('fail', $ptx['error_read'], $src);
             return;

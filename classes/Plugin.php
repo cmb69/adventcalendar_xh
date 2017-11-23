@@ -21,41 +21,9 @@
 
 namespace Adventcalendar;
 
-use Pfw\Url;
-use Pfw\View\View;
-
 class Plugin
 {
     const VERSION = '@PLUGIN_VERSION@';
-
-    /**
-     * @return string
-     */
-    public static function dataFolder()
-    {
-        global $pth, $plugin_cf;
-
-        $pcf = $plugin_cf['adventcalendar'];
-
-        if ($pcf['folder_data'] == '') {
-            $fn = $pth['folder']['plugins'] . 'adventcalendar/data/';
-        } else {
-            $fn = $pth['folder']['base'] . $pcf['folder_data'];
-        }
-        if (substr($fn, -1) != '/') {
-            $fn .= '/';
-        }
-        if (file_exists($fn)) {
-            if (!is_dir($fn)) {
-                e('cntopen', 'folder', $fn);
-            }
-        } else {
-            if (!mkdir($fn, 0777, true)) {
-                e('cntwriteto', 'folder', $fn);
-            }
-        }
-        return $fn;
-    }
 
     /**
      * @return void
