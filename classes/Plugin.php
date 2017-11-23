@@ -21,9 +21,6 @@
 
 namespace Adventcalendar;
 
-use Pfw\SystemCheckService;
-use Pfw\View\View;
-
 class Plugin
 {
     const VERSION = '@PLUGIN_VERSION@';
@@ -31,7 +28,7 @@ class Plugin
     /**
      * @return string
      */
-    protected static function dataFolder()
+    public static function dataFolder()
     {
         global $pth, $plugin_cf;
 
@@ -80,7 +77,9 @@ class Plugin
         $o .= print_plugin_admin('on');
         switch ($admin) {
             case '':
-                $o .= self::version();
+                ob_start();
+                (new InfoController)->defaultAction();
+                $o .= ob_get_clean();
                 break;
             case 'plugin_main':
                 switch ($action) {
@@ -223,35 +222,6 @@ EOS;
         }
         $o .= '</ul>';
         return $o;
-    }
-
-    /**
-     * @return string
-     */
-    protected static function version()
-    {
-        global $pth;
-
-        ob_start();
-        (new View('adventcalendar'))
-            ->template('info')
-            ->data([
-                'logo' => "{$pth['folder']['plugins']}adventcalendar/adventcalendar.png",
-                'version' => Plugin::VERSION,
-                'checks' => (new SystemCheckService)
-                    ->minPhpVersion('5.4.0')
-                    ->extension('gd')
-                    ->minXhVersion('1.6.3')
-                    ->plugin('pfw')
-                    ->plugin('jquery')
-                    ->writable("{$pth['folder']['plugins']}adventcalendar/config/")
-                    ->writable("{$pth['folder']['plugins']}adventcalendar/css/")
-                    ->writable("{$pth['folder']['plugins']}adventcalendar/languages/")
-                    ->writable(self::dataFolder())
-                    ->getChecks()
-            ])
-            ->render();
-        return ob_get_clean();
     }
 
     /**
