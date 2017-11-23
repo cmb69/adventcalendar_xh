@@ -41,7 +41,9 @@ EOT
  */
 function adventcalendar($cal)
 {
-    return Adventcalendar\Plugin::main($cal);
+    ob_start();
+    (new Adventcalendar\MainController($cal))->defaultAction();
+    return ob_get_clean();
 }
 
 Adventcalendar\Plugin::dispatch();
