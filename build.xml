@@ -4,13 +4,4 @@
 
     <import file="../pfw/build.xml"/>
 
-    <fileset id="php-sources" dir=".">
-        <include name="classes/*.php"/>
-        <include name="index.php"/>
-    </fileset>
-
-    <fileset id="attack-tests" dir="tests/attack">
-        <include name="*Test.php"/>
-    </fileset>
-
 </project>

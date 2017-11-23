@@ -23,5 +23,3 @@ $plugin_tx['adventcalendar']['cf_color_font']="The color of the day numbers insi
 $plugin_tx['adventcalendar']['cf_color_fringe']="The color of the fringe of the day numbers inside the little doors as hexadecimal RGB value (e.g. \"000000\" is black and \"ffffff\" is white).";
 $plugin_tx['adventcalendar']['cf_lightbox_width']="The width of the contents of the lightbox in pixels or percent (e.g. \"400px\" or \"70%\").";
 $plugin_tx['adventcalendar']['cf_lightbox_height']="The height of the contents of the lightbox in pixels or percent (e.g. \"400px\" or \"70%\").";
-
-?>

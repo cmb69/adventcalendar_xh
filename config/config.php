@@ -9,5 +9,3 @@ $plugin_cf['adventcalendar']['color_font']="cccccc";
 $plugin_cf['adventcalendar']['color_fringe']="000000";
 $plugin_cf['adventcalendar']['lightbox_width']="70%";
 $plugin_cf['adventcalendar']['lightbox_height']="70%";
-
-?>
