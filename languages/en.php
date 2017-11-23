@@ -6,14 +6,6 @@ $plugin_tx['adventcalendar']['prepare_cover']="Prepare Cover";
 
 $plugin_tx['adventcalendar']['message_missing_page']="The page \"%s\" does not exist!";
 
-$plugin_tx['adventcalendar']['syscheck_title']="System check";
-$plugin_tx['adventcalendar']['syscheck_phpversion']="PHP version &ge; %s";
-$plugin_tx['adventcalendar']['syscheck_extension']="Extension '%s' loaded";
-$plugin_tx['adventcalendar']['syscheck_encoding']="Encoding 'UTF-8' configured";
-$plugin_tx['adventcalendar']['syscheck_magic_quotes']="Magic quotes runtime off";
-$plugin_tx['adventcalendar']['syscheck_jquery']="<a href=\"http://www.cmsimple-xh.com/wiki/doku.php/plugins:jquery4cmsimple\">jQuery4CMSimple plugin</a> installed";
-$plugin_tx['adventcalendar']['syscheck_writable']="Folder '%s' writable";
-
 $plugin_tx['adventcalendar']['cf_folder_data']="Path to a folder relative to the CMSimple root directory, where to store the plugin's data. E.g. \"userfiles/adventcalendar/\". Leave empty to store in the plugin's data/ folder.";
 $plugin_tx['adventcalendar']['cf_date_start']="The start date of the advent calendar in format YYYY-MM-DD (e.g. 2013-12-01). Optionally you can use the extended format YYYY-MM-DD hh:mm &plusmn;h";
 $plugin_tx['adventcalendar']['cf_door_width']="The width of the little doors in pixel.";

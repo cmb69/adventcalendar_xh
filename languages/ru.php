@@ -16,14 +16,6 @@ $plugin_tx['adventcalendar']['menu_help']="Помощь";
 //
 $plugin_tx['adventcalendar']['prepare_cover']="Подготовка обложки";
 
-$plugin_tx['adventcalendar']['syscheck_title']="Проверка системы";
-$plugin_tx['adventcalendar']['syscheck_phpversion']="Версия PHP &ge; %s";
-$plugin_tx['adventcalendar']['syscheck_extension']="Расширение '%s' загружено";
-$plugin_tx['adventcalendar']['syscheck_encoding']="Кодировка 'UTF-8' установлена";
-$plugin_tx['adventcalendar']['syscheck_magic_quotes']="Экранирование спецсимволов (\"magic_quotes_runtime\") отключено";
-$plugin_tx['adventcalendar']['syscheck_jquery']="Плагин <a href=\"http://www.cmsimple-xh.com/wiki/doku.php/plugins:jquery4cmsimple\">jQuery4CMSimple</a> установлен";
-$plugin_tx['adventcalendar']['syscheck_writable']="Папка '%s' доступна для записи";
-
 $plugin_tx['adventcalendar']['cf_door_width']="Ширина небольших дверей в пикселях.";
 $plugin_tx['adventcalendar']['cf_door_height']="Высота небольших дверей в пикселях.";
 $plugin_tx['adventcalendar']['cf_color_door']="Цвет рамки небольших дверей - шестнадцатеричное значение RGB (например, \"000000 \" - черный и \"ffffff \" - белый).";

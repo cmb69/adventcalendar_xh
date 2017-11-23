@@ -21,6 +21,7 @@
 
 namespace Adventcalendar;
 
+use Pfw\SystemCheckService;
 use Pfw\View\View;
 
 class Plugin
@@ -79,8 +80,7 @@ class Plugin
         $o .= print_plugin_admin('on');
         switch ($admin) {
             case '':
-                $o .= self::version() . tag('hr')
-                    . self::systemCheck();
+                $o .= self::version();
                 break;
             case 'plugin_main':
                 switch ($action) {
@@ -237,51 +237,21 @@ EOS;
             ->template('info')
             ->data([
                 'logo' => "{$pth['folder']['plugins']}adventcalendar/adventcalendar.png",
-                'version' => Plugin::VERSION
+                'version' => Plugin::VERSION,
+                'checks' => (new SystemCheckService)
+                    ->minPhpVersion('5.4.0')
+                    ->extension('gd')
+                    ->minXhVersion('1.6.3')
+                    ->plugin('pfw')
+                    ->plugin('jquery')
+                    ->writable("{$pth['folder']['plugins']}adventcalendar/config/")
+                    ->writable("{$pth['folder']['plugins']}adventcalendar/css/")
+                    ->writable("{$pth['folder']['plugins']}adventcalendar/languages/")
+                    ->writable(self::dataFolder())
+                    ->getChecks()
             ])
             ->render();
         return ob_get_clean();
-    }
-
-    /**
-     * @return string
-     */
-    protected static function systemCheck()
-    {
-        global $pth, $tx, $plugin_tx;
-
-        $requiredVersion = '5.4.0';
-        $ptx = $plugin_tx['adventcalendar'];
-        $imgdir = $pth['folder']['plugins'] . 'adventcalendar/images/';
-        $ok = tag('img src="' . $imgdir . 'ok.png" alt="ok"');
-        $warn = tag('img src="' . $imgdir . 'warn.png" alt="warning"');
-        $fail = tag('img src="' . $imgdir . 'fail.png" alt="failure"');
-        $o = '<h4>' . $ptx['syscheck_title'] . '</h4>'
-            . (version_compare(PHP_VERSION, $requiredVersion) >= 0 ? $ok : $fail)
-            . '&nbsp;&nbsp;'
-            . sprintf($ptx['syscheck_phpversion'], $requiredVersion)
-            . tag('br');
-        foreach (array('gd') as $ext) {
-            $o .= (extension_loaded($ext) ? $ok : $fail)
-                . '&nbsp;&nbsp;' . sprintf($ptx['syscheck_extension'], $ext)
-                . tag('br');
-        }
-        $o .= (!get_magic_quotes_runtime() ? $ok : $fail)
-            . '&nbsp;&nbsp;' . $ptx['syscheck_magic_quotes'] . tag('br') . tag('br');
-        $o .= (strtoupper($tx['meta']['codepage']) == 'UTF-8' ? $ok : $warn)
-            . '&nbsp;&nbsp;' . $ptx['syscheck_encoding'] . tag('br');
-        $check = file_exists($pth['folder']['plugins'] . 'jquery/jquery.inc.php');
-        $o .= ($check ? $ok : $fail) . '&nbsp;&nbsp;' . $ptx['syscheck_jquery']
-            . tag('br') . tag('br');
-        foreach (array('config/', 'css/', 'languages/') as $folder) {
-            $folders[] = $pth['folder']['plugins'] . 'adventcalendar/' . $folder;
-        }
-        $folders[] = self::dataFolder();
-        foreach ($folders as $folder) {
-            $o .= (is_writable($folder) ? $ok : $warn) . '&nbsp;&nbsp;'
-                . sprintf($ptx['syscheck_writable'], $folder) . tag('br');
-        }
-        return $o;
     }
 
     /**
