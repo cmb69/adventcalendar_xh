@@ -21,7 +21,6 @@
 
 namespace Adventcalendar;
 
-use Pfw\View\HtmlString;
 use Pfw\View\View;
 
 class Plugin
@@ -197,16 +196,8 @@ EOS;
      */
     protected static function administration()
     {
-        global $_XH_csrfProtection;
-
         ob_start();
-        (new View('adventcalendar'))
-            ->template('admin')
-            ->data([
-                'csrfTokenInput' => new HtmlString($_XH_csrfProtection->tokenInput()),
-                'calendars' => Calendar::getAll()
-            ])
-            ->render();
+        (new MainAdminController)->defaultAction();
         return ob_get_clean();
     }
 
