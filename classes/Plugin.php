@@ -21,6 +21,7 @@
 
 namespace Adventcalendar;
 
+use Pfw\Url;
 use Pfw\View\View;
 
 class Plugin
@@ -87,6 +88,11 @@ class Plugin
                 switch ($action) {
                     case 'prepare':
                         $o .= self::prepare($_POST['adventcalendar_name']);
+                        break;
+                    case 'view':
+                        ob_start();
+                        (new MainAdminController)->viewAction();
+                        $o .= ob_get_clean();
                         break;
                     default:
                         ob_start();
@@ -219,11 +225,8 @@ EOS;
             return XH_message('fail', $plugin_tx['adventcalendar']['error_save'], "$dn$cal.dat");
         }
 
-        ob_start();
-        (new View('adventcalendar'))
-            ->template('view')
-            ->data(['src' => "$dn$cal+.jpg"])
-            ->render();
-        return ob_get_clean();
+        $url = Url::getCurrent()->with('action', 'view')->with('adventcalendar_name', $cal);
+        header("Location: {$url->getAbsolute()}", true, 303);
+        exit;
     }
 }

@@ -43,4 +43,17 @@ class MainAdminController
             ])
             ->render();
     }
+
+    /**
+     * @return void
+     */
+    public function viewAction()
+    {
+        $dn = Plugin::dataFolder();
+        $cal = $_GET['adventcalendar_name'];
+        (new View('adventcalendar'))
+            ->template('view')
+            ->data(['src' => "$dn$cal+.jpg"])
+            ->render();
+    }
 }
