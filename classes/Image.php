@@ -26,7 +26,7 @@ class Image
     /**
      * @var resource
      */
-    protected $image;
+    private $image;
 
     /**
      * @param resource $image
@@ -56,7 +56,7 @@ class Image
      * @param int $y2
      * @return void
      */
-    protected function drawStamp($x1, $y1, $x2, $y2)
+    private function drawStamp($x1, $y1, $x2, $y2)
     {
         global $plugin_cf;
 
@@ -70,7 +70,7 @@ class Image
      * @param int $number
      * @return void
      */
-    protected function drawNumber($x, $y, $number)
+    private function drawNumber($x, $y, $number)
     {
         global $plugin_cf;
 
@@ -85,7 +85,7 @@ class Image
      * @param int $number
      * @return void
      */
-    protected function drawFringe($x, $y, $number)
+    private function drawFringe($x, $y, $number)
     {
         global $plugin_cf;
 
@@ -103,7 +103,7 @@ class Image
      * @param string $hexcolor
      * @return int
      */
-    protected function allocateColor($hexcolor)
+    private function allocateColor($hexcolor)
     {
         $color = base_convert($hexcolor, 16, 10);
         $red = $color >> 16;

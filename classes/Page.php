@@ -42,12 +42,12 @@ class Page
     /**
      * @var int
      */
-    protected $index;
+    private $index;
 
     /**
      * @param int $index
      */
-    protected function __construct($index)
+    private function __construct($index)
     {
         $this->index = $index;
     }

@@ -57,7 +57,7 @@ class Calendar
     /**
      * @var string
      */
-    protected $name;
+    private $name;
 
     /**
      * @var string
@@ -67,7 +67,7 @@ class Calendar
     /**
      * @var array<array<int>>
      */
-    protected $doors;
+    private $doors;
 
     /**
      * @param string $name

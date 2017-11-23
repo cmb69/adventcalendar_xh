@@ -41,7 +41,7 @@ class Plugin
     /**
      * @return void
      */
-    protected static function handleAdministration()
+    private static function handleAdministration()
     {
         global $admin, $action, $o;
 
