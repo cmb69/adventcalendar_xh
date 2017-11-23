@@ -116,13 +116,11 @@ class Plugin
         $calendar = Calendar::findByName($cal);
         $data = $calendar->getDoors();
         if (!isset($data)) {
-            e('missing', 'file', $cal); // TODO: "Calendar $cal is not prepared!"
-            return false;
+            return XH_message('fail', $ptx['error_read'], self::dataFolder() . $cal . '.dat');
         }
         $src = self::dataFolder() . $cal . '+.jpg';
         if (!file_exists($src)) {
-            e('missing', 'file', $src);
-            return false;
+            return XH_message('fail', $ptx['error_read'], $src);
         }
         $page = Page::getByHeading($cal);
         if (!isset($page)) {
