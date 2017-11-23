@@ -219,8 +219,11 @@ EOS;
             return XH_message('fail', $plugin_tx['adventcalendar']['error_save'], "$dn$cal.dat");
         }
 
-        return '<div id="adventcalendar_admin" class="plugineditcaption">'
-            . 'Adventcalendar</div>'
-            . tag('img src="' . "$dn$cal+.jpg" . '" width="100%" alt=""');
+        ob_start();
+        (new View('adventcalendar'))
+            ->template('view')
+            ->data(['src' => "$dn$cal+.jpg"])
+            ->render();
+        return ob_get_clean();
     }
 }
