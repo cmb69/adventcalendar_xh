@@ -5,6 +5,8 @@ $plugin_tx['adventcalendar']['day_n']="Day %s";
 $plugin_tx['adventcalendar']['prepare_cover']="Prepare Cover";
 
 $plugin_tx['adventcalendar']['message_missing_page']="The page \"%s\" does not exist!";
+$plugin_tx['adventcalendar']['error_read']="Could not read '%s'!";
+$plugin_tx['adventcalendar']['error_save']="Could not save '%s'!";
 
 $plugin_tx['adventcalendar']['cf_folder_data']="Path to a folder relative to the CMSimple root directory, where to store the plugin's data. E.g. \"userfiles/adventcalendar/\". Leave empty to store in the plugin's data/ folder.";
 $plugin_tx['adventcalendar']['cf_date_start']="The start date of the advent calendar in format YYYY-MM-DD (e.g. 2013-12-01). Optionally you can use the extended format YYYY-MM-DD hh:mm &plusmn;h";

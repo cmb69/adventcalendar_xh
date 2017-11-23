@@ -207,26 +207,24 @@ EOS;
      */
     protected static function prepare($cal)
     {
-        global $_XH_csrfProtection;
+        global $_XH_csrfProtection, $plugin_tx;
 
         $_XH_csrfProtection->check();
         $dn = self::dataFolder();
         $calendar = Calendar::findByName($cal);
         $im = $calendar->getImage();
         if (!$im) {
-            e('cntopen', 'file', $cal); // TODO "Calendar image not readable"
-            return 'wurst'.self::administration();
+            return XH_message('fail', $plugin_tx['adventcalendar']['error_read'], "$dn$cal.jpg");
         }
         $calendar->calculateDoors(imagesx($im), imagesy($im));
         $image = new Image($im);
         $image->drawDoors($calendar->getDoors());
 
         if (!imagejpeg($im, "$dn$cal+.jpg")) {
-            e('cntsave', 'file', "$dn$cal+.jpg");
-            return self::administration();
+            return XH_message('fail', $plugin_tx['adventcalendar']['error_save'], "$dn$cal+.jpg");
         }
         if (!$calendar->save()) {
-            e('cntsave', 'file', $cal); // TODO
+            return XH_message('fail', $plugin_tx['adventcalendar']['error_save'], "$dn$cal.dat");
         }
 
         return '<div id="adventcalendar_admin" class="plugineditcaption">'
