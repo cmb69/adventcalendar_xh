@@ -84,7 +84,7 @@ class Plugin
             case 'plugin_main':
                 switch ($action) {
                     case 'prepare':
-                        $o .= self::prepare(stsl($_POST['adventcalendar_name']));
+                        $o .= self::prepare($_POST['adventcalendar_name']);
                         break;
                     default:
                         $o .= self::administration();
