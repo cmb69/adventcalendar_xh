@@ -21,6 +21,9 @@
 
 namespace Adventcalendar;
 
+use Pfw\View\HtmlString;
+use Pfw\View\View;
+
 class Plugin
 {
     const VERSION = '@PLUGIN_VERSION@';
@@ -120,25 +123,21 @@ class Plugin
             return XH_message('fail', sprintf($ptx['message_missing_page'], $cal));
         }
         self::js();
-        $o = tag(
-            'img src="' . $src . '" usemap="#adventcalendar" alt="'
-            . $ptx['adventcalendar'] . '"'
-        );
-        $o .= '<map name="adventcalendar">';
+        $doors = [];
         foreach ($page->getChildren() as $i => $page) {
             if ($i >= self::getCurrentDay()) {
                 break;
             }
-            $coords = $data[$i];
-            $href = $page->getURL() . '&amp;print';
-            $o .= tag(
-                'area class="adventcalendar" shape="rect" coords="'
-                . implode(',', $coords) . '" href="?' . $href . '" alt="'
-                . sprintf($ptx['day_n'], $i + 1) . '"'
-            );
+            $coords = implode(',', $data[$i]);
+            $href = '?' . $page->getURL() . '&print';
+            $doors[$i + 1] = (object) compact('coords', 'href');
         }
-        $o .= '</map>';
-        return $o;
+        ob_start();
+        (new View('adventcalendar'))
+            ->template('main')
+            ->data(compact('src', 'doors'))
+            ->render();
+        return ob_get_clean();
     }
 
     /**
@@ -198,30 +197,17 @@ EOS;
      */
     protected static function administration()
     {
-        global $plugin_tx, $_XH_csrfProtection;
+        global $_XH_csrfProtection;
 
-        $ptx = $plugin_tx['adventcalendar'];
-        $cals = Calendar::getAll();
-
-        $o = '<div id="adventcalendar_admin" class="plugineditcaption">'
-            . 'Adventcalendar</div><ul>';
-        foreach ($cals as $cal) {
-            $o .= '<li>' . $cal->getName() . '.jpg'
-                . '<form action="?adventcalendar" method="POST"'
-                . ' style="display: inline">'
-                . $_XH_csrfProtection->tokenInput()
-                . tag('input type="hidden" name="admin" value="plugin_main"')
-                . tag('input type="hidden" name="action" value="prepare"')
-                . tag(
-                    'input type="hidden" name="adventcalendar_name" value="'
-                    . $cal->getName() . '"'
-                )
-                . ' '
-                . tag('input type="submit" value="' . $ptx['prepare_cover'] . '"')
-                . '</form>' . '</li>';
-        }
-        $o .= '</ul>';
-        return $o;
+        ob_start();
+        (new View('adventcalendar'))
+            ->template('admin')
+            ->data([
+                'csrfTokenInput' => new HtmlString($_XH_csrfProtection->tokenInput()),
+                'calendars' => Calendar::getAll()
+            ])
+            ->render();
+        return ob_get_clean();
     }
 
     /**
