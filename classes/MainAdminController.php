@@ -21,6 +21,7 @@
 
 namespace Adventcalendar;
 
+use Pfw\Url;
 use Pfw\View\HtmlString;
 use Pfw\View\View;
 
@@ -36,6 +37,7 @@ class MainAdminController
         (new View('adventcalendar'))
             ->template('admin')
             ->data([
+                'url' => Url::getCurrent()->with('action', 'prepare'),
                 'csrfTokenInput' => new HtmlString($_XH_csrfProtection->tokenInput()),
                 'calendars' => Calendar::getAll()
             ])
