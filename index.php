@@ -46,4 +46,4 @@ function adventcalendar($cal)
     return ob_get_clean();
 }
 
-Adventcalendar\Plugin::dispatch();
+(new Adventcalendar\Plugin)->run();

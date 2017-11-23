@@ -28,12 +28,12 @@ class Plugin
     /**
      * @return void
      */
-    public static function dispatch()
+    public function run()
     {
         if (XH_ADM) {
             XH_registerStandardPluginMenuItems(true);
             if (XH_wantsPluginAdministration('adventcalendar')) {
-                self::handleAdministration();
+                $this->handleAdministration();
             }
         }
     }
@@ -41,7 +41,7 @@ class Plugin
     /**
      * @return void
      */
-    private static function handleAdministration()
+    private function handleAdministration()
     {
         global $admin, $action, $o;
 
