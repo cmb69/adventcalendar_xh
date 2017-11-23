@@ -47,6 +47,40 @@ class MainAdminController
     /**
      * @return void
      */
+    public function prepareAction()
+    {
+        global $_XH_csrfProtection, $plugin_tx;
+
+        $_XH_csrfProtection->check();
+        $cal = $_POST['adventcalendar_name'];
+        $dn = Plugin::dataFolder();
+        $calendar = Calendar::findByName($cal);
+        $im = $calendar->getImage();
+        if (!$im) {
+            echo XH_message('fail', $plugin_tx['adventcalendar']['error_read'], "$dn$cal.jpg");
+            return;
+        }
+        $calendar->calculateDoors(imagesx($im), imagesy($im));
+        $image = new Image($im);
+        $image->drawDoors($calendar->getDoors());
+
+        if (!imagejpeg($im, "$dn$cal+.jpg")) {
+            echo XH_message('fail', $plugin_tx['adventcalendar']['error_save'], "$dn$cal+.jpg");
+            return;
+        }
+        if (!$calendar->save()) {
+            echo XH_message('fail', $plugin_tx['adventcalendar']['error_save'], "$dn$cal.dat");
+            return;
+        }
+
+        $url = Url::getCurrent()->with('action', 'view')->with('adventcalendar_name', $cal);
+        header("Location: {$url->getAbsolute()}", true, 303);
+        exit;
+    }
+
+    /**
+     * @return void
+     */
     public function viewAction()
     {
         $dn = Plugin::dataFolder();

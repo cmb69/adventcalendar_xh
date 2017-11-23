@@ -85,20 +85,19 @@ class Plugin
                 $o .= ob_get_clean();
                 break;
             case 'plugin_main':
+                $controller = new MainAdminController;
+                ob_start();
                 switch ($action) {
                     case 'prepare':
-                        $o .= self::prepare($_POST['adventcalendar_name']);
+                        $controller->prepareAction();
                         break;
                     case 'view':
-                        ob_start();
-                        (new MainAdminController)->viewAction();
-                        $o .= ob_get_clean();
+                        $controller->viewAction();
                         break;
                     default:
-                        ob_start();
-                        (new MainAdminController)->defaultAction();
-                        $o .= ob_get_clean();
-                    }
+                        $controller->defaultAction();
+                }
+                $o .= ob_get_clean();
                 break;
             default:
                 $o .= plugin_admin_common($action, $admin, 'adventcalendar');
@@ -197,36 +196,5 @@ class Plugin
             /* ]]> */</script>
 
 EOS;
-    }
-
-    /**
-     * @param string $cal
-     * @return void
-     */
-    protected static function prepare($cal)
-    {
-        global $_XH_csrfProtection, $plugin_tx;
-
-        $_XH_csrfProtection->check();
-        $dn = self::dataFolder();
-        $calendar = Calendar::findByName($cal);
-        $im = $calendar->getImage();
-        if (!$im) {
-            return XH_message('fail', $plugin_tx['adventcalendar']['error_read'], "$dn$cal.jpg");
-        }
-        $calendar->calculateDoors(imagesx($im), imagesy($im));
-        $image = new Image($im);
-        $image->drawDoors($calendar->getDoors());
-
-        if (!imagejpeg($im, "$dn$cal+.jpg")) {
-            return XH_message('fail', $plugin_tx['adventcalendar']['error_save'], "$dn$cal+.jpg");
-        }
-        if (!$calendar->save()) {
-            return XH_message('fail', $plugin_tx['adventcalendar']['error_save'], "$dn$cal.dat");
-        }
-
-        $url = Url::getCurrent()->with('action', 'view')->with('adventcalendar_name', $cal);
-        header("Location: {$url->getAbsolute()}", true, 303);
-        exit;
     }
 }
