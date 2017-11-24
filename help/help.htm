@@ -3,22 +3,27 @@
 
 <head>
 <meta http-equiv="content-type" content="text/html;charset=utf-8">
-<title>Adventcalendar_XH - Manual</title>
-<link rel="stylesheet" type="text/css" href="./stylesheet.css">
+<title>Adventcalendar_XH – User Manual</title>
+<link rel="stylesheet" type="text/css" href="../../pfw/help/stylesheet.css">
 </head>
 
 <body>
 
-<h1>Adventcalendar_XH &ndash; a CMSimple_XH Plugin</h1>
-<img src="../adventcalendar.png" style="float: left; margin-right: 16px"
-alt="Plugin icon">
-<p style="text-align:justify">Adventcalendar_XH facilitates to display an advent
-calendar on your site. The little doors can only be opened by visitors up to the
-current date. The secrets behind the doors are the contents of CMSimple_XH
-pages, so it's possible to present whatever you like (poetry, images, videos,
-products etc.)</p>
+<article>
 
-<ul id="nav">
+<h1>Adventcalendar_XH – User Manual</h1>
+<img src="../adventcalendar.png" class="logo" alt="Advent Wreath">
+<p>
+    Adventcalendar_XH facilitates to display an advent
+    calendar on your site. The little doors can only be opened by visitors up to the
+    current date. The secrets behind the doors are the contents of CMSimple_XH
+    pages, so it's possible to present whatever you like (poetry, images, videos,
+    products etc.)
+</p>
+
+<nav id="nav">
+<h2>Table of Contents</h2>
+<ul>
 <li><a href="#notice">Important Notice</a></li>
 <li><a href="#requirements">Requirements</a></li>
 <li><a href="#installation">Installation</a></li>
@@ -34,144 +39,218 @@ products etc.)</p>
 <li><a href="#license">License</a></li>
 <li><a href="#credits">Credits</a></li>
 </ul>
+</nav>
 
-<div id="body">
+<section id="notice">
+<h2>Important Notice</h2>
+<p class="important">
+    Adventcalendar_XH couldn't be tested so far in various environments. It is a
+    so called beta version. Use with caution!
+</p>
+</section>
 
-<p><strong>Please do read this documentation <em>before</em> you encounter any
-problems!</strong></p>
+<section id="requirements">
+<h2>Requirements</h2>
+<p>
+    Adventcalendar_XH requires CMSimple_XH ≥ 1.6.3, <a
+    href="http://3-magi.net/?CMSimple_XH/Pfw_XH">Pfw_XH</a> ≥ 0.2.0 and PHP ≥
+    5.4.0.
+</p>
+</section>
 
-<h2 id="notice">Important Notice</h2>
-<p><strong>Adventcalendar_XH couldn't be tested so far in various environments.
-It is a so called BETA version. Use with caution!</strong></p>
-<div class="toplink"><a href="#">back to top</a></div>
-
-<h2 id="requirements">Requirements</h2>
-<p>Adventcalendar_XH requires CMSimple_XH &ge; 1.6.3, <a href="http://3-magi.net/?CMSimple_XH/Pfw_XH">Pfw_XH</a> ≥ 0.2.0
-and PHP &ge; 5.4.0.</p>
-<div class="toplink"><a href="#">back to top</a></div>
-
-<h2 id="installation">Installation</h2>
-<p>The installation is done as with many other CMSimple_XH plugins.
-See the <a href="http://www.cmsimple-xh.org/wiki/doku.php/installation">
-CMSimple_XH wiki</a> for further details.</p>
+<section id="installation">
+<h2>Installation</h2>
+<p>
+    The installation is done as with many other CMSimple_XH plugins. See the <a
+    href="http://www.cmsimple-xh.org/wiki/doku.php/installation">
+    CMSimple_XH wiki</a> for further details.
+</p>
 <ol>
-<li>Backup the data on your server.</li>
-<li>Unzip the distribution on your computer.</li>
-<li>Upload the whole directory adventcalendar/ to your server into CMSimple_XH's
-plugins directory.</li>
-<li>Set write permissions to the subdirectories config/, css/, languages/
-and the data folder of the plugin.</li>
-<li>Switch to "Adventcalendar" in the back-end to check if all requirements are
-fulfilled.</li>
+<li class="important">
+    Backup the data on your server.
+</li>
+<li>
+    Unzip the distribution on your computer.
+</li>
+<li>
+    Upload the whole directory <code>adventcalendar/</code> to your server into
+    CMSimple_XH's <code>plugins/</code> directory.
+</li>
+<li>
+    Set write permissions to the subdirectories <code>config/</code>,
+    <code>css/</code>, <code>languages/</code> and the data folder of the plugin.
+</li>
+<li class="important">
+    Navigate to <i>Plugins</i> → <i>Adventcalendar</i> in the back-end to check
+    if all requirements are fulfilled.
+</li>
 </ol>
-<div class="toplink"><a href="#">back to top</a></div>
+</section>
 
-<h2 id="settings">Settings</h2>
-<p>The plugin's configuration is done as with many other CMSimple_XH plugins in
-the website's back-end. Select "Adventcalendar" from "Plugins".</p>
-<p>You can change the default settings of Adventcalendar_XH under "Config".
-Hints for the options will be displayed when hovering over the help icons with
-your mouse.</p>
-<p>Localization is done under "Language". You can translate the character
-strings to your own language, or customize them according to your needs.</p>
-<p>The look of the Adventcalendar_XH can be customized under "Stylesheet".</p>
-<div class="toplink"><a href="#">back to top</a></div>
+<section id="settings">
+<h2>Settings</h2>
+<p>
+    The plugin's configuration is done as with many other CMSimple_XH plugins in
+    the website's back-end. Select <i>Plugins</i> → <i>Adventcalendar</i>.
+</p>
+<p>
+    You can change the default settings of Adventcalendar_XH under
+    <i>Config</i>. Hints for the options will be displayed when hovering over
+    the help icons with your mouse.
+</p>
+<p>
+    Localization is done under <i>Language</i>. You can translate the character
+    strings to your own language, if there is no appropriate language file
+    available, or customize them according to your needs.
+</p>
+<p>
+    The look of the Adventcalendar_XH can be customized under <i>Stylesheet</i>.
+</p>
+</section>
 
-<h2 id="usage">Usage</h2>
-<p>You can have as much separate advent calendars in a CMSimple_XH installation
-as you like. These are distinguished by a name. The name may contain
-alphanumeric characters only and it should not be the same as the heading of any
-already existing page.</p>
-<p>Visitors of your site will not be able to open doors of future days,
-according to the configuration option "Date" &rarr; "Start". When you're logged
-in as administrator you can access all doors for testing purposes.</p>
-<div class="toplink"><a href="#">back to top</a></div>
+<section id="usage">
+<h2>Usage</h2>
+<p>
+    You can have as much separate advent calendars in a CMSimple_XH installation
+    as you like. These are distinguished by a name. The name may contain
+    alphanumeric characters only and it should not be the same as the heading of
+    any already existing page.
+</p>
+<p>
+    Visitors of your site will not be able to open doors of future days,
+    according to the configuration option <i>Date</i> → <i>Start</i>. When
+    you're logged in as administrator you can access all doors for testing
+    purposes.
+</p>
 
-<h3 id="usage-quickstart">Quick Start Guide</h3>
-<p>To quickly set up a working demo, just follow these steps:</p>
+<section id="usage-quickstart">
+<h3>Quick Start Guide</h3>
+<p>
+    To quickly set up a working demo, just follow these steps:
+</p>
 <ol>
-<li>Browse to "Plugins" &rarr; "Adventcalendar" &rarr; "Main Settings" and press
-"Prepare Cover".</li>
-<li>Create a new hidden CMSimple_XH page with the heading "winter" (letter case
-is important) and without content.</li>
-<li>Create some hidden subpages of these page with arbitrary headings and
-content.</li>
-<li>Enter the following plugin call on another page:
-<pre>{{{PLUGIN:adventcalendar('winter');}}}</pre></li>
-<li>Switch to view mode and enjoy the advent calendar. Note, that you can only
-open as much doors, as you have created subpages of the calendar page.</li>
+<li>
+    Navigate to <i>Plugins</i> → <i>Adventcalendar</i> → <i>Main Settings</i>
+    and press <i>Prepare Cover</i>.
+</li>
+<li>
+    Create a new hidden CMSimple_XH page with the heading "winter" (letter case
+    is important) and without content.
+</li>
+<li>
+    Create some hidden subpages of this page with arbitrary headings and
+    content.
+</li>
+<li>
+    Enter the following plugin call on another page:
+    <pre>{{{adventcalendar('winter')}}}</pre>
+</li>
+<li>
+    Switch to view mode and enjoy the advent calendar. Note, that you can only
+    open as much doors, as you have created subpages of the calendar page.
+</li>
 </ol>
-<div class="toplink"><a href="#">back to top</a></div>
+</section>
 
-<h3 id="usage-cover">Prepare the Cover</h3>
-<p>Find an appropriate background image for your advent calendar, resize it to
-the desired size (typically the width of the contents area of your template) and
-upload it to the configured data folder of the plugin. The uploaded image has to
-be in JPEG format and has to be named like the calendar; so for the calendar
-"winter" the file has to be "winter.jpg". Then browse to "Plugins" &rarr;
-"Adventcalendar" &rarr; "Main Settings", where you can prepare the image to be
-the cover of your advent calendar. Pressing "Prepare Cover" will draw the little
-doors with the according day numbers. For images in landscape format there will
-be 4 rows with 6 doors each; for images in portrait format there will be 6 rows
-with 4 doors each. The size of the doors and the colors can be customized in the
-plugin's configuration. The order of the doors is chosen randomly; if you don't
-like the chosen order, just prepare the image again.</p>
-<div class="toplink"><a href="#">back to top</a></div>
+<section id="usage-cover">
+<h3>Prepare the Cover</h3>
+<p>
+    Find an appropriate background image for your advent calendar, resize it to
+    the desired size (typically the width of the contents area of your template)
+    and upload it to the configured data folder of the plugin. The uploaded
+    image has to be in JPEG format and has to be named like the calendar; so for
+    the calendar <i>winter</i> the file has to be <code>winter.jpg</code>. Then
+    browse to <i>Plugins</i> → <i>Adventcalendar</i> → <i>Main Settings</i>,
+    where you can prepare the image to be the cover of your advent calendar.
+    Pressing <i>Prepare Cover</i> will draw the little doors with the according
+    day numbers. For images in landscape format there will be 4 rows with 6
+    doors each; for images in portrait format there will be 6 rows with 4 doors
+    each. The size of the doors and the colors can be customized in the plugin's
+    configuration. The order of the doors is chosen randomly; if you don't like
+    the chosen order, just prepare the image again.
+</p>
+</section>
 
-<h3 id="usage-secrets">Prepare the Secrets</h3>
-<p>Create a new CMSimple page with the name of the advent calendar as heading
-(the menu level of the page doesn't matter). Create a sub page for each day (the
-1st sub page is for day 1, the 2nd for day 2 etc.) You can fill the pages with
-any contents you like, even plugin calls are possible. Typically you will want
-to <a
-href="http://www.cmsimple-xh.org/wiki/doku.php/cmsimple_scripting#show_in_menu">hide</a>
-all these pages from the menu. If you want to use an already existing page as
-secret behind a door, just <a
-href="http://www.cmsimple-xh.org/wiki/doku.php/cmsimple_scripting#redirect_page">redirect</a>
-the respective sub page to the existing one and append "&amp;print" to the
-URL.</p>
-<div class="toplink"><a href="#">back to top</a></div>
+<section id="usage-secrets">
+<h3>Prepare the Secrets</h3>
+<p>
+    Create a new CMSimple_XH page with the name of the advent calendar as
+    heading (the menu level of the page doesn't matter). Create a sub page for
+    each day (the 1st sub page is for day 1, the 2nd for day 2 etc.) You can
+    fill the pages with any contents you like, even plugin calls are possible.
+    Typically you will want to <a
+    href="http://www.cmsimple-xh.org/wiki/doku.php/cmsimple_scripting#show_in_menu">hide</a>
+    all these pages from the menu. If you want to use an already existing page
+    as secret behind a door, just <a
+    href="http://www.cmsimple-xh.org/wiki/doku.php/cmsimple_scripting#redirect_page">redirect</a>
+    the respective sub page to the existing one and append "&amp;print" to the
+    URL.
+</p>
+</section>
 
-<h3 id="usage-display">Display the Calendar</h3>
-<p>Display the advent calendar on any CMSimple_XH page by calling the
-plugin:</p>
-<pre>{{{PLUGIN:Adventcalendar('name_of_the_calendar');}}}</pre>
-<p>Of course "name_of_the_calendar" must be replaced with the actual name of
-your advent calendar.</p>
-<div class="toplink"><a href="#">back to top</a></div>
+<section id="usage-display">
+<h3>Display the Calendar</h3>
+<p>
+    Display the advent calendar on any CMSimple_XH page by calling the plugin:
+</p>
+<pre>{{{adventcalendar('name_of_the_calendar')}}}</pre>
+<p>
+    Of course <i>name_of_the_calendar</i> must be replaced with the actual name
+    of your advent calendar.
+</p>
+</section>
 
-<h2 id="limitations">Limitations</h2>
-<ul>
-<li>The lightbox does not work in Internet Explorer &lt; 7 and most likely in
-other browsers of that age.</li>
-</ul>
-<div class="toplink"><a href="#">back to top</a></div>
+</section>
 
-<h2 id="license">License</h2>
-<p>Adventcalendar_XH is licensed under
-<a href="http://www.gnu.org/licenses/gpl.html">GPLv3</a>.</p>
-<p>&copy; 2012-2017 Christoph M. Becker</p>
-<p>Russian translation &copy; 2012 Любомир Кудрай.</p>
-<div class="toplink"><a href="#">back to top</a></div>
+<section id="limitations">
+<h2>Limitations</h2>
+<p>
+    The lightbox does not work in Internet Explorer &lt; 7 and most likely in
+    other browsers of that age.
+</p>
+</section>
 
-<h2 id="credits">Credits</h2>
-<p>Adventcalendar_XH uses <a
-href="http://www.jacklmoore.com/colorbox/">Colorbox</a>. Many thanks to Jack
-Moore for publishing this fine lightbox clone under MIT license.</p>
-<p>The plugin icon is designed by <a href="http://enhancedlabs.com/">Enhanced
-Labs Design Studio</a>. Many thanks for publishing this icon under a liberal
-license.</p>
-<p>Many thanks to the community at the <a
-href="http://cmsimpleforum.com/">CMSimple_XH forum</a> for tips, suggestions and
-testing. Especially I want to thank Korvell for pushing 1beta5 just in time
-before December 2013.</p>
-<p>And last but not least many thanks to <a href="http://www.harteg.dk/">Peter
-Harteg</a>, the "father" of CMSimple, and all developers of <a
-href="http://www.cmsimple-xh.org">CMSimple_XH</a> without whom this amazing CMS
-wouldn't exist.</p>
-<div class="toplink"><a href="#">back to top</a></div>
+<section id="license">
+<h2>License</h2>
+<p>
+    Adventcalendar_XH is licensed under
+    <a href="http://www.gnu.org/licenses/gpl.html">GPLv3</a>.
+</p>
+<p>
+    Copyright © 2012-2017 Christoph M. Becker
+</p>
+<p>
+    Russian translation © 2012 Любомир Кудрай
+</p>
+</section>
 
-</div>
+<section id="credits">
+<h2>Credits</h2>
+<p>
+    Adventcalendar_XH uses <a
+    href="http://www.jacklmoore.com/colorbox/">Colorbox</a>. Many thanks to Jack
+    Moore for publishing this fine lightbox clone under MIT license.
+</p>
+<p>
+    The plugin logo is designed by <a href="http://enhancedlabs.com/">Enhanced
+    Labs Design Studio</a>. Many thanks for publishing this icon under a liberal
+    license.
+</p>
+<p>
+    Many thanks to the community at the <a
+    href="http://cmsimpleforum.com/">CMSimple_XH forum</a> for tips, suggestions
+    and testing. Especially I want to thank Korvell for pushing 1beta5 just in
+    time before December 2013.
+</p>
+<p>
+    And last but not least many thanks to <a href="http://www.harteg.dk/">Peter
+    Harteg</a>, the "father" of CMSimple, and all developers of <a
+    href="http://www.cmsimple-xh.org">CMSimple_XH</a> without whom this amazing
+    CMS wouldn't exist.
+</p>
+</section>
+
+</article>
 
 </body>
 
