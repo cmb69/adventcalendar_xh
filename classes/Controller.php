@@ -47,6 +47,8 @@ class Controller
         } else {
             if (!mkdir($fn, 0777, true)) {
                 e('cntwriteto', 'folder', $fn);
+            } else {
+                chmod($fn, 0777);
             }
         }
         return $fn;
