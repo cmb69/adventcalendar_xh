@@ -1,3 +1,6 @@
+Version 1.0beta6 – released 2017-11-24
+see https://github.com/cmb69/adventcalendar_xh/milestone/1?closed=1
+
 Version 1beta5 - released 2013-11-28
 cmb     fixed bug, where jQuery4CMSimple could be included more than once (reported by Korvell, solved by Holger)
 cmb     fixed bug, where the contents of the lightbox could interfere with the page (reported by Korvell)

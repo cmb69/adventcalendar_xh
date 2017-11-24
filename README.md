@@ -6,7 +6,7 @@ English
 
 Adventcalendar_XH is a plugin for [CMSimple_XH](http://www.cmsimple-xh.org/) which facilitates displaying adventcalendars on the website.
 
-[![Latest Version: 1beta5](https://img.shields.io/badge/Latest%20Version-1beta5-red.svg)](https://github.com/cmb69/adventcalendar_xh/releases/tag/1beta5)
+[![Latest Version: 1.0beta6](https://img.shields.io/badge/Latest%20Version-1.0beta6-red.svg)](https://github.com/cmb69/adventcalendar_xh/releases/tag/1,0beta6)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
 
 * For general **information** and **downloads** of the latest version visit the [project page](http://3-magi.net/?CMSimple_XH/Adventcalendar_XH).
@@ -25,7 +25,7 @@ Deutsch
 
 Adventcalendar_XH ist ein Plugin für [CMSimple_XH](http://www.cmsimple-xh.org/de/), das es ermöglicht Adventskalender auf der Website anzuzeigen.
 
-[![Aktuelle Version: 1beta5](https://img.shields.io/badge/Aktuelle%20Version-1beta5-red.svg)](https://github.com/cmb69/adventcalendar_xh/releases/tag/1beta5)
+[![Aktuelle Version: 1.0beta6](https://img.shields.io/badge/Aktuelle%20Version-1.0beta6-red.svg)](https://github.com/cmb69/adventcalendar_xh/releases/tag/1.0beta6)
 [![Lizenz: GPL v3](https://img.shields.io/badge/Lizenz-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
 
 * Für allgemeine **Information** und **Downloads** der aktuellen Version besuche die [Projektseite](http://3-magi.net/de/?CMSimple_XH/Adventcalendar_XH).
