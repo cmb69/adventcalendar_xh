@@ -18,8 +18,8 @@ Adventcalendar_XH is a plugin for [CMSimple_XH](http://www.cmsimple-xh.org/) whi
 
 Enjoy!
 
-German
-------
+Deutsch
+-------
 
 Adventcalendar_XH ist ein Plugin für [CMSimple_XH](http://www.cmsimple-xh.org/de/), das es ermöglicht Adventskalender auf der Website anzuzeigen.
 
