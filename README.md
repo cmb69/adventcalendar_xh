@@ -10,7 +10,7 @@ Adventcalendar_XH is a plugin for [CMSimple_XH](http://www.cmsimple-xh.org/) whi
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
 
 * For general **information** and **downloads** of the latest version visit the [project page](http://3-magi.net/?CMSimple_XH/Adventcalendar_XH).
-* The **user manual** is available in `help/help.htm` and also [online](http://3-magi.net/demo/presentation/plugins/adventcalendar/help/help.htm).
+* For **installation** and **usage** information consult the [user manual](https://htmlpreview.github.io/?https://github.com/cmb69/adventcalendar_xh/blob/master/help/help.htm).
 * The **source code** is hosted on [Github](https://github.com/cmb69/adventcalendar_xh).
 * You have **translated** the language files and/or the user manual to another language?  Please submit a respective [pull request](https://github.com/cmb69/adventcalendar_xh/compare) or send me the file(s) via [email](mailto:cmbecker69@gmx.de).
 * You have found a **vulnerability**?  Please send a private report via [email](mailto:cmbecker69@gmx.de).
@@ -29,7 +29,7 @@ Adventcalendar_XH ist ein Plugin für [CMSimple_XH](http://www.cmsimple-xh.org/d
 [![Lizenz: GPL v3](https://img.shields.io/badge/Lizenz-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
 
 * Für allgemeine **Information** und **Downloads** der aktuellen Version besuche die [Projektseite](http://3-magi.net/de/?CMSimple_XH/Adventcalendar_XH).
-* Das **Handbuch** ist in `help/help_de.htm` und ebenfalls [online](http://3-magi.net/demo/presentation/plugins/adventcalendar/help/help_de.htm) verfügbar.
+* Informationen zu **Installation** und **Verwendung** findest du im [Handbuch](https://htmlpreview.github.io/?https://github.com/cmb69/imgzoom_xh/blob/master/help/help_de.htm).
 * Der **Quellcode** wird auf [Github](https://github.com/cmb69/adventcalendar_xh) gehostet.
 * Du hast die Sprachdatei und/oder das Handbuch in eine andere Sprache **übersetzt**? Bitte reiche einen entsprechenden [Pull-Request](https://github.com/cmb69/adventcalendar_xh/compare) ein oder schicke mir die Datei(en) per [E-Mail](mailto:cmbecker69@gmx.de).
 * Du hast eine **Sicherheitslücke** gefunden? Bitte melde diese per [E-Mail](mailto:cmbecker69@gmx.de).
