@@ -29,7 +29,7 @@ Adventcalendar_XH ist ein Plugin für [CMSimple_XH](http://www.cmsimple-xh.org/d
 [![Lizenz: GPL v3](https://img.shields.io/badge/Lizenz-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
 
 * Für allgemeine **Information** und **Downloads** der aktuellen Version besuche die [Projektseite](http://3-magi.net/de/?CMSimple_XH/Adventcalendar_XH).
-* Informationen zu **Installation** und **Verwendung** findest du im [Handbuch](https://htmlpreview.github.io/?https://github.com/cmb69/imgzoom_xh/blob/master/help/help_de.htm).
+* Informationen zu **Installation** und **Verwendung** findest du im [Handbuch](https://htmlpreview.github.io/?https://github.com/cmb69/adventcalendar_xh/blob/master/help/help_de.htm).
 * Der **Quellcode** wird auf [Github](https://github.com/cmb69/adventcalendar_xh) gehostet.
 * Du hast die Sprachdatei und/oder das Handbuch in eine andere Sprache **übersetzt**? Bitte reiche einen entsprechenden [Pull-Request](https://github.com/cmb69/adventcalendar_xh/compare) ein oder schicke mir die Datei(en) per [E-Mail](mailto:cmbecker69@gmx.de).
 * Du hast eine **Sicherheitslücke** gefunden? Bitte melde diese per [E-Mail](mailto:cmbecker69@gmx.de).
