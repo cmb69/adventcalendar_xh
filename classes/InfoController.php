@@ -42,7 +42,7 @@ class InfoController extends Controller
                     ->minPhpVersion('5.4.0')
                     ->extension('gd')
                     ->minXhVersion('1.6.3')
-                    ->plugin('pfw')
+                    ->minPfwVersion('0.2.0')
                     ->plugin('jquery')
                     ->writable("{$pth['folder']['plugins']}adventcalendar/config/")
                     ->writable("{$pth['folder']['plugins']}adventcalendar/css/")
