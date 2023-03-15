@@ -1,3 +1,5 @@
 tests/coverage
 /classes.svg
 /README.htm
+/vendor
+/composer.lock

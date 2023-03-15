@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright 2014-2017 Christoph M. Becker
+ * Copyright 2023 Christoph M. Becker
  *
  * This file is part of Adventcalendar_XH.
  *
@@ -19,26 +19,22 @@
  * along with Adventcalendar_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Adventcalendar;
+namespace Adventcalendar\Value;
 
-use Pfw\CsrfTestCase;
-
-class CsrfTest extends CsrfTestCase
+class Html
 {
-    /**
-     * @return array
-     */
-    public function dataForAttack()
+    public static function of(string $string): self
     {
-        return array(
-            array(
-                array(
-                      'admin' => 'plugin_main',
-                      'action' => 'prepare',
-                      'adventcalendar_name' => 'winter'
-                ),
-                '&adventcalendar'
-            )
-        );
+        $that = new self;
+        $that->string = $string;
+        return $that;
+    }
+
+    /** @var string */
+    private $string;
+
+    public function __toString(): string
+    {
+        return $this->string;
     }
 }

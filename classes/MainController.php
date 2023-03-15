@@ -21,7 +21,7 @@
 
 namespace Adventcalendar;
 
-use Pfw\View\View;
+use Adventcalendar\Infra\View;
 
 class MainController extends Controller
 {
@@ -43,7 +43,7 @@ class MainController extends Controller
      */
     public function defaultAction()
     {
-        global $plugin_tx;
+        global $pth, $plugin_cf, $plugin_tx;
 
         $ptx = $plugin_tx['adventcalendar'];
         $calendar = Calendar::findByName($this->calendarName, $this->dataFolder());
@@ -72,10 +72,15 @@ class MainController extends Controller
             $href = '?' . $page->getURL() . '&print';
             $doors[$i + 1] = (object) compact('coords', 'href');
         }
-        (new View('adventcalendar'))
-            ->template('main')
-            ->data(compact('src', 'doors'))
-            ->render();
+        $view = new View($pth["folder"]["plugins"] . "adventcalendar/views/", $plugin_tx["adventcalendar"]);
+        echo $view->render("main", [
+            "src" => $src,
+            "doors" => $doors,
+        ]);
+        // (new View('adventcalendar'))
+        //     ->template('main')
+        //     ->data(compact('src', 'doors'))
+        //     ->render();
     }
 
     /**

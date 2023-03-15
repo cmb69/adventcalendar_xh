@@ -8,6 +8,17 @@ $plugin_tx['adventcalendar']['message_missing_page']="Die Seite \"%s\" gibt es n
 $plugin_tx['adventcalendar']['error_read']="'%s' konnte nicht gelesen werden!";
 $plugin_tx['adventcalendar']['error_save']="'%s' konnte nicht gespeichert werden!";
 
+$plugin_tx['adventcalendar']['syscheck_extension']="die PHP-Extension '%s' geladen wurde";
+$plugin_tx['adventcalendar']['syscheck_fail']="Fehlschlag";
+$plugin_tx['adventcalendar']['syscheck_message']="Prüfe, dass %1\$s … %2\$s";
+$plugin_tx['adventcalendar']['syscheck_phpversion']="die PHP-Version mindestens %s ist";
+$plugin_tx['adventcalendar']['syscheck_plugin']="das CMSimple_XH-Plugin '%s' installiert ist";
+$plugin_tx['adventcalendar']['syscheck_success']="Okay";
+$plugin_tx['adventcalendar']['syscheck_title']="System-Prüfung";
+$plugin_tx['adventcalendar']['syscheck_warning']="Warnung";
+$plugin_tx['adventcalendar']['syscheck_writable']="'%s' is writable";
+$plugin_tx['adventcalendar']['syscheck_xhversion']="die CMSimple_XH-Version mindestens %s ist";
+
 $plugin_tx['adventcalendar']['cf_folder_data']="Pfad zu einem Ordner relativ zu CMSimple_XHs Wurzelverzeichnis, wo die Plugin-Daten gespeichert werden sollen. Z.B. \"userfiles/adventcalendar/\". Lassen Sie diesen Eintrag leer, um in den data/ Ordner des Plugins zu speichern.";
 $plugin_tx['adventcalendar']['cf_date_start']="Der Start-Tag des Adventskalenders im Format JJJJ-MM-TT (z.B. 2013-12-01). Optional können Sie auch das erweiterte Format JJJJ-MM-TT ss:mm &plusmn;s verwenden.";
 $plugin_tx['adventcalendar']['cf_door_width']="Die Breite der Türchen in Pixeln.";

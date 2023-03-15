@@ -21,9 +21,8 @@
 
 namespace Adventcalendar;
 
-use Pfw\Url;
-use Pfw\View\HtmlString;
-use Pfw\View\View;
+use Adventcalendar\Infra\View;
+use Adventcalendar\Value\Html;
 
 class MainAdminController extends Controller
 {
@@ -32,16 +31,14 @@ class MainAdminController extends Controller
      */
     public function defaultAction()
     {
-        global $_XH_csrfProtection;
+        global $sn, $_XH_csrfProtection, $pth, $plugin_tx;
 
-        (new View('adventcalendar'))
-            ->template('admin')
-            ->data([
-                'url' => Url::getCurrent()->with('action', 'prepare'),
-                'csrfTokenInput' => new HtmlString($_XH_csrfProtection->tokenInput()),
-                'calendars' => Calendar::getAll($this->dataFolder())
-            ])
-            ->render();
+        $view = new View($pth["folder"]["plugins"] . "adventcalendar/views/", $plugin_tx["adventcalendar"]);
+        echo $view->render("admin", [
+            'url' => "$sn?adventcalendar&admin=plugin_main&action=prepare",
+            'csrfTokenInput' => Html::of($_XH_csrfProtection->tokenInput()),
+            'calendars' => Calendar::getAll($this->dataFolder())
+        ]);
     }
 
     /**
@@ -73,8 +70,8 @@ class MainAdminController extends Controller
             return;
         }
 
-        $url = Url::getCurrent()->with('action', 'view')->with('adventcalendar_name', $cal);
-        header("Location: {$url->getAbsolute()}", true, 303);
+        $url = CMSIMPLE_URL . "?adventcalendar&admin=plugin_main&action=view&adventcalendar_name=$cal";
+        header("Location: $url", true, 303);
         exit;
     }
 
@@ -83,11 +80,13 @@ class MainAdminController extends Controller
      */
     public function viewAction()
     {
+        global $pth, $plugin_tx;
+
         $dn = $this->dataFolder();
         $cal = $_GET['adventcalendar_name'];
-        (new View('adventcalendar'))
-            ->template('view')
-            ->data(['src' => "$dn$cal+.jpg"])
-            ->render();
+        $view = new View($pth["folder"]["plugins"] . "adventcalendar/views/", $plugin_tx["adventcalendar"]);
+        echo $view->render("view", [
+            'src' => "$dn$cal+.jpg",
+        ]);
     }
 }

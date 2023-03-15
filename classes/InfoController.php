@@ -21,8 +21,8 @@
 
 namespace Adventcalendar;
 
-use Pfw\SystemCheckService;
-use Pfw\View\View;
+use Adventcalendar\Infra\View;
+use stdClass;
 
 class InfoController extends Controller
 {
@@ -31,25 +31,89 @@ class InfoController extends Controller
      */
     public function defaultAction()
     {
+        global $pth, $plugin_tx;
+
+        $view = new View($pth["folder"]["plugins"] . "adventcalendar/views/", $plugin_tx["adventcalendar"]);
+        echo $view->render("info", [
+            'logo' => "{$pth['folder']['plugins']}adventcalendar/adventcalendar.png",
+            'version' => Plugin::VERSION,
+            'checks' => $this->checks(),
+        ]);
+    }
+
+    private function checks(): array
+    {
         global $pth;
 
-        (new View('adventcalendar'))
-            ->template('info')
-            ->data([
-                'logo' => "{$pth['folder']['plugins']}adventcalendar/adventcalendar.png",
-                'version' => Plugin::VERSION,
-                'checks' => (new SystemCheckService)
-                    ->minPhpVersion('5.4.0')
-                    ->extension('gd')
-                    ->minXhVersion('1.6.3')
-                    ->minPfwVersion('0.2.0')
-                    ->plugin('jquery')
-                    ->writable("{$pth['folder']['plugins']}adventcalendar/config/")
-                    ->writable("{$pth['folder']['plugins']}adventcalendar/css/")
-                    ->writable("{$pth['folder']['plugins']}adventcalendar/languages/")
-                    ->writable($this->dataFolder())
-                    ->getChecks()
-            ])
-            ->render();
+        return [
+            $this->checkPhpVersion("5.4.0"),
+            $this->checkExtension("gd"),
+            $this->checkXhVersion("1.6.3"),
+            $this->checkPlugin("jquery"),
+            $this->checkWritability($pth['folder']['plugins'] . "adventcalendar/config/"),
+            $this->checkWritability($pth['folder']['plugins'] . "adventcalendar/css/"),
+            $this->checkWritability($pth['folder']['plugins'] . "adventcalendar/languages/"),
+            $this->checkWritability($this->dataFolder()),
+        ];
+    }
+
+    private function checkPhpVersion($version): stdClass
+    {
+        global $plugin_tx;
+
+        $state = version_compare(PHP_VERSION, $version, "ge") ? "success" : "fail";
+        return (object) [
+            "state" => $state,
+            "label" => sprintf($plugin_tx["adventcalendar"]["syscheck_phpversion"], $version),
+            "stateLabel" => $plugin_tx["adventcalendar"]["syscheck_$state"],
+        ];
+    }
+
+    private function checkExtension($name): stdClass
+    {
+        global $plugin_tx;
+
+        $state = extension_loaded($name) ? "success" : "fail";
+        return (object) [
+            "state" => $state,
+            "label" => sprintf($plugin_tx["adventcalendar"]["syscheck_extension"], $name),
+            "stateLabel" => $plugin_tx["adventcalendar"]["syscheck_$state"],
+        ];
+    }
+
+    private function checkXhVersion($version): stdClass
+    {
+        global $plugin_tx;
+
+        $state = version_compare(CMSIMPLE_XH_VERSION, "CMSimple_XH $version", "ge") ? "success" : "fail";
+        return (object) [
+            "state" => $state,
+            "label" => sprintf($plugin_tx["adventcalendar"]["syscheck_xhversion"], $version),
+            "stateLabel" => $plugin_tx["adventcalendar"]["syscheck_$state"],
+        ];
+    }
+
+    private function checkPlugin($name): stdClass
+    {
+        global $pth, $plugin_tx;
+
+        $state = is_dir($pth["folder"]["plugins"] . $name) ? "success" : "fail";
+        return (object) [
+            "state" => $state,
+            "label" => sprintf($plugin_tx["adventcalendar"]["syscheck_plugin"], $name),
+            "stateLabel" => $plugin_tx["adventcalendar"]["syscheck_$state"],
+        ];
+    }
+
+    private function checkWritability($folder): stdClass
+    {
+        global $plugin_tx;
+
+        $state = is_writeable($folder) ? "success" : "fail";
+        return (object) [
+            "state" => $state,
+            "label" => sprintf($plugin_tx["adventcalendar"]["syscheck_writable"], $folder),
+            "stateLabel" => $plugin_tx["adventcalendar"]["syscheck_$state"],
+        ];
     }
 }
