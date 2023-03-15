@@ -1,7 +1,7 @@
 <?php
 
-/*
- * Copyright 2012-2017 Christoph M. Becker
+/**
+ * Copyright 2023 Christoph M. Becker
  *
  * This file is part of Adventcalendar_XH.
  *
@@ -19,27 +19,29 @@
  * along with Adventcalendar_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Adventcalendar\Infra\Pages;
-use Adventcalendar\Infra\Repository;
-use Adventcalendar\Infra\View;
+namespace Adventcalendar\Infra;
 
-/**
- * @param string $cal
- * @return string
- */
-function adventcalendar($cal)
+/** @codeCoverageIgnore */
+class SystemChecker
 {
-    global $pth, $plugin_tx;
+    public function checkVersion(string $actual, string $minimum): bool
+    {
+        return version_compare($actual, $minimum) >= 0;
+    }
 
-    ob_start();
-    $controller = new Adventcalendar\MainController(
-        new Pages,
-        new Repository,
-        new View($pth["folder"]["plugins"] . "adventcalendar/views/", $plugin_tx["adventcalendar"]),
-        $cal
-    );
-    $controller->defaultAction();
-    return ob_get_clean();
+    public function checkExtension(string $name): bool
+    {
+        return extension_loaded($name);
+    }
+
+    public function checkPlugin(string $name): bool
+    {
+        global $pth;
+        return is_dir($pth["folder"]["plugins"] . $name);
+    }
+
+    public function checkWritability(string $path): bool
+    {
+        return is_writable($path);
+    }
 }
-
-(new Adventcalendar\Plugin)->run();

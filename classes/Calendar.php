@@ -21,6 +21,7 @@
 
 namespace Adventcalendar;
 
+use Adventcalendar\Logic\Util;
 use GdImage;
 
 class Calendar
@@ -124,29 +125,12 @@ class Calendar
     {
         global $plugin_cf;
 
-        if ($width >= $height) {
-            $doorsPerRow = 6;
-            $doorsPerCol = 4;
-        } else {
-            $doorsPerRow = 4;
-            $doorsPerCol = 6;
-        }
-        $dw = $plugin_cf['adventcalendar']['door_width'];
-        $dh = $plugin_cf['adventcalendar']['door_height'];
-        $dx = ($width - $doorsPerRow * $dw) / ($doorsPerRow + 1);
-        $dy = ($height - $doorsPerCol * $dh) / ($doorsPerCol + 1);
-        $this->doors = array();
-        for ($i = 0; $i < $doorsPerRow; $i++) {
-            $x1 = ($i + 1) * $dx + $i * $dw;
-            $x2 = $x1 + $dw;
-            for ($j = 0; $j < $doorsPerCol; $j++) {
-                $y1 = ($j + 1) * $dy + $j * $dh;
-                $y2 = $y1 + $dh;
-                $this->doors[] = array(
-                    round($x1), round($y1), round($x2), round($y2)
-                );
-            }
-        }
+        $this->doors = Util::calculateDoors(
+            $width,
+            $height,
+            $plugin_cf['adventcalendar']['door_width'],
+            $plugin_cf['adventcalendar']['door_height']
+        );
         shuffle($this->doors);
     }
 

@@ -21,23 +21,36 @@
 
 namespace Adventcalendar;
 
+use Adventcalendar\Infra\Image;
+use Adventcalendar\Infra\Repository;
 use Adventcalendar\Infra\View;
 use Adventcalendar\Value\Html;
 
-class MainAdminController extends Controller
+class MainAdminController
 {
+    /** @var Repository */
+    private $repository;
+
+    /** @var View */
+    private $view;
+
+    public function __construct(Repository $repository, View $view)
+    {
+        $this->repository = $repository;
+        $this->view = $view;
+    }
+
     /**
      * @return void
      */
     public function defaultAction()
     {
-        global $sn, $_XH_csrfProtection, $pth, $plugin_tx;
+        global $sn, $_XH_csrfProtection;
 
-        $view = new View($pth["folder"]["plugins"] . "adventcalendar/views/", $plugin_tx["adventcalendar"]);
-        echo $view->render("admin", [
+        echo $this->view->render("admin", [
             'url' => "$sn?adventcalendar&admin=plugin_main&action=prepare",
             'csrfTokenInput' => Html::of($_XH_csrfProtection->tokenInput()),
-            'calendars' => Calendar::getAll($this->dataFolder())
+            'calendars' => Calendar::getAll($this->repository->dataFolder())
         ]);
     }
 
@@ -46,27 +59,32 @@ class MainAdminController extends Controller
      */
     public function prepareAction()
     {
-        global $_XH_csrfProtection, $plugin_tx;
+        global $_XH_csrfProtection, $plugin_cf;
 
         $_XH_csrfProtection->check();
         $cal = $_POST['adventcalendar_name'];
-        $dn = $this->dataFolder();
-        $calendar = Calendar::findByName($cal, $this->dataFolder());
+        $dn = $this->repository->dataFolder();
+        $calendar = Calendar::findByName($cal, $this->repository->dataFolder());
         $im = $calendar->getImage();
         if (!$im) {
-            echo XH_message('fail', $plugin_tx['adventcalendar']['error_read'], "$dn$cal.jpg");
+            echo $this->view->error("error_read", "$dn$cal.jpg");
             return;
         }
         $calendar->calculateDoors(imagesx($im), imagesy($im));
-        $image = new Image($im);
+        $image = new Image(
+            $im,
+            $plugin_cf["adventcalendar"]["color_door"],
+            $plugin_cf["adventcalendar"]["color_font"],
+            $plugin_cf["adventcalendar"]["color_fringe"],
+        );
         $image->drawDoors($calendar->getDoors());
 
         if (!imagejpeg($im, "$dn$cal+.jpg")) {
-            echo XH_message('fail', $plugin_tx['adventcalendar']['error_save'], "$dn$cal+.jpg");
+            echo $this->view->error("error_save", "$dn$cal+.jpg");
             return;
         }
         if (!$calendar->save()) {
-            echo XH_message('fail', $plugin_tx['adventcalendar']['error_save'], "$dn$cal.dat");
+            echo $this->view->error("error_save", "$dn$cal.dat");
             return;
         }
 
@@ -80,12 +98,9 @@ class MainAdminController extends Controller
      */
     public function viewAction()
     {
-        global $pth, $plugin_tx;
-
-        $dn = $this->dataFolder();
+        $dn = $this->repository->dataFolder();
         $cal = $_GET['adventcalendar_name'];
-        $view = new View($pth["folder"]["plugins"] . "adventcalendar/views/", $plugin_tx["adventcalendar"]);
-        echo $view->render("view", [
+        echo $this->view->render("view", [
             'src' => "$dn$cal+.jpg",
         ]);
     }

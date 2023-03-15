@@ -21,10 +21,21 @@
 
 namespace Adventcalendar;
 
+use Adventcalendar\Infra\Pages;
+use Adventcalendar\Infra\Repository;
 use Adventcalendar\Infra\View;
 
-class MainController extends Controller
+class MainController
 {
+    /** @var Pages */
+    private $pages;
+
+    /** @var Repository */
+    private $repository;
+
+    /** @var View */
+    private $view;
+
     /**
      * @var string
      */
@@ -33,8 +44,11 @@ class MainController extends Controller
     /**
      * @param string $cal
      */
-    public function __construct($cal)
+    public function __construct(Pages $pages, Repository $repository, View $view, $cal)
     {
+        $this->pages = $pages;
+        $this->repository = $repository;
+        $this->view = $view;
         $this->calendarName = (string) $cal;
     }
 
@@ -46,34 +60,33 @@ class MainController extends Controller
         global $pth, $plugin_cf, $plugin_tx;
 
         $ptx = $plugin_tx['adventcalendar'];
-        $calendar = Calendar::findByName($this->calendarName, $this->dataFolder());
+        $calendar = Calendar::findByName($this->calendarName, $this->repository->dataFolder());
         $data = $calendar->getDoors();
         if (!isset($data)) {
-            echo XH_message('fail', $ptx['error_read'], $this->dataFolder() . $this->calendarName . '.dat');
+            echo $this->view->error("error_read", $this->repository->dataFolder() . $this->calendarName . '.dat');
             return;
         }
-        $src = $this->dataFolder() . $this->calendarName . '+.jpg';
+        $src = $this->repository->dataFolder() . $this->calendarName . '+.jpg';
         if (!file_exists($src)) {
-            echo XH_message('fail', $ptx['error_read'], $src);
+            echo $this->view->error("error_read", $src);
             return;
         }
-        $page = Page::getByHeading($this->calendarName);
-        if (!isset($page)) {
-            echo XH_message('fail', sprintf($ptx['message_missing_page'], $this->calendarName));
+        $page = $this->pages->findByHeading($this->calendarName);
+        if ($page < 0) {
+            echo $this->view->error("message_missing_page", $this->calendarName);
             return;
         }
         $this->emitJs();
         $doors = [];
-        foreach ($page->getChildren() as $i => $page) {
+        foreach ($this->pages->childrenOf($page) as $i => $page) {
             if ($i >= $this->getCurrentDay()) {
                 break;
             }
             $coords = implode(',', $data[$i]);
-            $href = '?' . $page->getURL() . '&print';
+            $href = '?' . $this->pages->urlOf($page) . '&print';
             $doors[$i + 1] = (object) compact('coords', 'href');
         }
-        $view = new View($pth["folder"]["plugins"] . "adventcalendar/views/", $plugin_tx["adventcalendar"]);
-        echo $view->render("main", [
+        echo $this->view->render("main", [
             "src" => $src,
             "doors" => $doors,
         ]);

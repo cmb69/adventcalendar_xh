@@ -21,6 +21,10 @@
 
 namespace Adventcalendar;
 
+use Adventcalendar\Infra\Repository;
+use Adventcalendar\Infra\SystemChecker;
+use Adventcalendar\Infra\View;
+
 class Plugin
 {
     const VERSION = '1.0beta6';
@@ -43,17 +47,24 @@ class Plugin
      */
     private function handleAdministration()
     {
-        global $admin, $action, $o;
+        global $admin, $action, $o, $pth, $plugin_tx;
 
         $o .= print_plugin_admin('on');
         switch ($admin) {
             case '':
-                ob_start();
-                (new InfoController)->defaultAction();
-                $o .= ob_get_clean();
+                $controller = new InfoController(
+                    $pth["folder"]["plugins"] . "adventcalendar/",
+                    new Repository,
+                    new SystemChecker,
+                    new View($pth["folder"]["plugins"] . "adventcalendar/views/", $plugin_tx["adventcalendar"])
+                );
+                $o .= $controller->defaultAction();
                 break;
             case 'plugin_main':
-                $controller = new MainAdminController;
+                $controller = new MainAdminController(
+                    new Repository,
+                    new View($pth["folder"]["plugins"] . "adventcalendar/views/", $plugin_tx["adventcalendar"])
+                );
                 ob_start();
                 switch ($action) {
                     case 'prepare':

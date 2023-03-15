@@ -19,64 +19,38 @@
  * along with Adventcalendar_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Adventcalendar;
+namespace Adventcalendar\Infra;
 
-class Page
+class Pages
 {
-    /**
-     * @param string $heading
-     * @return ?Page
-     */
-    public static function getByHeading($heading)
+    public function findByHeading(string $heading): int
     {
         global $h;
 
-        $index = array_search($heading, $h);
-        if ($index !== false) {
-            return new self($index);
-        } else {
-            return null;
-        }
+        $index = array_search($heading, $h, true);
+        return $index !== false ? $index : -1;
     }
 
-    /**
-     * @var int
-     */
-    private $index;
-
-    /**
-     * @param int $index
-     */
-    private function __construct($index)
-    {
-        $this->index = $index;
-    }
-
-    /**
-     * @return string
-     */
-    public function getURL()
+    public function urlOf(int $index): string
     {
         global $u;
 
-        return $u[$this->index];
+        return $u[$index];
     }
 
-    /**
-     * @return array<self>
-     */
-    public function getChildren()
+    /** @return list<int> */
+    public function childrenOf(int $index): array
     {
         global $cl, $l, $cf;
 
-        $children = array();
+        $children = [];
         $ll = $cf['menu']['levelcatch'];
-        for ($i = $this->index + 1; $i < $cl; $i++) {
-            if ($l[$i] <= $l[$this->index]) {
+        for ($i = $index + 1; $i < $cl; $i++) {
+            if ($l[$i] <= $l[$index]) {
                 break;
             }
             if ($l[$i] <= $ll) {
-                $children[] = new self($i);
+                $children[] = $i;
                 $ll = $l[$i];
             }
         }

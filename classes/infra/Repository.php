@@ -19,14 +19,11 @@
  * along with Adventcalendar_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Adventcalendar;
+namespace Adventcalendar\Infra;
 
-class Controller
+class Repository
 {
-    /**
-     * @return string
-     */
-    protected function dataFolder()
+    public function dataFolder(): string
     {
         global $pth, $plugin_cf;
 
@@ -40,14 +37,8 @@ class Controller
         if (substr($fn, -1) != '/') {
             $fn .= '/';
         }
-        if (file_exists($fn)) {
-            if (!is_dir($fn)) {
-                e('cntopen', 'folder', $fn);
-            }
-        } else {
-            if (!mkdir($fn, 0777, true)) {
-                e('cntwriteto', 'folder', $fn);
-            } else {
+        if (!file_exists($fn)) {
+            if (mkdir($fn, 0777, true)) {
                 chmod($fn, 0777);
             }
         }

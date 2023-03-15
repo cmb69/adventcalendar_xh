@@ -19,23 +19,31 @@
  * along with Adventcalendar_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-namespace Adventcalendar;
+namespace Adventcalendar\Infra;
 
 use GdImage;
 
 class Image
 {
-    /**
-     * @var GdImage
-     */
+    /** @var GdImage */
     private $image;
 
-    /**
-     * @param GdImage $image
-     */
-    public function __construct($image)
+    /** @var string */
+    private $doorColor;
+
+    /** @var string */
+    private $fontColor;
+
+    /** @var string */
+    private $fringeColor;
+
+    /** @param GdImage $image */
+    public function __construct($image, string $doorColor, string $fontColor, string $fringeColor)
     {
         $this->image = $image;
+        $this->doorColor = $doorColor;
+        $this->fontColor = $fontColor;
+        $this->fringeColor = $fringeColor;
     }
 
     /**
@@ -60,9 +68,7 @@ class Image
      */
     private function drawStamp($x1, $y1, $x2, $y2)
     {
-        global $plugin_cf;
-
-        $color = $this->allocateColor($plugin_cf['adventcalendar']['color_door']);
+        $color = $this->allocateColor($this->doorColor);
         imagerectangle($this->image, $x1, $y1, $x2, $y2, $color);
     }
 
@@ -74,10 +80,8 @@ class Image
      */
     private function drawNumber($x, $y, $number)
     {
-        global $plugin_cf;
-
         $this->drawFringe($x, $y, $number);
-        $color = $this->allocateColor($plugin_cf['adventcalendar']['color_font']);
+        $color = $this->allocateColor($this->fontColor);
         imagestring($this->image, 5, $x, $y, (string) $number, $color);
     }
 
@@ -89,13 +93,9 @@ class Image
      */
     private function drawFringe($x, $y, $number)
     {
-        global $plugin_cf;
-
         for ($i = $x - 1; $i <= $x + 1; $i++) {
             for ($j = $y - 1; $j <= $y + 1; $j++) {
-                $color = $this->allocateColor(
-                    $plugin_cf['adventcalendar']['color_fringe']
-                );
+                $color = $this->allocateColor($this->fringeColor);
                 imagestring($this->image, 5, $i, $j, (string) $number, $color);
             }
         }

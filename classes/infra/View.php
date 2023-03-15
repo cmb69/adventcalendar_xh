@@ -42,6 +42,12 @@ class View
         return sprintf($this->esc($this->text[$key]), ...$args);
     }
 
+    /** @param scalar $args */
+    public function error(string $key, ...$args): string
+    {
+        return XH_message($this->text[$key], ...$args);
+    }
+
     /** @param array<string,mixed> $_data */
     public function render(string $_template, array $_data): string
     {

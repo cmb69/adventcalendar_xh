@@ -21,21 +21,37 @@
 
 namespace Adventcalendar;
 
+use Adventcalendar\Infra\Repository;
+use Adventcalendar\Infra\SystemChecker;
 use Adventcalendar\Infra\View;
 use stdClass;
 
-class InfoController extends Controller
+class InfoController
 {
-    /**
-     * @return void
-     */
-    public function defaultAction()
-    {
-        global $pth, $plugin_tx;
+    /** @var string */
+    private $pluginFolder;
 
-        $view = new View($pth["folder"]["plugins"] . "adventcalendar/views/", $plugin_tx["adventcalendar"]);
-        echo $view->render("info", [
-            'logo' => "{$pth['folder']['plugins']}adventcalendar/adventcalendar.png",
+    /** @var Repository */
+    private $repository;
+
+    /** @var SystemChecker */
+    private $systemChecker;
+
+    /** @var View */
+    private $view;
+
+    public function __construct(string $pluginFolder, Repository $repository, SystemChecker $systemChecker, View $view)
+    {
+        $this->pluginFolder = $pluginFolder;
+        $this->repository = $repository;
+        $this->systemChecker = $systemChecker;
+        $this->view = $view;
+    }
+
+    public function defaultAction(): string
+    {
+        return $this->view->render("info", [
+            'logo' => $this->pluginFolder . "adventcalendar.png",
             'version' => Plugin::VERSION,
             'checks' => $this->checks(),
         ]);
@@ -44,17 +60,15 @@ class InfoController extends Controller
     /** @return list<stdClass> */
     private function checks(): array
     {
-        global $pth;
-
         return [
             $this->checkPhpVersion("5.4.0"),
             $this->checkExtension("gd"),
             $this->checkXhVersion("1.6.3"),
             $this->checkPlugin("jquery"),
-            $this->checkWritability($pth['folder']['plugins'] . "adventcalendar/config/"),
-            $this->checkWritability($pth['folder']['plugins'] . "adventcalendar/css/"),
-            $this->checkWritability($pth['folder']['plugins'] . "adventcalendar/languages/"),
-            $this->checkWritability($this->dataFolder()),
+            $this->checkWritability($this->pluginFolder . "config/"),
+            $this->checkWritability($this->pluginFolder . "css/"),
+            $this->checkWritability($this->pluginFolder . "languages/"),
+            $this->checkWritability($this->repository->dataFolder()),
         ];
     }
 
@@ -62,7 +76,7 @@ class InfoController extends Controller
     {
         global $plugin_tx;
 
-        $state = version_compare(PHP_VERSION, $version, "ge") ? "success" : "fail";
+        $state = $this->systemChecker->checkVersion(PHP_VERSION, $version) ? "success" : "fail";
         return (object) [
             "state" => $state,
             "label" => sprintf($plugin_tx["adventcalendar"]["syscheck_phpversion"], $version),
@@ -74,7 +88,7 @@ class InfoController extends Controller
     {
         global $plugin_tx;
 
-        $state = extension_loaded($name) ? "success" : "fail";
+        $state = $this->systemChecker->checkExtension($name) ? "success" : "fail";
         return (object) [
             "state" => $state,
             "label" => sprintf($plugin_tx["adventcalendar"]["syscheck_extension"], $name),
@@ -86,7 +100,7 @@ class InfoController extends Controller
     {
         global $plugin_tx;
 
-        $state = version_compare(CMSIMPLE_XH_VERSION, "CMSimple_XH $version", "ge") ? "success" : "fail";
+        $state = $this->systemChecker->checkVersion(CMSIMPLE_XH_VERSION, "CMSimple_XH $version") ? "success" : "fail";
         return (object) [
             "state" => $state,
             "label" => sprintf($plugin_tx["adventcalendar"]["syscheck_xhversion"], $version),
@@ -96,9 +110,9 @@ class InfoController extends Controller
 
     private function checkPlugin(string $name): stdClass
     {
-        global $pth, $plugin_tx;
+        global $plugin_tx;
 
-        $state = is_dir($pth["folder"]["plugins"] . $name) ? "success" : "fail";
+        $state = $this->systemChecker->checkPlugin($name) ? "success" : "fail";
         return (object) [
             "state" => $state,
             "label" => sprintf($plugin_tx["adventcalendar"]["syscheck_plugin"], $name),
@@ -110,7 +124,7 @@ class InfoController extends Controller
     {
         global $plugin_tx;
 
-        $state = is_writeable($folder) ? "success" : "fail";
+        $state = $this->systemChecker->checkWritability($folder) ? "success" : "fail";
         return (object) [
             "state" => $state,
             "label" => sprintf($plugin_tx["adventcalendar"]["syscheck_writable"], $folder),
