@@ -21,15 +21,17 @@
 
 namespace Adventcalendar;
 
+use GdImage;
+
 class Image
 {
     /**
-     * @var resource
+     * @var GdImage
      */
     private $image;
 
     /**
-     * @param resource $image
+     * @param GdImage $image
      */
     public function __construct($image)
     {

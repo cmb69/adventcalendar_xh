@@ -21,6 +21,8 @@
 
 namespace Adventcalendar;
 
+use GdImage;
+
 class Calendar
 {
     /**
@@ -104,7 +106,7 @@ class Calendar
     }
 
     /**
-     * @return resource|null
+     * @return GdImage|null
      */
     public function getImage()
     {
