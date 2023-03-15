@@ -41,6 +41,7 @@ class InfoController extends Controller
         ]);
     }
 
+    /** @return list<stdClass> */
     private function checks(): array
     {
         global $pth;
@@ -57,7 +58,7 @@ class InfoController extends Controller
         ];
     }
 
-    private function checkPhpVersion($version): stdClass
+    private function checkPhpVersion(string $version): stdClass
     {
         global $plugin_tx;
 
@@ -69,7 +70,7 @@ class InfoController extends Controller
         ];
     }
 
-    private function checkExtension($name): stdClass
+    private function checkExtension(string $name): stdClass
     {
         global $plugin_tx;
 
@@ -81,7 +82,7 @@ class InfoController extends Controller
         ];
     }
 
-    private function checkXhVersion($version): stdClass
+    private function checkXhVersion(string $version): stdClass
     {
         global $plugin_tx;
 
@@ -93,7 +94,7 @@ class InfoController extends Controller
         ];
     }
 
-    private function checkPlugin($name): stdClass
+    private function checkPlugin(string $name): stdClass
     {
         global $pth, $plugin_tx;
 
@@ -105,7 +106,7 @@ class InfoController extends Controller
         ];
     }
 
-    private function checkWritability($folder): stdClass
+    private function checkWritability(string $folder): stdClass
     {
         global $plugin_tx;
 

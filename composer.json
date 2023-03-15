@@ -1,6 +1,4 @@
 {
     "require-dev": {
-        "phing/phing": "2.16.*",
-        "squizlabs/php_codesniffer": "2.9.*"
     }
 }

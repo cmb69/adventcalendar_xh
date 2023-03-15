@@ -76,7 +76,7 @@ class Image
 
         $this->drawFringe($x, $y, $number);
         $color = $this->allocateColor($plugin_cf['adventcalendar']['color_font']);
-        imagestring($this->image, 5, $x, $y, $number, $color);
+        imagestring($this->image, 5, $x, $y, (string) $number, $color);
     }
 
     /**
@@ -94,7 +94,7 @@ class Image
                 $color = $this->allocateColor(
                     $plugin_cf['adventcalendar']['color_fringe']
                 );
-                imagestring($this->image, 5, $i, $j, $number, $color);
+                imagestring($this->image, 5, $i, $j, (string) $number, $color);
             }
         }
     }
@@ -105,7 +105,7 @@ class Image
      */
     private function allocateColor($hexcolor)
     {
-        $color = base_convert($hexcolor, 16, 10);
+        $color = (int) base_convert($hexcolor, 16, 10);
         $red = $color >> 16;
         $green = ($color & 0xffff) >> 8;
         $blue = $color & 0xff;

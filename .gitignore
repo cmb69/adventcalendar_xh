@@ -3,3 +3,4 @@ tests/coverage
 /README.htm
 /vendor
 /composer.lock
+/tools

@@ -1,3 +1,15 @@
+<?php
+
+use Adventcalendar\Calendar;
+use Adventcalendar\Infra\View;
+
+/**
+ * @var View $this
+ * @var array<Calendar> $calendars
+ * @var string $url
+ * @var string $csrfTokenInput
+ */
+?>
 <div id="adventcalendar_admin" class="plugineditcaption">Adventcalendar</div>
 <ul>
 <?php foreach ($calendars as $calendar):?>

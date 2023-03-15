@@ -30,7 +30,7 @@ class Plugin
      */
     public function run()
     {
-        if (XH_ADM) {
+        if (defined("XH_ADM") && XH_ADM) {
             XH_registerStandardPluginMenuItems(true);
             if (XH_wantsPluginAdministration('adventcalendar')) {
                 $this->handleAdministration();
@@ -68,7 +68,7 @@ class Plugin
                 $o .= ob_get_clean();
                 break;
             default:
-                $o .= plugin_admin_common($action, $admin, 'adventcalendar');
+                $o .= plugin_admin_common();
         }
     }
 }

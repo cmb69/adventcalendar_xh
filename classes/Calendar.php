@@ -65,7 +65,7 @@ class Calendar
     private $dataFolder;
 
     /**
-     * @var array<array<int>>
+     * @var array<array<int>>|null
      */
     private $doors;
 
@@ -88,7 +88,7 @@ class Calendar
     }
 
     /**
-     * @return array<array<int>>
+     * @return array<array<int>>|null
      */
     public function getDoors()
     {
@@ -104,7 +104,7 @@ class Calendar
     }
 
     /**
-     * @return resource
+     * @return resource|null
      */
     public function getImage()
     {

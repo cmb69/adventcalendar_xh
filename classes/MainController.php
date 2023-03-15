@@ -31,7 +31,7 @@ class MainController extends Controller
     private $calendarName;
 
     /**
-     * @param string
+     * @param string $cal
      */
     public function __construct($cal)
     {
@@ -77,10 +77,6 @@ class MainController extends Controller
             "src" => $src,
             "doors" => $doors,
         ]);
-        // (new View('adventcalendar'))
-        //     ->template('main')
-        //     ->data(compact('src', 'doors'))
-        //     ->render();
     }
 
     /**
@@ -90,7 +86,7 @@ class MainController extends Controller
     {
         global $plugin_cf;
 
-        if (XH_ADM) {
+        if (defined("XH_ADM") && XH_ADM) {
             return 24;
         } else {
             $start = strtotime($plugin_cf['adventcalendar']['date_start']);

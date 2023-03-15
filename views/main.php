@@ -1,3 +1,13 @@
+<?php
+
+use Adventcalendar\Infra\View;
+
+/**
+ * @var View $this
+ * @var string $src
+ * @var array<stdClass> $doors
+ */
+?>
 <img src="<?=$src?>" usemap="#adventcalendar" alt="<?=$this->text('adventcalendar')?>">
 <map name="adventcalendar">
 <?php foreach ($doors as $i => $door):?>
