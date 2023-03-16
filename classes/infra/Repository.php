@@ -45,6 +45,24 @@ class Repository
         return $fn;
     }
 
+    /** @return list<string> */
+    public function findCalendars(): array
+    {
+        $calendars = [];
+        $folder = $this->dataFolder();
+        $dir = opendir($folder);
+        while (($entry = readdir($dir)) !== false) {
+            $name = basename($entry, '.jpg');
+            if (pathinfo($folder . $entry, PATHINFO_EXTENSION) == 'jpg'
+                && strpos($name, '+') != strlen($name) - 1
+            ) {
+                $calendars[] = $name;
+            }
+        }
+        closedir($dir);
+        return $calendars;
+    }
+
     /** @return array<array{int,int,int,int}> */
     public function findDoors(string $calendarName): ?array
     {
@@ -61,5 +79,33 @@ class Repository
     {
         $filename = $this->dataFolder() . $calendarName . "+.jpg";
         return is_file($filename) ? $filename : null;
+    }
+
+    /** @return array{int,int,string} */
+    public function findImage(string $calendarName): ?array
+    {
+        $filename = $this->dataFolder() . $calendarName . ".jpg";
+        $data = file_get_contents($filename);
+        if ($data === false) {
+            return null;
+        }
+        [$width, $height] = getimagesizefromstring($data);
+        if ($width === 0 || $height === 0) {
+            return null;
+        }
+        return [$width, $height, $data];
+    }
+
+    public function saveCover(string $calendarName, string $data): bool
+    {
+        $filename = $this->dataFolder() . $calendarName . "+.jpg";
+        return (bool) file_put_contents($filename, $data);
+    }
+
+    /** @param array<array{int,int,int,int}> $doors */
+    public function saveDoors(string $calendarName, array $doors): bool
+    {
+        $filename = $this->dataFolder() . $calendarName . ".dat";
+        return (bool) file_put_contents($filename, serialize($doors));
     }
 }

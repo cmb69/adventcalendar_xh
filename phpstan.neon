@@ -10,4 +10,5 @@ parameters:
   scanFiles:
     - ../../cmsimple/adminfuncs.php
     - ../../cmsimple/functions.php
+    - ../../cmsimple/classes/CSRFProtection.php
     - ../jquery/jquery.inc.php

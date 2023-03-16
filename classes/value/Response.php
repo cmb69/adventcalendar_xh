@@ -30,11 +30,21 @@ class Response
         return $that;
     }
 
+    public static function redirect(string $location): self
+    {
+        $that = new self;
+        $that->location = $location;
+        return $that;
+    }
+
     /** @var string */
     private $output;
 
     /** @var bool */
     private $javascript = false;
+
+    /** @var string|null */
+    private $location = null;
 
     public function withJavascript(): self
     {
@@ -51,5 +61,10 @@ class Response
     public function javascript(): bool
     {
         return $this->javascript;
+    }
+
+    public function location(): ?string
+    {
+        return $this->location;
     }
 }

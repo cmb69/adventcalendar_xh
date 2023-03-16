@@ -21,87 +21,88 @@
 
 namespace Adventcalendar;
 
+use Adventcalendar\Infra\CsrfProtector;
 use Adventcalendar\Infra\Image;
 use Adventcalendar\Infra\Repository;
 use Adventcalendar\Infra\View;
+use Adventcalendar\Logic\Util;
 use Adventcalendar\Value\Html;
+use Adventcalendar\Value\Response;
 
 class MainAdminController
 {
+    /** @var array<string,string> */
+    private $conf;
+
+    /** @var CsrfProtector */
+    private $csrfProtector;
+
     /** @var Repository */
     private $repository;
+
+    /** @var Image */
+    private $image;
 
     /** @var View */
     private $view;
 
-    public function __construct(Repository $repository, View $view)
-    {
+    /** @param array<string,string> $conf */
+    public function __construct(
+        array $conf,
+        CsrfProtector $csrfProtector,
+        Repository $repository,
+        Image $image,
+        View $view
+    ) {
+        $this->conf = $conf;
+        $this->csrfProtector = $csrfProtector;
         $this->repository = $repository;
+        $this->image = $image;
         $this->view = $view;
     }
 
-    /**
-     * @return void
-     */
-    public function defaultAction()
+    public function defaultAction(): Response
     {
-        global $sn, $_XH_csrfProtection;
+        global $sn;
 
-        echo $this->view->render("admin", [
+        return Response::create($this->view->render("admin", [
             'url' => "$sn?adventcalendar&admin=plugin_main&action=prepare",
-            'csrfTokenInput' => Html::of($_XH_csrfProtection->tokenInput()),
-            'calendars' => Calendar::getAll($this->repository->dataFolder())
-        ]);
+            'csrfTokenInput' => Html::of($this->csrfProtector->tokenInput()),
+            'calendars' => $this->repository->findCalendars()
+        ]));
     }
 
-    /**
-     * @return void
-     */
-    public function prepareAction()
+    public function prepareAction(): Response
     {
-        global $_XH_csrfProtection, $plugin_cf;
-
-        $_XH_csrfProtection->check();
+        $this->csrfProtector->check();
         $cal = $_POST['adventcalendar_name'];
         $dn = $this->repository->dataFolder();
-        $calendar = Calendar::findByName($cal, $this->repository->dataFolder());
-        $im = $calendar->getImage();
-        if (!$im) {
-            echo $this->view->error("error_read", "$dn$cal.jpg");
-            return;
+        $image = $this->repository->findImage($cal);
+        if ($image === null) {
+            return Response::create($this->view->error("error_read", "$dn$cal.jpg"));
         }
-        $calendar->calculateDoors(imagesx($im), imagesy($im));
-        $image = new Image(
-            $im,
-            $plugin_cf["adventcalendar"]["color_door"],
-            $plugin_cf["adventcalendar"]["color_font"],
-            $plugin_cf["adventcalendar"]["color_fringe"],
-        );
-        $image->drawDoors($calendar->getDoors());
+        [$width, $height, $data] = $image;
+        $doors = Util::calculateDoors($width, $height, (int) $this->conf['door_width'], (int) $this->conf['door_height']);
+        $doors = $this->image->shuffleDoors($doors);
+        $data = $this->image->drawDoors($data, $doors);
 
-        if (!imagejpeg($im, "$dn$cal+.jpg")) {
-            echo $this->view->error("error_save", "$dn$cal+.jpg");
-            return;
+        if (!$this->repository->saveCover($cal, $data)) {
+            return Response::create($this->view->error("error_save", "$dn$cal+.jpg"));
         }
-        if (!$calendar->save()) {
-            echo $this->view->error("error_save", "$dn$cal.dat");
-            return;
+        if (!$this->repository->saveDoors($cal, $doors)) {
+            return Response::create($this->view->error("error_save", "$dn$cal.dat"));
         }
 
         $url = CMSIMPLE_URL . "?adventcalendar&admin=plugin_main&action=view&adventcalendar_name=$cal";
-        header("Location: $url", true, 303);
-        exit;
+        return Response::redirect($url);
     }
 
-    /**
-     * @return void
-     */
-    public function viewAction()
+    public function viewAction(): Response
     {
         $dn = $this->repository->dataFolder();
         $cal = $_GET['adventcalendar_name'];
-        echo $this->view->render("view", [
+        return Response::create($this->view->render("view", [
             'src' => "$dn$cal+.jpg",
-        ]);
+        ]));
     }
 }

@@ -21,7 +21,10 @@
 
 namespace Adventcalendar;
 
+use Adventcalendar\Infra\CsrfProtector;
+use Adventcalendar\Infra\Image;
 use Adventcalendar\Infra\Repository;
+use Adventcalendar\Infra\Responder;
 use Adventcalendar\Infra\View;
 
 class Plugin
@@ -46,7 +49,7 @@ class Plugin
      */
     private function handleAdministration()
     {
-        global $admin, $action, $o, $pth, $plugin_tx;
+        global $admin, $action, $o, $pth, $plugin_cf, $plugin_tx;
 
         $o .= print_plugin_admin('on');
         switch ($admin) {
@@ -55,21 +58,26 @@ class Plugin
                 break;
             case 'plugin_main':
                 $controller = new MainAdminController(
+                    $plugin_cf["adventcalendar"],
+                    new CsrfProtector,
                     new Repository,
+                    new Image(
+                        $plugin_cf["adventcalendar"]["color_door"],
+                        $plugin_cf["adventcalendar"]["color_font"],
+                        $plugin_cf["adventcalendar"]["color_fringe"],
+                    ),
                     new View($pth["folder"]["plugins"] . "adventcalendar/views/", $plugin_tx["adventcalendar"])
                 );
-                ob_start();
                 switch ($action) {
                     case 'prepare':
-                        $controller->prepareAction();
+                        $o .= Responder::respond($controller->prepareAction());
                         break;
                     case 'view':
-                        $controller->viewAction();
+                        $o .= Responder::respond($controller->viewAction());
                         break;
                     default:
-                        $controller->defaultAction();
+                        $o .= Responder::respond($controller->defaultAction());
                 }
-                $o .= ob_get_clean();
                 break;
             default:
                 $o .= plugin_admin_common();

@@ -19,21 +19,30 @@
  * along with Adventcalendar_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-const CMSIMPLE_XH_VERSION = "CMSimple_XH 1.7.5";
-const CMSIMPLE_URL = "http://example.com/";
+namespace Adventcalendar\Infra;
 
-require_once "../../cmsimple/functions.php";
- 
-spl_autoload_register(function (string $className) {
-    $parts = explode("\\", $className);
-    if ($parts[0] !== "Adventcalendar") {
-        return;
+use XH\CSRFProtection;
+
+class CsrfProtector
+{
+    /** @var CSRFProtection */
+    private $csrfProtection;
+
+    public function __construct()
+    {
+        global $_XH_csrfProtection;
+
+        $this->csrfProtection = $_XH_csrfProtection;
     }
-    if (count($parts) === 3) {
-        $parts[1] = strtolower($parts[1]);
+
+    public function tokenInput(): string
+    {
+        return $this->csrfProtection->tokenInput();
     }
-    $filename = implode("/", array_slice($parts, 1));
-    if (is_readable("./classes/$filename.php")) {
-        include_once "./classes/$filename.php";
+
+    /** @return void|never */
+    public function check()
+    {
+        $this->csrfProtection->check();
     }
-});
+}
