@@ -37,7 +37,7 @@ class ImageTest extends TestCase
             return ob_get_clean();
         });
         $im = imagecreatetruecolor(400, 300);
-        imagefilledrectangle($im, 0, 0, imagesx($im), imagesy($im), 0x000000);
+        imagefilledrectangle($im, 0, 0, imagesx($im), imagesy($im), 0x7f7f7f);
         ob_start();
         imagejpeg($im);
         $data = ob_get_clean();
@@ -50,7 +50,7 @@ class ImageTest extends TestCase
     private function sut()
     {
         return $this->getMockBuilder(Image::class)
-        ->setConstructorArgs(["888888", "cccccc", "000000"])
+        ->setConstructorArgs(["0000ff", "ff0000", "00ff00"])
         ->disableOriginalClone()
         ->disableArgumentCloning()
         ->disallowMockingUnknownTypes()
