@@ -21,11 +21,7 @@
 
 namespace Adventcalendar;
 
-use Adventcalendar\Infra\CsrfProtector;
-use Adventcalendar\Infra\Image;
-use Adventcalendar\Infra\Repository;
 use Adventcalendar\Infra\Responder;
-use Adventcalendar\Infra\View;
 
 class Plugin
 {
@@ -49,7 +45,7 @@ class Plugin
      */
     private function handleAdministration()
     {
-        global $admin, $action, $o, $pth, $plugin_cf, $plugin_tx;
+        global $admin, $action, $o;
 
         $o .= print_plugin_admin('on');
         switch ($admin) {
@@ -57,27 +53,7 @@ class Plugin
                 $o .= Dic::makeInfoController()->defaultAction();
                 break;
             case 'plugin_main':
-                $controller = new MainAdminController(
-                    $plugin_cf["adventcalendar"],
-                    new CsrfProtector,
-                    new Repository,
-                    new Image(
-                        $plugin_cf["adventcalendar"]["color_door"],
-                        $plugin_cf["adventcalendar"]["color_font"],
-                        $plugin_cf["adventcalendar"]["color_fringe"],
-                    ),
-                    new View($pth["folder"]["plugins"] . "adventcalendar/views/", $plugin_tx["adventcalendar"])
-                );
-                switch ($action) {
-                    case 'prepare':
-                        $o .= Responder::respond($controller->prepareAction());
-                        break;
-                    case 'view':
-                        $o .= Responder::respond($controller->viewAction());
-                        break;
-                    default:
-                        $o .= Responder::respond($controller->defaultAction());
-                }
+                $o .= Responder::respond(Dic::makeMainAdminController()($action));
                 break;
             default:
                 $o .= plugin_admin_common();

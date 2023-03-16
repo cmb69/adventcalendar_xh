@@ -21,6 +21,8 @@
 
 namespace Adventcalendar;
 
+use Adventcalendar\Infra\CsrfProtector;
+use Adventcalendar\Infra\Image;
 use Adventcalendar\Infra\Pages;
 use Adventcalendar\Infra\Repository;
 use Adventcalendar\Infra\SystemChecker;
@@ -49,6 +51,30 @@ class Dic
             new Repository,
             new SystemChecker,
             self::makeView()
+        );
+    }
+
+    public static function makeMainAdminController(): MainAdminController
+    {
+        global $plugin_cf;
+
+        return new MainAdminController(
+            $plugin_cf["adventcalendar"],
+            new CsrfProtector,
+            new Repository,
+            self::makeImage(),
+            self::makeView()
+        );
+    }
+
+    private static function makeImage(): Image
+    {
+        global $plugin_cf;
+
+        return new Image(
+            $plugin_cf["adventcalendar"]["color_door"],
+            $plugin_cf["adventcalendar"]["color_font"],
+            $plugin_cf["adventcalendar"]["color_fringe"],
         );
     }
 

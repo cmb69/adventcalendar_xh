@@ -30,7 +30,7 @@ class DicTest extends TestCase
         global $pth, $plugin_cf, $plugin_tx;
 
         $pth = ["folder" => ["plugins" => ""]];
-        $plugin_cf = ["adventcalendar" => []];
+        $plugin_cf = ["adventcalendar" => ["color_door" => "", "color_font" => "", "color_fringe" => ""]];
         $plugin_tx = ["adventcalendar" => []];
     }
 
@@ -42,5 +42,10 @@ class DicTest extends TestCase
     public function testMakesInfoController(): void
     {
         $this->assertInstanceOf(InfoController::class, Dic::makeInfoController());
+    }
+
+    public function testMakesMainAdminController(): void
+    {
+        $this->assertInstanceOf(MainAdminController::class, Dic::makeMainAdminController());
     }
 }

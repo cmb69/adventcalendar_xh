@@ -61,7 +61,19 @@ class MainAdminController
         $this->view = $view;
     }
 
-    public function defaultAction(): Response
+    public function __invoke(string $action): Response
+    {
+        switch ($action) {
+            default:
+                return $this->overview();
+            case "prepare":
+                return $this->prepare();
+            case "view":
+                return $this->view();
+        }
+    }
+
+    private function overview(): Response
     {
         global $sn;
 
@@ -72,7 +84,7 @@ class MainAdminController
         ]));
     }
 
-    public function prepareAction(): Response
+    private function prepare(): Response
     {
         $this->csrfProtector->check();
         $cal = $_POST['adventcalendar_name'];
@@ -97,7 +109,7 @@ class MainAdminController
         return Response::redirect($url);
     }
 
-    public function viewAction(): Response
+    private function view(): Response
     {
         $dn = $this->repository->dataFolder();
         $cal = $_GET['adventcalendar_name'];

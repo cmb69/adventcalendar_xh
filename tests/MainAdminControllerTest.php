@@ -33,7 +33,7 @@ class MainAdminControllerTest extends TestCase
     public function testRendersOverview(): void
     {
         $sut = $this->sut();
-        $response = $sut->defaultAction();
+        $response = $sut("");
         Approvals::verifyHtml($response->output());
     }
 
@@ -41,7 +41,7 @@ class MainAdminControllerTest extends TestCase
     {
         $_POST = ["adventcalendar_name" => "2023"];
         $sut = $this->sut(["check" => true, "saveCover" => true, "saveDoors" => true]);
-        $response = $sut->prepareAction();
+        $response = $sut("prepare");
         $this->assertEquals(
             "http://example.com/?adventcalendar&admin=plugin_main&action=view&adventcalendar_name=2023",
             $response->location()
@@ -52,7 +52,7 @@ class MainAdminControllerTest extends TestCase
     {
         $_POST = ["adventcalendar_name" => "2023"];
         $sut = $this->sut(["findImage" => null, "check" => true]);
-        $response = $sut->prepareAction();
+        $response = $sut("prepare");
         Approvals::verifyHtml($response->output());
     }
 
@@ -60,7 +60,7 @@ class MainAdminControllerTest extends TestCase
     {
         $_POST = ["adventcalendar_name" => "2023"];
         $sut = $this->sut(["check" => true, "saveCover" => true, "saveCoverRes" => false]);
-        $response = $sut->prepareAction();
+        $response = $sut("prepare");
         Approvals::verifyHtml($response->output());
     }
 
@@ -68,7 +68,7 @@ class MainAdminControllerTest extends TestCase
     {
         $_POST = ["adventcalendar_name" => "2023"];
         $sut = $this->sut(["check" => true, "saveCover" => true, "saveDoors" => true, "saveDoorsRes" => false]);
-        $response = $sut->prepareAction();
+        $response = $sut("prepare");
         Approvals::verifyHtml($response->output());
     }
 
@@ -76,7 +76,7 @@ class MainAdminControllerTest extends TestCase
     {
         $_GET = ["adventcalendar_name" => "2023"];
         $sut = $this->sut();
-        $response = $sut->viewAction();
+        $response = $sut("view");
         Approvals::verifyHtml($response->output());
     }
 
