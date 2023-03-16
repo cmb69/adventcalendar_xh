@@ -39,7 +39,7 @@ class ImageTest extends TestCase
         $im = imagecreatetruecolor(400, 300);
         imagefilledrectangle($im, 0, 0, imagesx($im), imagesy($im), 0x7f7f7f);
         ob_start();
-        imagejpeg($im);
+        imagegif($im);
         $data = ob_get_clean();
         $doors = Util::calculateDoors(400, 300, 50, 50);
         [$newdata, $newdoors] = $sut->drawDoors($data, $doors);
