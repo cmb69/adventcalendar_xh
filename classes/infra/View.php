@@ -51,6 +51,11 @@ class View
     /** @param array<string,mixed> $_data */
     public function render(string $_template, array $_data): string
     {
+        array_walk_recursive($_data, function (&$value) {
+            if (is_string($value)) {
+                $value = $this->esc($value);
+            }
+        });
         extract($_data);
         ob_start();
         include $this->templateFolder . $_template . ".php";
