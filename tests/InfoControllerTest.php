@@ -46,7 +46,7 @@ class InfoControllerTest extends TestCase
         $systemChecker->method("checkWritability")->willReturn(false);
         $view = new View("./views/", XH_includeVar("./languages/en.php", "plugin_tx")["adventcalendar"]);
         $sut = new InfoController("./plugins/adventcalendar/", $repository, $systemChecker, $view);
-        $response = $sut->defaultAction();
-        Approvals::verifyHtml($response);
+        $response = $sut();
+        Approvals::verifyHtml($response->output());
     }
 }

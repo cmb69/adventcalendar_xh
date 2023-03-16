@@ -39,7 +39,7 @@ if (XH_wantsPluginAdministration("adventcalendar")) {
     $o .= print_plugin_admin("on");
     switch ($admin) {
         case "":
-            $o .= Dic::makeInfoController()->defaultAction();
+            $o .= Responder::respond(Dic::makeInfoController()());
             break;
         case "plugin_main":
             $o .= Responder::respond(Dic::makeMainAdminController()($action));

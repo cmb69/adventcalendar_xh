@@ -24,7 +24,7 @@ namespace Adventcalendar;
 use Adventcalendar\Infra\Repository;
 use Adventcalendar\Infra\SystemChecker;
 use Adventcalendar\Infra\View;
-use stdClass;
+use Adventcalendar\Value\Response;
 
 class InfoController
 {
@@ -48,87 +48,80 @@ class InfoController
         $this->view = $view;
     }
 
-    public function defaultAction(): string
+    public function __invoke(): Response
     {
-        return $this->view->render("info", [
-            'logo' => $this->pluginFolder . "adventcalendar.png",
-            'version' => ADVENTCALENDAR_VERSION,
-            'checks' => $this->checks(),
-        ]);
+        return Response::create($this->view->render("info", [
+            "version" => ADVENTCALENDAR_VERSION,
+            "checks" => [
+                $this->checkPhpVersion("5.4.0"),
+                $this->checkExtension("gd"),
+                $this->checkXhVersion("1.6.3"),
+                $this->checkPlugin("jquery"),
+                $this->checkWritability($this->pluginFolder . "config/"),
+                $this->checkWritability($this->pluginFolder . "css/"),
+                $this->checkWritability($this->pluginFolder . "languages/"),
+                $this->checkWritability($this->repository->dataFolder()),
+            ],
+        ]));
     }
 
-    /** @return list<stdClass> */
-    private function checks(): array
+    /** @return array{class:string,key:string,arg:string,statekey:string} */
+    private function checkPhpVersion(string $version): array
     {
-        return [
-            $this->checkPhpVersion("5.4.0"),
-            $this->checkExtension("gd"),
-            $this->checkXhVersion("1.6.3"),
-            $this->checkPlugin("jquery"),
-            $this->checkWritability($this->pluginFolder . "config/"),
-            $this->checkWritability($this->pluginFolder . "css/"),
-            $this->checkWritability($this->pluginFolder . "languages/"),
-            $this->checkWritability($this->repository->dataFolder()),
-        ];
-    }
-
-    private function checkPhpVersion(string $version): stdClass
-    {
-        global $plugin_tx;
-
         $state = $this->systemChecker->checkVersion(PHP_VERSION, $version) ? "success" : "fail";
-        return (object) [
-            "state" => $state,
-            "label" => sprintf($plugin_tx["adventcalendar"]["syscheck_phpversion"], $version),
-            "stateLabel" => $plugin_tx["adventcalendar"]["syscheck_$state"],
+        return [
+            "class" => "xh_$state",
+            "key" => "syscheck_phpversion",
+            "arg" => $version,
+            "statekey" => "syscheck_$state",
         ];
     }
 
-    private function checkExtension(string $name): stdClass
+    /** @return array{class:string,key:string,arg:string,statekey:string} */
+    private function checkExtension(string $name): array
     {
-        global $plugin_tx;
-
         $state = $this->systemChecker->checkExtension($name) ? "success" : "fail";
-        return (object) [
-            "state" => $state,
-            "label" => sprintf($plugin_tx["adventcalendar"]["syscheck_extension"], $name),
-            "stateLabel" => $plugin_tx["adventcalendar"]["syscheck_$state"],
+        return [
+            "class" => "xh_$state",
+            "key" => "syscheck_extension",
+            "arg" => $name,
+            "statekey" => "syscheck_$state",
         ];
     }
 
-    private function checkXhVersion(string $version): stdClass
+    /** @return array{class:string,key:string,arg:string,statekey:string} */
+    private function checkXhVersion(string $version): array
     {
-        global $plugin_tx;
-
         $state = $this->systemChecker->checkVersion(CMSIMPLE_XH_VERSION, "CMSimple_XH $version") ? "success" : "fail";
-        return (object) [
-            "state" => $state,
-            "label" => sprintf($plugin_tx["adventcalendar"]["syscheck_xhversion"], $version),
-            "stateLabel" => $plugin_tx["adventcalendar"]["syscheck_$state"],
+        return [
+            "class" => "xh_$state",
+            "key" => "syscheck_xhversion",
+            "arg" => $version,
+            "statekey" => "syscheck_$state",
         ];
     }
 
-    private function checkPlugin(string $name): stdClass
+    /** @return array{class:string,key:string,arg:string,statekey:string} */
+    private function checkPlugin(string $name): array
     {
-        global $plugin_tx;
-
         $state = $this->systemChecker->checkPlugin($name) ? "success" : "fail";
-        return (object) [
-            "state" => $state,
-            "label" => sprintf($plugin_tx["adventcalendar"]["syscheck_plugin"], $name),
-            "stateLabel" => $plugin_tx["adventcalendar"]["syscheck_$state"],
+        return [
+            "class" => "xh_$state",
+            "key" => "syscheck_plugin",
+            "arg" => $name,
+            "statekey" => "syscheck_$state",
         ];
     }
 
-    private function checkWritability(string $folder): stdClass
+    /** @return array{class:string,key:string,arg:string,statekey:string} */
+    private function checkWritability(string $folder): array
     {
-        global $plugin_tx;
-
-        $state = $this->systemChecker->checkWritability($folder) ? "success" : "fail";
-        return (object) [
-            "state" => $state,
-            "label" => sprintf($plugin_tx["adventcalendar"]["syscheck_writable"], $folder),
-            "stateLabel" => $plugin_tx["adventcalendar"]["syscheck_$state"],
+        $state = $this->systemChecker->checkWritability($folder) ? "success" : "warning";
+        return [
+            "class" => "xh_$state",
+            "key" => "syscheck_writable",
+            "arg" => $folder,
+            "statekey" => "syscheck_$state",
         ];
     }
 }

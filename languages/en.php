@@ -9,16 +9,15 @@ $plugin_tx['adventcalendar']['error_read']="Could not read '%s'!";
 $plugin_tx['adventcalendar']['error_save']="Could not save '%s'!";
 $plugin_tx['adventcalendar']['error_not_prepared']="The cover of '%s' is not yet prepared!";
 
-$plugin_tx['adventcalendar']['syscheck_extension']="the PHP extension '%s' is loaded";
+$plugin_tx['adventcalendar']['syscheck_extension']="PHP extension '%s' is loaded: ";
 $plugin_tx['adventcalendar']['syscheck_fail']="failure";
-$plugin_tx['adventcalendar']['syscheck_message']="Checking that %1\$s … %2\$s";
-$plugin_tx['adventcalendar']['syscheck_phpversion']="the PHP version is at least %s";
-$plugin_tx['adventcalendar']['syscheck_plugin']="the CMSimple_XH plugin '%s' is installed";
+$plugin_tx['adventcalendar']['syscheck_phpversion']="PHP version is at least %s: ";
+$plugin_tx['adventcalendar']['syscheck_plugin']="CMSimple_XH plugin '%s' is installed: ";
 $plugin_tx['adventcalendar']['syscheck_success']="okay";
 $plugin_tx['adventcalendar']['syscheck_title']="System check";
 $plugin_tx['adventcalendar']['syscheck_warning']="warning";
-$plugin_tx['adventcalendar']['syscheck_writable']="'%s' is writable";
-$plugin_tx['adventcalendar']['syscheck_xhversion']="the CMSimple_XH version is at least %s";
+$plugin_tx['adventcalendar']['syscheck_writable']="'%s' is writable: ";
+$plugin_tx['adventcalendar']['syscheck_xhversion']="CMSimple_XH version is at least %s: ";
 
 $plugin_tx['adventcalendar']['cf_folder_data']="Path to a folder relative to the CMSimple root directory, where to store the plugin's data. E.g. \"userfiles/adventcalendar/\". Leave empty to store in the plugin's data/ folder.";
 $plugin_tx['adventcalendar']['cf_date_start']="The start date of the advent calendar in format YYYY-MM-DD (e.g. 2013-12-01). Optionally you can use the extended format YYYY-MM-DD hh:mm &plusmn;h";
