@@ -106,9 +106,9 @@ class Image
      */
     private function drawFringe($image, int $x, int $y, int $number)
     {
+        $color = $this->allocateColor($image, $this->fringeColor);
         for ($i = $x - 1; $i <= $x + 1; $i++) {
             for ($j = $y - 1; $j <= $y + 1; $j++) {
-                $color = $this->allocateColor($image, $this->fringeColor);
                 imagestring($image, 5, $i, $j, (string) $number, $color);
             }
         }
