@@ -22,7 +22,6 @@
 namespace Adventcalendar;
 
 use Adventcalendar\Infra\Repository;
-use Adventcalendar\Infra\SystemChecker;
 use Adventcalendar\Infra\View;
 
 class Plugin
@@ -52,13 +51,7 @@ class Plugin
         $o .= print_plugin_admin('on');
         switch ($admin) {
             case '':
-                $controller = new InfoController(
-                    $pth["folder"]["plugins"] . "adventcalendar/",
-                    new Repository,
-                    new SystemChecker,
-                    new View($pth["folder"]["plugins"] . "adventcalendar/views/", $plugin_tx["adventcalendar"])
-                );
-                $o .= $controller->defaultAction();
+                $o .= Dic::makeInfoController()->defaultAction();
                 break;
             case 'plugin_main':
                 $controller = new MainAdminController(

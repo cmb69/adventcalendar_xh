@@ -19,11 +19,9 @@
  * along with Adventcalendar_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Adventcalendar\Infra\Pages;
-use Adventcalendar\Infra\Repository;
+use Adventcalendar\Dic;
 use Adventcalendar\Infra\Request;
 use Adventcalendar\Infra\Responder;
-use Adventcalendar\Infra\View;
 
 /**
  * @param string $cal
@@ -31,15 +29,7 @@ use Adventcalendar\Infra\View;
  */
 function adventcalendar($cal)
 {
-    global $pth, $plugin_cf, $plugin_tx;
-
-    $controller = new Adventcalendar\MainController(
-        $plugin_cf["adventcalendar"],
-        new Pages,
-        new Repository,
-        new View($pth["folder"]["plugins"] . "adventcalendar/views/", $plugin_tx["adventcalendar"])
-    );
-    return Responder::respond($controller->defaultAction(Request::current(), $cal));
+    return Responder::respond(Dic::makeMainController()->defaultAction(Request::current(), $cal));
 }
 
 (new Adventcalendar\Plugin)->run();
