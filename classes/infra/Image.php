@@ -42,21 +42,12 @@ class Image
     }
 
     /**
-     * @param array<array{int,int,int,int}> $doors
-     * @return array<array{int,int,int,int}>
-     */
-    public function shuffleDoors(array $doors): array
-    {
-        shuffle($doors);
-        return $doors;
-    }
-
-    /**
      * @param array<array<int>> $doors
-     * @return string
+     * @return array{string,array<array{int,int,int,int}>}
      */
     public function drawDoors(string $data, $doors)
     {
+        $doors = $this->shuffleDoors($doors);
         $image = imagecreatefromstring($data);
         for ($i = 0; $i < 24; $i++) {
             list($x1, $y1, $x2, $y2) = $doors[$i];
@@ -65,7 +56,18 @@ class Image
         }
         ob_start();
         imagejpeg($image);
-        return ob_get_clean();
+        return [ob_get_clean(), $doors];
+    }
+
+    /**
+     * @param array<array{int,int,int,int}> $doors
+     * @return array<array{int,int,int,int}>
+     * @codeCoverageIgnore
+     */
+    protected function shuffleDoors(array $doors): array
+    {
+        shuffle($doors);
+        return $doors;
     }
 
     /**

@@ -95,8 +95,7 @@ class MainAdminController
         }
         [$width, $height, $data] = $image;
         $doors = Util::calculateDoors($width, $height, (int) $this->conf['door_width'], (int) $this->conf['door_height']);
-        $doors = $this->image->shuffleDoors($doors);
-        $data = $this->image->drawDoors($data, $doors);
+        [$data, $doors] = $this->image->drawDoors($data, $doors);
 
         if (!$this->repository->saveCover($cal, $data)) {
             return Response::create($this->view->error("error_save", "$dn$cal+.jpg"));

@@ -105,8 +105,7 @@ class MainAdminControllerTest extends TestCase
             ->with("2023", [[0, 0, 1, 1]])
             ->willReturn($opts["saveDoorsRes"]);
         $image = $this->createMock(Image::class);
-        $image->method("shuffleDoors")->willReturn([[0, 0, 1, 1]]);
-        $image->method("drawDoors")->willReturn("modified image data");
+        $image->method("drawDoors")->willReturn(["modified image data", [[0, 0, 1, 1]]]);
         $view = new View("./views/", XH_includeVar("./languages/en.php", "plugin_tx")["adventcalendar"]);
         return new MainAdminController($conf, $csrfProtector, $repository, $image, $view);
     }
