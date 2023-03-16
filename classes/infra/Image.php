@@ -58,17 +58,6 @@ class Image
     }
 
     /**
-     * @param GdImage $image
-     * @codeCoverageIgnore
-     */
-    protected function data($image): string
-    {
-        ob_start();
-        imagejpeg($image);
-        return ob_get_clean();
-    }
-
-    /**
      * @param array<array{int,int,int,int}> $doors
      * @return array<array{int,int,int,int}>
      * @codeCoverageIgnore
@@ -77,6 +66,17 @@ class Image
     {
         shuffle($doors);
         return $doors;
+    }
+
+    /**
+     * @param GdImage $image
+     * @codeCoverageIgnore
+     */
+    protected function data($image): string
+    {
+        ob_start();
+        imagejpeg($image);
+        return ob_get_clean();
     }
 
     /**
