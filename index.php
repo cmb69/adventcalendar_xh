@@ -23,6 +23,8 @@ use Adventcalendar\Dic;
 use Adventcalendar\Infra\Request;
 use Adventcalendar\Infra\Responder;
 
+const ADVENTCALENDAR_VERSION = "1.0beta6";
+
 /**
  * @param string $cal
  * @return string
@@ -31,5 +33,3 @@ function adventcalendar($cal)
 {
     return Responder::respond(Dic::makeMainController()->defaultAction(Request::current(), $cal));
 }
-
-(new Adventcalendar\Plugin)->run();

@@ -52,7 +52,7 @@ class InfoController
     {
         return $this->view->render("info", [
             'logo' => $this->pluginFolder . "adventcalendar.png",
-            'version' => Plugin::VERSION,
+            'version' => ADVENTCALENDAR_VERSION,
             'checks' => $this->checks(),
         ]);
     }
