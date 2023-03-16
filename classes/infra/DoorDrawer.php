@@ -23,7 +23,7 @@ namespace Adventcalendar\Infra;
 
 use GdImage;
 
-class Image
+class DoorDrawer
 {
     /** @var string */
     private $doorColor;
@@ -42,27 +42,38 @@ class Image
     }
 
     /**
-     * @param array<array{int,int,int,int}> $doors
-     * @return array<array{int,int,int,int}>
-     */
-    public function shuffleDoors(array $doors): array
-    {
-        shuffle($doors);
-        return $doors;
-    }
-
-    /**
      * @param array<array<int>> $doors
-     * @return string
+     * @return array{string,array<array{int,int,int,int}>}
      */
     public function drawDoors(string $data, $doors)
     {
+        $doors = $this->shuffleDoors($doors);
         $image = imagecreatefromstring($data);
         for ($i = 0; $i < 24; $i++) {
             list($x1, $y1, $x2, $y2) = $doors[$i];
             $this->drawStamp($image, $x1, $y1, $x2, $y2);
             $this->drawNumber($image, $x1 + 2, $y1 + 1, $i + 1);
         }
+        return [$this->data($image), $doors];
+    }
+
+    /**
+     * @param array<array{int,int,int,int}> $doors
+     * @return array<array{int,int,int,int}>
+     * @codeCoverageIgnore
+     */
+    protected function shuffleDoors(array $doors): array
+    {
+        shuffle($doors);
+        return $doors;
+    }
+
+    /**
+     * @param GdImage $image
+     * @codeCoverageIgnore
+     */
+    protected function data($image): string
+    {
         ob_start();
         imagejpeg($image);
         return ob_get_clean();
@@ -70,13 +81,9 @@ class Image
 
     /**
      * @param GdImage $image
-     * @param int $x1
-     * @param int $y1
-     * @param int $x2
-     * @param int $y2
      * @return void
      */
-    private function drawStamp($image, $x1, $y1, $x2, $y2)
+    private function drawStamp($image, int $x1, int $y1, int $x2, int $y2)
     {
         $color = $this->allocateColor($image, $this->doorColor);
         imagerectangle($image, $x1, $y1, $x2, $y2, $color);
@@ -84,12 +91,9 @@ class Image
 
     /**
      * @param GdImage $image
-     * @param int $x
-     * @param int $y
-     * @param int $number
      * @return void
      */
-    private function drawNumber($image, $x, $y, $number)
+    private function drawNumber($image, int $x, int $y, int $number)
     {
         $this->drawFringe($image, $x, $y, $number);
         $color = $this->allocateColor($image, $this->fontColor);
@@ -98,27 +102,20 @@ class Image
 
     /**
      * @param GdImage $image
-     * @param int $x
-     * @param int $y
-     * @param int $number
      * @return void
      */
-    private function drawFringe($image, $x, $y, $number)
+    private function drawFringe($image, int $x, int $y, int $number)
     {
+        $color = $this->allocateColor($image, $this->fringeColor);
         for ($i = $x - 1; $i <= $x + 1; $i++) {
             for ($j = $y - 1; $j <= $y + 1; $j++) {
-                $color = $this->allocateColor($image, $this->fringeColor);
                 imagestring($image, 5, $i, $j, (string) $number, $color);
             }
         }
     }
 
-    /**
-     * @param GdImage $image
-     * @param string $hexcolor
-     * @return int
-     */
-    private function allocateColor($image, $hexcolor)
+    /** @param GdImage $image */
+    private function allocateColor($image, string $hexcolor): int
     {
         $color = (int) base_convert($hexcolor, 16, 10);
         $red = $color >> 16;

@@ -22,7 +22,7 @@
 namespace Adventcalendar;
 
 use Adventcalendar\Infra\CsrfProtector;
-use Adventcalendar\Infra\Image;
+use Adventcalendar\Infra\DoorDrawer;
 use Adventcalendar\Infra\Pages;
 use Adventcalendar\Infra\Repository;
 use Adventcalendar\Infra\SystemChecker;
@@ -62,16 +62,16 @@ class Dic
             $plugin_cf["adventcalendar"],
             new CsrfProtector,
             new Repository,
-            self::makeImage(),
+            self::makeDoorDrawer(),
             self::makeView()
         );
     }
 
-    private static function makeImage(): Image
+    private static function makeDoorDrawer(): DoorDrawer
     {
         global $plugin_cf;
 
-        return new Image(
+        return new DoorDrawer(
             $plugin_cf["adventcalendar"]["color_door"],
             $plugin_cf["adventcalendar"]["color_font"],
             $plugin_cf["adventcalendar"]["color_fringe"],
