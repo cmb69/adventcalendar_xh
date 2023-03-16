@@ -45,7 +45,7 @@ class View
     /** @param scalar $args */
     public function error(string $key, ...$args): string
     {
-        return XH_message($this->text[$key], ...$args);
+        return XH_message("fail", $this->text[$key], ...$args) . "\n";
     }
 
     /** @param array<string,mixed> $_data */

@@ -23,10 +23,15 @@ namespace Adventcalendar;
 
 use Adventcalendar\Infra\Pages;
 use Adventcalendar\Infra\Repository;
+use Adventcalendar\Infra\Request;
 use Adventcalendar\Infra\View;
+use Adventcalendar\Value\Response;
 
 class MainController
 {
+    /** @var array<string,string> */
+    private $conf;
+
     /** @var Pages */
     private $pages;
 
@@ -36,111 +41,61 @@ class MainController
     /** @var View */
     private $view;
 
-    /**
-     * @var string
-     */
-    private $calendarName;
-
-    /**
-     * @param string $cal
-     */
-    public function __construct(Pages $pages, Repository $repository, View $view, $cal)
+    /** @param array<string,string> $conf */
+    public function __construct(array $conf, Pages $pages, Repository $repository, View $view)
     {
+        $this->conf = $conf;
         $this->pages = $pages;
         $this->repository = $repository;
         $this->view = $view;
-        $this->calendarName = (string) $cal;
+    }
+
+    public function defaultAction(Request $request, string $calendar): Response
+    {
+        $doors = $this->repository->findDoors($calendar);
+        if ($doors === null) {
+            return Response::create($this->view->error("error_not_prepared", $calendar));
+        }
+        $cover = $this->repository->findCover($calendar);
+        if ($cover === null) {
+            return Response::create($this->view->error("error_not_prepared", $calendar));
+        }
+        $page = $this->pages->findByHeading($calendar);
+        if ($page < 0) {
+            return Response::create($this->view->error("message_missing_page", $calendar));
+        }
+        return Response::create($this->view->render("main", [
+            "src" => $cover,
+            "doors" => $this->doorRecords($request, $page, $doors),
+        ]))->withJavascript();
     }
 
     /**
-     * @return void
+     * @param array<array{int,int,int,int}> $doors
+     * @return array<array{coords:string,href:string}>
      */
-    public function defaultAction()
+    private function doorRecords(Request $request, int $page, array $doors): array
     {
-        global $pth, $plugin_cf, $plugin_tx;
-
-        $ptx = $plugin_tx['adventcalendar'];
-        $calendar = Calendar::findByName($this->calendarName, $this->repository->dataFolder());
-        $data = $calendar->getDoors();
-        if (!isset($data)) {
-            echo $this->view->error("error_read", $this->repository->dataFolder() . $this->calendarName . '.dat');
-            return;
-        }
-        $src = $this->repository->dataFolder() . $this->calendarName . '+.jpg';
-        if (!file_exists($src)) {
-            echo $this->view->error("error_read", $src);
-            return;
-        }
-        $page = $this->pages->findByHeading($this->calendarName);
-        if ($page < 0) {
-            echo $this->view->error("message_missing_page", $this->calendarName);
-            return;
-        }
-        $this->emitJs();
-        $doors = [];
+        $records = [];
         foreach ($this->pages->childrenOf($page) as $i => $page) {
-            if ($i >= $this->getCurrentDay()) {
+            if ($i >= $this->getCurrentDay($request)) {
                 break;
             }
-            $coords = implode(',', $data[$i]);
-            $href = '?' . $this->pages->urlOf($page) . '&print';
-            $doors[$i + 1] = (object) compact('coords', 'href');
+            $records[$i + 1] = [
+                "coords" => implode(",", $doors[$i]),
+                "href" => "?" . $this->pages->urlOf($page) . "&print",
+            ];
         }
-        echo $this->view->render("main", [
-            "src" => $src,
-            "doors" => $doors,
-        ]);
+        return $records;
     }
 
-    /**
-     * @return int
-     */
-    private function getCurrentDay()
+    private function getCurrentDay(Request $request): int
     {
-        global $plugin_cf;
-
-        if (defined("XH_ADM") && XH_ADM) {
+        if ($request->adm()) {
             return 24;
         } else {
-            $start = strtotime($plugin_cf['adventcalendar']['date_start']);
-            return (int) floor((time() - $start) / 86400) + 1;
+            $start = strtotime($this->conf['date_start']);
+            return (int) floor(($request->time() - $start) / 86400) + 1;
         }
-    }
-
-    /**
-     * @return void
-     */
-    private function emitJs()
-    {
-        global $pth, $plugin_cf, $hjs;
-        static $again = false;
-
-        if ($again) {
-            return;
-        }
-        $again = true;
-        $pcf = $plugin_cf['adventcalendar'];
-        include_once $pth['folder']['plugins'] . 'jquery/jquery.inc.php';
-        include_jQuery();
-        $filename = $pth['folder']['plugins']
-            . 'adventcalendar/colorbox/jquery.colorbox-min.js';
-        include_jQueryPlugin('colorbox', $filename);
-        $width = $pcf['lightbox_width'];
-        $height = $pcf['lightbox_height'];
-        $hjs .= <<<EOS
-            <script type="text/javascript">/* <![CDATA[ */
-            jQuery(function () {
-                jQuery("area.adventcalendar").click(function (event) {
-                        jQuery.colorbox({
-                            iframe: true, href: this.href,
-                            maxWidth: "100%", maxHeight: "100%",
-                            innerWidth: "$width", innerHeight: "$height"
-                        });
-                        event.preventDefault();
-                });
-            });
-            /* ]]> */</script>
-
-EOS;
     }
 }

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright 2012-2017 Christoph M. Becker
+ * Copyright 2023 Christoph M. Becker
  *
  * This file is part of Adventcalendar_XH.
  *
@@ -19,27 +19,37 @@
  * along with Adventcalendar_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Adventcalendar\Infra\Pages;
-use Adventcalendar\Infra\Repository;
-use Adventcalendar\Infra\Request;
-use Adventcalendar\Infra\Responder;
-use Adventcalendar\Infra\View;
+namespace Adventcalendar\Value;
 
-/**
- * @param string $cal
- * @return string
- */
-function adventcalendar($cal)
+class Response
 {
-    global $pth, $plugin_cf, $plugin_tx;
+    public static function create(string $output = ""): self
+    {
+        $that = new self;
+        $that->output = $output;
+        return $that;
+    }
 
-    $controller = new Adventcalendar\MainController(
-        $plugin_cf["adventcalendar"],
-        new Pages,
-        new Repository,
-        new View($pth["folder"]["plugins"] . "adventcalendar/views/", $plugin_tx["adventcalendar"])
-    );
-    return Responder::respond($controller->defaultAction(Request::current(), $cal));
+    /** @var string */
+    private $output;
+
+    /** @var bool */
+    private $javascript = false;
+
+    public function withJavascript(): self
+    {
+        $that = clone $this;
+        $that->javascript = true;
+        return $that;
+    }
+
+    public function output(): string
+    {
+        return $this->output;
+    }
+
+    public function javascript(): bool
+    {
+        return $this->javascript;
+    }
 }
-
-(new Adventcalendar\Plugin)->run();

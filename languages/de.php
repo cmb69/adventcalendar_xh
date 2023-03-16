@@ -7,6 +7,7 @@ $plugin_tx['adventcalendar']['prepare_cover']="Umschlag vorbereiten";
 $plugin_tx['adventcalendar']['message_missing_page']="Die Seite \"%s\" gibt es nicht!";
 $plugin_tx['adventcalendar']['error_read']="'%s' konnte nicht gelesen werden!";
 $plugin_tx['adventcalendar']['error_save']="'%s' konnte nicht gespeichert werden!";
+$plugin_tx['adventcalendar']['error_not_prepared']="Der Umschlag von '%s' ist noch nicht vorbereitet!";
 
 $plugin_tx['adventcalendar']['syscheck_extension']="die PHP-Extension '%s' geladen wurde";
 $plugin_tx['adventcalendar']['syscheck_fail']="Fehlschlag";

@@ -44,4 +44,22 @@ class Repository
         }
         return $fn;
     }
+
+    /** @return array<array{int,int,int,int}> */
+    public function findDoors(string $calendarName): ?array
+    {
+        $filename = $this->dataFolder() . $calendarName . ".dat";
+        if (!is_readable($filename)) {
+            return null;
+        }
+        $contents = file_get_contents($filename);
+        $doors = unserialize($contents);
+        return is_array($doors) ? $doors : null;
+    }
+
+    public function findCover(string $calendarName): ?string
+    {
+        $filename = $this->dataFolder() . $calendarName . "+.jpg";
+        return is_file($filename) ? $filename : null;
+    }
 }

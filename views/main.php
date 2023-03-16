@@ -5,13 +5,13 @@ use Adventcalendar\Infra\View;
 /**
  * @var View $this
  * @var string $src
- * @var array<stdClass> $doors
+ * @var array<array{coords:string,href:string}> $doors
  */
 ?>
 <img src="<?=$src?>" usemap="#adventcalendar" alt="<?=$this->text('adventcalendar')?>">
 <map name="adventcalendar">
 <?php foreach ($doors as $i => $door):?>
-    <area class="adventcalendar" shape="rect" coords="<?=$door->coords?>" href="<?=$door->href?>" 
+    <area class="adventcalendar" shape="rect" coords="<?=$door['coords']?>" href="<?=$door['href']?>" 
           alt="<?=$this->text('day_n', $i)?>">
 <?php endforeach?>
 </map>

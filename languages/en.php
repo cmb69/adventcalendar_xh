@@ -7,6 +7,7 @@ $plugin_tx['adventcalendar']['prepare_cover']="Prepare Cover";
 $plugin_tx['adventcalendar']['message_missing_page']="The page \"%s\" does not exist!";
 $plugin_tx['adventcalendar']['error_read']="Could not read '%s'!";
 $plugin_tx['adventcalendar']['error_save']="Could not save '%s'!";
+$plugin_tx['adventcalendar']['error_not_prepared']="The cover of '%s' is not yet prepared!";
 
 $plugin_tx['adventcalendar']['syscheck_extension']="the PHP extension '%s' is loaded";
 $plugin_tx['adventcalendar']['syscheck_fail']="failure";
