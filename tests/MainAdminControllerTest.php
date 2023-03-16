@@ -93,6 +93,7 @@ class MainAdminControllerTest extends TestCase
         $conf = XH_includeVar("./config/config.php", "plugin_cf")["adventcalendar"];
         $csrfProtector = $this->createStub(CsrfProtector::class);
         $csrfProtector->expects($opts["check"] ? $this->once() : $this->never())->method("check");
+        $csrfProtector->method("token")->willReturn("0ecaa0f044230af99f72073f6a7aa4ab");
         $repository = $this->createMock(Repository::class);
         $repository->method("dataFolder")->willReturn("./plugins/adventcalendar/data/");
         $repository->method("findCalendars")->willReturn(["2022", "2023"]);

@@ -21,6 +21,7 @@
 
 namespace Adventcalendar\Infra;
 
+use Exception;
 use XH\CSRFProtection;
 
 class CsrfProtector
@@ -28,6 +29,7 @@ class CsrfProtector
     /** @var CSRFProtection */
     private $csrfProtection;
 
+    /** @codeCoverageIgnore */
     public function __construct()
     {
         global $_XH_csrfProtection;
@@ -35,12 +37,25 @@ class CsrfProtector
         $this->csrfProtection = $_XH_csrfProtection;
     }
 
-    public function tokenInput(): string
+    public function token(): string
+    {
+        $input = $this->tokenInput();
+        if (!preg_match('/value="([a-z0-9]+)"/ui', $input, $matches)) {
+            throw new Exception("CSRF protection is broken!");
+        }
+        return $matches[1];
+    }
+
+    /** @codeCoverageIgnore */
+    protected function tokenInput(): string
     {
         return $this->csrfProtection->tokenInput();
     }
 
-    /** @return void|never */
+    /**
+     * @return void|never
+     * @codeCoverageIgnore
+     */
     public function check()
     {
         $this->csrfProtection->check();

@@ -67,7 +67,7 @@ class MainAdminController
 
         return Response::create($this->view->render("admin", [
             'url' => "$sn?adventcalendar&admin=plugin_main&action=prepare",
-            'csrfTokenInput' => Html::of($this->csrfProtector->tokenInput()),
+            'token' => $this->csrfProtector->token(),
             'calendars' => $this->repository->findCalendars()
         ]));
     }
