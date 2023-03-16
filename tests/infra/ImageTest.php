@@ -31,6 +31,11 @@ class ImageTest extends TestCase
     {
         $sut = $this->sut();
         $sut->method("shuffleDoors")->willReturnArgument(0);
+        $sut->method("data")->willReturnCallback(function ($image) {
+            ob_start();
+            imagegif($image);
+            return ob_get_clean();
+        });
         $im = imagecreatetruecolor(400, 300);
         imagefilledrectangle($im, 0, 0, imagesx($im), imagesy($im), 0x000000);
         ob_start();
@@ -39,7 +44,7 @@ class ImageTest extends TestCase
         $doors = Util::calculateDoors(400, 300, 50, 50);
         [$newdata, $newdoors] = $sut->drawDoors($data, $doors);
         $this->assertEquals($doors, $newdoors);
-        Approvals::verifyStringWithFileExtension($newdata, "jpg");
+        Approvals::verifyStringWithFileExtension($newdata, "gif");
     }
 
     private function sut()
@@ -49,7 +54,7 @@ class ImageTest extends TestCase
         ->disableOriginalClone()
         ->disableArgumentCloning()
         ->disallowMockingUnknownTypes()
-        ->onlyMethods(["shuffleDoors"])
+        ->onlyMethods(["data", "shuffleDoors"])
         ->getMock();
     }
 }

@@ -54,9 +54,18 @@ class Image
             $this->drawStamp($image, $x1, $y1, $x2, $y2);
             $this->drawNumber($image, $x1 + 2, $y1 + 1, $i + 1);
         }
+        return [$this->data($image), $doors];
+    }
+
+    /**
+     * @param GdImage $image
+     * @codeCoverageIgnore
+     */
+    protected function data($image): string
+    {
         ob_start();
         imagejpeg($image);
-        return [ob_get_clean(), $doors];
+        return ob_get_clean();
     }
 
     /**
