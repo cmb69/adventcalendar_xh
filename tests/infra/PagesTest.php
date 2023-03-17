@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Copyright 2012-2017 Christoph M. Becker
+ * Copyright 2023 Christoph M. Becker
  *
  * This file is part of Adventcalendar_XH.
  *
@@ -21,40 +21,28 @@
 
 namespace Adventcalendar\Infra;
 
-class Pages
+use PHPUnit\Framework\TestCase;
+
+class PagesTest extends TestCase
 {
-    public function findByHeading(string $heading): int
+    public function testFindsByHeading(): void
     {
         global $h;
 
-        $index = array_search($heading, $h, true);
-        return $index !== false ? $index : -1;
+        $h = ["Foo", "Bar", "Baz"];
+        $sut = new Pages;
+        $page = $sut->findByHeading("Baz");
+        $this->assertEquals(2, $page);
     }
 
-    /** @codeCoverageIgnore */
-    public function urlOf(int $index): string
-    {
-        global $u;
-
-        return $u[$index];
-    }
-
-    /** @return list<int> */
-    public function childrenOf(int $index): array
+    public function testFindsChildrenOf(): void
     {
         global $cl, $l;
 
-        $children = [];
-        $ll = PHP_INT_MAX;
-        for ($i = $index + 1; $i < $cl; $i++) {
-            if ($l[$i] <= $l[$index]) {
-                break;
-            }
-            if ($l[$i] <= $ll) {
-                $children[] = $i;
-                $ll = $l[$i];
-            }
-        }
-        return $children;
+        $l = [1, 2, 3, 2, 1];
+        $cl = count($l);
+        $sut = new Pages;
+        $children = $sut->childrenOf(0);
+        $this->assertEquals([1, 3], $children);
     }
 }
