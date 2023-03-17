@@ -43,29 +43,16 @@ class DoorDrawer
 
     /**
      * @param array<array<int>> $doors
-     * @return array{string,array<array{int,int,int,int}>}
      */
-    public function drawDoors(string $data, $doors)
+    public function drawDoors(string $data, $doors): string
     {
-        $doors = $this->shuffleDoors($doors);
         $image = imagecreatefromstring($data);
         for ($i = 0; $i < 24; $i++) {
             list($x1, $y1, $x2, $y2) = $doors[$i];
             $this->drawStamp($image, $x1, $y1, $x2, $y2);
             $this->drawNumber($image, $x1 + 2, $y1 + 1, $i + 1);
         }
-        return [$this->data($image), $doors];
-    }
-
-    /**
-     * @param array<array{int,int,int,int}> $doors
-     * @return array<array{int,int,int,int}>
-     * @codeCoverageIgnore
-     */
-    protected function shuffleDoors(array $doors): array
-    {
-        shuffle($doors);
-        return $doors;
+        return $this->data($image);
     }
 
     /**

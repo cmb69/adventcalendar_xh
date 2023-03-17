@@ -30,7 +30,6 @@ class DoorDrawerTest extends TestCase
     public function testIt(): void
     {
         $sut = $this->sut();
-        $sut->method("shuffleDoors")->willReturnArgument(0);
         $sut->method("data")->willReturnCallback(function ($image) {
             ob_start();
             imagegif($image);
@@ -42,8 +41,7 @@ class DoorDrawerTest extends TestCase
         imagegif($im);
         $data = ob_get_clean();
         $doors = Util::calculateDoors(400, 300, 50, 50);
-        [$newdata, $newdoors] = $sut->drawDoors($data, $doors);
-        $this->assertEquals($doors, $newdoors);
+        $newdata = $sut->drawDoors($data, $doors);
         Approvals::verifyStringWithFileExtension($newdata, "gif");
     }
 
@@ -54,7 +52,7 @@ class DoorDrawerTest extends TestCase
         ->disableOriginalClone()
         ->disableArgumentCloning()
         ->disallowMockingUnknownTypes()
-        ->onlyMethods(["data", "shuffleDoors"])
+        ->onlyMethods(["data"])
         ->getMock();
     }
 }

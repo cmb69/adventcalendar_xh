@@ -24,9 +24,9 @@ namespace Adventcalendar;
 use Adventcalendar\Infra\CsrfProtector;
 use Adventcalendar\Infra\DoorDrawer;
 use Adventcalendar\Infra\Repository;
+use Adventcalendar\Infra\Shuffler;
 use Adventcalendar\Infra\View;
 use Adventcalendar\Logic\Util;
-use Adventcalendar\Value\Html;
 use Adventcalendar\Value\Response;
 
 class MainAdminController
@@ -40,6 +40,9 @@ class MainAdminController
     /** @var Repository */
     private $repository;
 
+    /** @var Shuffler */
+    private $shuffler;
+
     /** @var DoorDrawer */
     private $doorDrawer;
 
@@ -51,12 +54,14 @@ class MainAdminController
         array $conf,
         CsrfProtector $csrfProtector,
         Repository $repository,
+        Shuffler $shuffler,
         DoorDrawer $doorDrawer,
         View $view
     ) {
         $this->conf = $conf;
         $this->csrfProtector = $csrfProtector;
         $this->repository = $repository;
+        $this->shuffler = $shuffler;
         $this->doorDrawer = $doorDrawer;
         $this->view = $view;
     }
@@ -95,7 +100,8 @@ class MainAdminController
         }
         [$width, $height, $data] = $image;
         $doors = Util::calculateDoors($width, $height, (int) $this->conf['door_width'], (int) $this->conf['door_height']);
-        [$data, $doors] = $this->doorDrawer->drawDoors($data, $doors);
+        $doors = $this->shuffler->shuffle($doors);
+        $data = $this->doorDrawer->drawDoors($data, $doors);
 
         if (!$this->repository->saveCover($cal, $data)) {
             return Response::create($this->view->error("error_save", "$dn$cal+.jpg"));

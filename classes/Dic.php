@@ -25,6 +25,7 @@ use Adventcalendar\Infra\CsrfProtector;
 use Adventcalendar\Infra\DoorDrawer;
 use Adventcalendar\Infra\Pages;
 use Adventcalendar\Infra\Repository;
+use Adventcalendar\Infra\Shuffler;
 use Adventcalendar\Infra\SystemChecker;
 use Adventcalendar\Infra\View;
 
@@ -62,6 +63,7 @@ class Dic
             $plugin_cf["adventcalendar"],
             new CsrfProtector,
             self::makeRepository(),
+            new Shuffler,
             self::makeDoorDrawer(),
             self::makeView()
         );

@@ -24,6 +24,7 @@ namespace Adventcalendar;
 use Adventcalendar\Infra\CsrfProtector;
 use Adventcalendar\Infra\DoorDrawer;
 use Adventcalendar\Infra\Repository;
+use Adventcalendar\Infra\Shuffler;
 use Adventcalendar\Infra\View;
 use ApprovalTests\Approvals;
 use PHPUnit\Framework\TestCase;
@@ -40,7 +41,7 @@ class MainAdminControllerTest extends TestCase
     public function testPreparesCover(): void
     {
         $_POST = ["adventcalendar_name" => "2023"];
-        $sut = $this->sut(["check" => true, "saveCover" => true, "saveDoors" => true]);
+        $sut = $this->sut(["check" => true, "shuffle" => true, "saveCover" => true, "saveDoors" => true]);
         $response = $sut("prepare");
         $this->assertEquals(
             "http://example.com/?adventcalendar&admin=plugin_main&action=view&adventcalendar_name=2023",
@@ -59,7 +60,7 @@ class MainAdminControllerTest extends TestCase
     public function testReportsFailureToSaveCover(): void
     {
         $_POST = ["adventcalendar_name" => "2023"];
-        $sut = $this->sut(["check" => true, "saveCover" => true, "saveCoverRes" => false]);
+        $sut = $this->sut(["check" => true, "shuffle" => true, "saveCover" => true, "saveCoverRes" => false]);
         $response = $sut("prepare");
         Approvals::verifyHtml($response->output());
     }
@@ -67,7 +68,7 @@ class MainAdminControllerTest extends TestCase
     public function testReportsFailureToSaveDoors(): void
     {
         $_POST = ["adventcalendar_name" => "2023"];
-        $sut = $this->sut(["check" => true, "saveCover" => true, "saveDoors" => true, "saveDoorsRes" => false]);
+        $sut = $this->sut(["check" => true, "shuffle" => true, "saveCover" => true, "saveDoors" => true, "saveDoorsRes" => false]);
         $response = $sut("prepare");
         Approvals::verifyHtml($response->output());
     }
@@ -89,6 +90,7 @@ class MainAdminControllerTest extends TestCase
             "saveCoverRes" => true,
             "saveDoors" => false,
             "saveDoorsRes" => true,
+            "shuffle" => false,
         ];
         $conf = XH_includeVar("./config/config.php", "plugin_cf")["adventcalendar"];
         $csrfProtector = $this->createStub(CsrfProtector::class);
@@ -102,11 +104,14 @@ class MainAdminControllerTest extends TestCase
             ->with("2023", "modified image data")
             ->willReturn($opts["saveCoverRes"]);
         $repository->expects($opts["saveDoors"] ? $this->once(): $this->never())->method("saveDoors")
-            ->with("2023", [[0, 0, 1, 1]])
+            ->with("2023")
             ->willReturn($opts["saveDoorsRes"]);
+        $shuffler = $this->createMock(Shuffler::class);
+        $shuffler->expects($opts["shuffle"] ? $this->once() : $this->never())->method("shuffle")
+            ->willReturnArgument(0);
         $image = $this->createMock(DoorDrawer::class);
-        $image->method("drawDoors")->willReturn(["modified image data", [[0, 0, 1, 1]]]);
+        $image->method("drawDoors")->willReturn("modified image data");
         $view = new View("./views/", XH_includeVar("./languages/en.php", "plugin_tx")["adventcalendar"]);
-        return new MainAdminController($conf, $csrfProtector, $repository, $image, $view);
+        return new MainAdminController($conf, $csrfProtector, $repository, $shuffler, $image, $view);
     }
 }
