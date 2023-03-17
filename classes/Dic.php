@@ -37,7 +37,7 @@ class Dic
         return new MainController(
             $plugin_cf["adventcalendar"],
             new Pages,
-            new Repository,
+            self::makeRepository(),
             self::makeView()
         );
     }
@@ -48,7 +48,7 @@ class Dic
 
         return new InfoController(
             $pth["folder"]["plugins"] . "adventcalendar/",
-            new Repository,
+            self::makeRepository(),
             new SystemChecker,
             self::makeView()
         );
@@ -61,7 +61,7 @@ class Dic
         return new MainAdminController(
             $plugin_cf["adventcalendar"],
             new CsrfProtector,
-            new Repository,
+            self::makeRepository(),
             self::makeDoorDrawer(),
             self::makeView()
         );
@@ -76,6 +76,18 @@ class Dic
             $plugin_cf["adventcalendar"]["color_font"],
             $plugin_cf["adventcalendar"]["color_fringe"],
         );
+    }
+
+    private static function makeRepository(): Repository
+    {
+        global $pth, $plugin_cf;
+
+        if (trim($plugin_cf["adventcalendar"]["folder_data"]) === "") {
+            $folder = $pth["folder"]["plugins"] . "adventcalendar/data/";
+        } else {
+            $folder = $pth["folder"]["base"] . rtrim(trim($plugin_cf["adventcalendar"]["folder_data"]), "/") . "/";
+        }
+        return new Repository($folder);
     }
 
     private static function makeView(): View

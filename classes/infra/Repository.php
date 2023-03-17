@@ -23,26 +23,22 @@ namespace Adventcalendar\Infra;
 
 class Repository
 {
+    /** @var string */
+    private $dataFolder;
+
+    public function __construct(string $dataFolder)
+    {
+        $this->dataFolder = $dataFolder;
+    }
+
     public function dataFolder(): string
     {
-        global $pth, $plugin_cf;
-
-        $pcf = $plugin_cf['adventcalendar'];
-
-        if ($pcf['folder_data'] == '') {
-            $fn = $pth['folder']['plugins'] . 'adventcalendar/data/';
-        } else {
-            $fn = $pth['folder']['base'] . $pcf['folder_data'];
-        }
-        if (substr($fn, -1) != '/') {
-            $fn .= '/';
-        }
-        if (!file_exists($fn)) {
-            if (mkdir($fn, 0777, true)) {
-                chmod($fn, 0777);
+        if (!file_exists($this->dataFolder)) {
+            if (mkdir($this->dataFolder, 0777, true)) {
+                chmod($this->dataFolder, 0777);
             }
         }
-        return $fn;
+        return $this->dataFolder;
     }
 
     /** @return list<string> */
@@ -50,16 +46,14 @@ class Repository
     {
         $calendars = [];
         $folder = $this->dataFolder();
-        $dir = opendir($folder);
-        while (($entry = readdir($dir)) !== false) {
-            $name = basename($entry, '.jpg');
-            if (pathinfo($folder . $entry, PATHINFO_EXTENSION) == 'jpg'
-                && strpos($name, '+') != strlen($name) - 1
-            ) {
-                $calendars[] = $name;
+        if (($dir = opendir($folder))) {
+            while (($entry = readdir($dir)) !== false) {
+                if ($entry[0] !== "." && preg_match('/(.+)(?<!\+).jpg$/', $entry, $matches)) {
+                    $calendars[] = $matches[1];
+                }
             }
+            closedir($dir);
         }
-        closedir($dir);
         return $calendars;
     }
 
@@ -85,12 +79,12 @@ class Repository
     public function findImage(string $calendarName): ?array
     {
         $filename = $this->dataFolder() . $calendarName . ".jpg";
-        $data = file_get_contents($filename);
+        $data = @file_get_contents($filename);
         if ($data === false) {
             return null;
         }
-        [$width, $height] = getimagesizefromstring($data);
-        if ($width === 0 || $height === 0) {
+        [$width, $height, $type] = @getimagesizefromstring($data);
+        if ($type !== IMAGETYPE_JPEG) {
             return null;
         }
         return [$width, $height, $data];

@@ -30,7 +30,12 @@ class DicTest extends TestCase
         global $pth, $plugin_cf, $plugin_tx;
 
         $pth = ["folder" => ["plugins" => ""]];
-        $plugin_cf = ["adventcalendar" => ["color_door" => "", "color_font" => "", "color_fringe" => ""]];
+        $plugin_cf = ["adventcalendar" => [
+            "color_door" => "",
+            "color_font" => "",
+            "color_fringe" => "",
+            "folder_data" => "",
+        ]];
         $plugin_tx = ["adventcalendar" => []];
     }
 
