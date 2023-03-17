@@ -5,8 +5,9 @@ $plugin_tx['adventcalendar']['day_n']="Day %s";
 $plugin_tx['adventcalendar']['prepare_cover']="Prepare Cover";
 
 $plugin_tx['adventcalendar']['message_missing_page']="The page \"%s\" does not exist!";
-$plugin_tx['adventcalendar']['error_read']="Could not read '%s'!";
-$plugin_tx['adventcalendar']['error_save']="Could not save '%s'!";
+$plugin_tx['adventcalendar']['error_missing_image']="The image for '%s' cannot be found!";
+$plugin_tx['adventcalendar']['error_save_cover']="The cover of '%s' cannot be saved!";
+$plugin_tx['adventcalendar']['error_save_doors']="The doors of '%s' cannot be saved!";
 $plugin_tx['adventcalendar']['error_not_prepared']="The cover of '%s' is not yet prepared!";
 
 $plugin_tx['adventcalendar']['syscheck_extension']="PHP extension '%s' is loaded: ";

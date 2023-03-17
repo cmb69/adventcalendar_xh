@@ -24,6 +24,7 @@ namespace Adventcalendar;
 use Adventcalendar\Infra\CsrfProtector;
 use Adventcalendar\Infra\DoorDrawer;
 use Adventcalendar\Infra\Repository;
+use Adventcalendar\Infra\Request;
 use Adventcalendar\Infra\Shuffler;
 use Adventcalendar\Infra\View;
 use Adventcalendar\Logic\Util;
@@ -66,11 +67,11 @@ class MainAdminController
         $this->view = $view;
     }
 
-    public function __invoke(string $action): Response
+    public function __invoke(Request $request, string $action): Response
     {
         switch ($action) {
             default:
-                return $this->overview();
+                return $this->overview($request);
             case "prepare":
                 return $this->prepare();
             case "view":
@@ -78,12 +79,10 @@ class MainAdminController
         }
     }
 
-    private function overview(): Response
+    private function overview(Request $request): Response
     {
-        global $sn;
-
         return Response::create($this->view->render("admin", [
-            'url' => "$sn?adventcalendar&admin=plugin_main&action=prepare",
+            'url' => $request->sn() . "?adventcalendar&admin=plugin_main&action=prepare",
             'token' => $this->csrfProtector->token(),
             'calendars' => $this->repository->findCalendars()
         ]));
@@ -93,33 +92,45 @@ class MainAdminController
     {
         $this->csrfProtector->check();
         $cal = $_POST['adventcalendar_name'];
-        $dn = $this->repository->dataFolder();
         $image = $this->repository->findImage($cal);
         if ($image === null) {
-            return Response::create($this->view->error("error_read", "$dn$cal.jpg"));
+            return Response::create($this->view->error("error_missing_image", $cal));
         }
-        [$width, $height, $data] = $image;
-        $doors = Util::calculateDoors($width, $height, (int) $this->conf['door_width'], (int) $this->conf['door_height']);
-        $doors = $this->shuffler->shuffle($doors);
-        $data = $this->doorDrawer->drawDoors($data, $doors);
-
+        [$data, $doors] = $this->doPrepare($image);
         if (!$this->repository->saveCover($cal, $data)) {
-            return Response::create($this->view->error("error_save", "$dn$cal+.jpg"));
+            return Response::create($this->view->error("error_save_cover", $cal));
         }
         if (!$this->repository->saveDoors($cal, $doors)) {
-            return Response::create($this->view->error("error_save", "$dn$cal.dat"));
+            return Response::create($this->view->error("error_save_doors", $cal));
         }
-
         $url = CMSIMPLE_URL . "?adventcalendar&admin=plugin_main&action=view&adventcalendar_name=$cal";
         return Response::redirect($url);
     }
 
+    /**
+     * @param array{int,int,string} $image
+     * @return array{string,array<array{int,int,int,int}>}
+     */
+    private function doPrepare(array $image): array
+    {
+        [$width, $height, $data] = $image;
+        $doorWidth = (int) $this->conf['door_width'];
+        $doorHeight = (int) $this->conf['door_height'];
+        $doors = Util::calculateDoors($width, $height, $doorWidth, $doorHeight);
+        $doors = $this->shuffler->shuffle($doors);
+        $data = $this->doorDrawer->drawDoors($data, $doors);
+        return [$data, $doors];
+    }
+
     private function view(): Response
     {
-        $dn = $this->repository->dataFolder();
         $cal = $_GET['adventcalendar_name'];
+        $cover = $this->repository->findCover($cal);
+        if ($cover === null) {
+            return Response::create($this->view->error("error_not_prepared", $cal));
+        }
         return Response::create($this->view->render("view", [
-            'src' => "$dn$cal+.jpg",
+            'src' => $cover,
         ]));
     }
 }

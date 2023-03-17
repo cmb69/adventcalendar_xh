@@ -20,6 +20,7 @@
  */
 
 use Adventcalendar\Dic;
+use Adventcalendar\Infra\Request;
 use Adventcalendar\Infra\Responder;
 
 if (!defined("CMSIMPLE_XH_VERSION")) {
@@ -42,7 +43,7 @@ if (XH_wantsPluginAdministration("adventcalendar")) {
             $o .= Responder::respond(Dic::makeInfoController()());
             break;
         case "plugin_main":
-            $o .= Responder::respond(Dic::makeMainAdminController()($action));
+            $o .= Responder::respond(Dic::makeMainAdminController()(Request::current(), $action));
             break;
         default:
             $o .= plugin_admin_common();

@@ -24,6 +24,7 @@ namespace Adventcalendar;
 use Adventcalendar\Infra\CsrfProtector;
 use Adventcalendar\Infra\DoorDrawer;
 use Adventcalendar\Infra\Repository;
+use Adventcalendar\Infra\Request;
 use Adventcalendar\Infra\Shuffler;
 use Adventcalendar\Infra\View;
 use ApprovalTests\Approvals;
@@ -34,7 +35,7 @@ class MainAdminControllerTest extends TestCase
     public function testRendersOverview(): void
     {
         $sut = $this->sut();
-        $response = $sut("");
+        $response = $sut($this->request(), "");
         Approvals::verifyHtml($response->output());
     }
 
@@ -42,7 +43,7 @@ class MainAdminControllerTest extends TestCase
     {
         $_POST = ["adventcalendar_name" => "2023"];
         $sut = $this->sut(["check" => true, "shuffle" => true, "saveCover" => true, "saveDoors" => true]);
-        $response = $sut("prepare");
+        $response = $sut($this->request(), "prepare");
         $this->assertEquals(
             "http://example.com/?adventcalendar&admin=plugin_main&action=view&adventcalendar_name=2023",
             $response->location()
@@ -53,7 +54,7 @@ class MainAdminControllerTest extends TestCase
     {
         $_POST = ["adventcalendar_name" => "2023"];
         $sut = $this->sut(["findImage" => null, "check" => true]);
-        $response = $sut("prepare");
+        $response = $sut($this->request(), "prepare");
         Approvals::verifyHtml($response->output());
     }
 
@@ -61,7 +62,7 @@ class MainAdminControllerTest extends TestCase
     {
         $_POST = ["adventcalendar_name" => "2023"];
         $sut = $this->sut(["check" => true, "shuffle" => true, "saveCover" => true, "saveCoverRes" => false]);
-        $response = $sut("prepare");
+        $response = $sut($this->request(), "prepare");
         Approvals::verifyHtml($response->output());
     }
 
@@ -69,15 +70,23 @@ class MainAdminControllerTest extends TestCase
     {
         $_POST = ["adventcalendar_name" => "2023"];
         $sut = $this->sut(["check" => true, "shuffle" => true, "saveCover" => true, "saveDoors" => true, "saveDoorsRes" => false]);
-        $response = $sut("prepare");
+        $response = $sut($this->request(), "prepare");
         Approvals::verifyHtml($response->output());
     }
 
     public function testShowsPreparedCover(): void
     {
         $_GET = ["adventcalendar_name" => "2023"];
+        $sut = $this->sut(["findCover" => "./plugins/adventcalendar/data/2023+.jpg"]);
+        $response = $sut($this->request(), "view");
+        Approvals::verifyHtml($response->output());
+    }
+
+    public function testReportsFailureToShowPreparedCover(): void
+    {
+        $_GET = ["adventcalendar_name" => "2023"];
         $sut = $this->sut();
-        $response = $sut("view");
+        $response = $sut($this->request(), "view");
         Approvals::verifyHtml($response->output());
     }
 
@@ -90,6 +99,7 @@ class MainAdminControllerTest extends TestCase
             "saveCoverRes" => true,
             "saveDoors" => false,
             "saveDoorsRes" => true,
+            "findCover" => null,
             "shuffle" => false,
         ];
         $conf = XH_includeVar("./config/config.php", "plugin_cf")["adventcalendar"];
@@ -106,6 +116,7 @@ class MainAdminControllerTest extends TestCase
         $repository->expects($opts["saveDoors"] ? $this->once(): $this->never())->method("saveDoors")
             ->with("2023")
             ->willReturn($opts["saveDoorsRes"]);
+        $repository->method("findCover")->willReturn($opts["findCover"]);
         $shuffler = $this->createMock(Shuffler::class);
         $shuffler->expects($opts["shuffle"] ? $this->once() : $this->never())->method("shuffle")
             ->willReturnArgument(0);
@@ -113,5 +124,10 @@ class MainAdminControllerTest extends TestCase
         $image->method("drawDoors")->willReturn("modified image data");
         $view = new View("./views/", XH_includeVar("./languages/en.php", "plugin_tx")["adventcalendar"]);
         return new MainAdminController($conf, $csrfProtector, $repository, $shuffler, $image, $view);
+    }
+
+    private function request()
+    {
+        return $this->createMock(Request::class);
     }
 }

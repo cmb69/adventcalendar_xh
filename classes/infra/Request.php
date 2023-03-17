@@ -40,4 +40,11 @@ class Request
     {
         return (int) $_SERVER["REQUEST_TIME"];
     }
+
+    /** @codeCoverageIgnore */
+    public function sn(): string
+    {
+        global $sn;
+        return $sn;
+    }
 }
