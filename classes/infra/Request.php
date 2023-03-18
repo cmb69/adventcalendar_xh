@@ -21,12 +21,21 @@
 
 namespace Adventcalendar\Infra;
 
+use Adventcalendar\Value\Url;
+
 class Request
 {
     /** @codeCoverageIgnore */
     public static function current(): self
     {
         return new self;
+    }
+
+    /** @codeCoverageIgnore */
+    public function url(): Url
+    {
+        global $sn, $su;
+        return new Url(CMSIMPLE_URL, $sn, $su, $_SERVER["QUERY_STRING"]);
     }
 
     /** @codeCoverageIgnore */
@@ -39,12 +48,5 @@ class Request
     public function time(): int
     {
         return (int) $_SERVER["REQUEST_TIME"];
-    }
-
-    /** @codeCoverageIgnore */
-    public function sn(): string
-    {
-        global $sn;
-        return $sn;
     }
 }

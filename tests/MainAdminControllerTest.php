@@ -27,6 +27,7 @@ use Adventcalendar\Infra\Repository;
 use Adventcalendar\Infra\Request;
 use Adventcalendar\Infra\Shuffler;
 use Adventcalendar\Infra\View;
+use Adventcalendar\Value\Url;
 use ApprovalTests\Approvals;
 use PHPUnit\Framework\TestCase;
 
@@ -76,7 +77,6 @@ class MainAdminControllerTest extends TestCase
 
     public function testShowsPreparedCover(): void
     {
-        $_GET = ["adventcalendar_name" => "2023"];
         $sut = $this->sut(["findCover" => "./plugins/adventcalendar/data/2023+.jpg"]);
         $response = $sut($this->request(), "view");
         Approvals::verifyHtml($response->output());
@@ -84,7 +84,6 @@ class MainAdminControllerTest extends TestCase
 
     public function testReportsFailureToShowPreparedCover(): void
     {
-        $_GET = ["adventcalendar_name" => "2023"];
         $sut = $this->sut();
         $response = $sut($this->request(), "view");
         Approvals::verifyHtml($response->output());
@@ -128,6 +127,10 @@ class MainAdminControllerTest extends TestCase
 
     private function request()
     {
-        return $this->createMock(Request::class);
+        $request = $this->createMock(Request::class);
+        $request->method("url")->willReturn(
+            new Url(CMSIMPLE_URL, "/", "adventcalendar", "adventcalendar&adventcalendar_name=2023")
+        );
+        return $request;
     }
 }

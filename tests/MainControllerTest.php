@@ -25,6 +25,7 @@ use Adventcalendar\Infra\Pages;
 use Adventcalendar\Infra\Repository;
 use Adventcalendar\Infra\Request;
 use Adventcalendar\Infra\View;
+use Adventcalendar\Value\Url;
 use ApprovalTests\Approvals;
 use PHPUnit\Framework\TestCase;
 
@@ -76,6 +77,9 @@ class MainControllerTest extends TestCase
         $pages = $this->createMock(Pages::class);
         $pages->method("findByHeading")->willReturn($options["findByHeading"]);
         $pages->method("childrenOf")->willReturn([17, 18, 19]);
+        $pages->method("urlOf")->willReturnCallback(function (int $page) {
+            return "Day" . ($page - 16);
+        });
         $repository = $this->createMock(Repository::class);
         $repository->method("findDoors")->willReturn($options["findDoors"]);
         $repository->method("findCover")->willReturn($options["findCover"]);
@@ -91,6 +95,7 @@ class MainControllerTest extends TestCase
         $request = $this->createMock(Request::class);
         $request->method("time")->willReturn(strtotime("2014-12-02"));
         $request->method("adm")->willReturn($opts["adm"]);
+        $request->method("url")->willReturn(new Url(CMSIMPLE_URL, "/", "Adventcalendar", "Adventcalendar"));
         return $request;
     }
 }

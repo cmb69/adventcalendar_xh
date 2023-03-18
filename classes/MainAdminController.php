@@ -73,22 +73,23 @@ class MainAdminController
             default:
                 return $this->overview($request);
             case "prepare":
-                return $this->prepare();
+                return $this->prepare($request);
             case "view":
-                return $this->view();
+                return $this->view($request);
         }
     }
 
     private function overview(Request $request): Response
     {
         return Response::create($this->view->render("admin", [
-            'url' => $request->sn() . "?adventcalendar&admin=plugin_main&action=prepare",
+            "url" => $request->url()->withPage("adventcalendar")->withParam("admin", "plugin_main")
+                ->withParam("action", "prepare")->relative(),
             'token' => $this->csrfProtector->token(),
             'calendars' => $this->repository->findCalendars()
         ]));
     }
 
-    private function prepare(): Response
+    private function prepare(Request $request): Response
     {
         $this->csrfProtector->check();
         $cal = $_POST['adventcalendar_name'];
@@ -103,8 +104,9 @@ class MainAdminController
         if (!$this->repository->saveDoors($cal, $doors)) {
             return Response::create($this->view->error("error_save_doors", $cal));
         }
-        $url = CMSIMPLE_URL . "?adventcalendar&admin=plugin_main&action=view&adventcalendar_name=$cal";
-        return Response::redirect($url);
+        $location = $request->url()->withPage("adventcalendar")->withParam("admin", "plugin_main")
+            ->withParam("action", "view")->withParam("adventcalendar_name", $cal)->absolute();
+        return Response::redirect($location);
     }
 
     /**
@@ -122,12 +124,12 @@ class MainAdminController
         return [$data, $doors];
     }
 
-    private function view(): Response
+    private function view(Request $request): Response
     {
-        $cal = $_GET['adventcalendar_name'];
-        $cover = $this->repository->findCover($cal);
+        $calendar = $request->url()->param("adventcalendar_name");
+        $cover = $this->repository->findCover($calendar);
         if ($cover === null) {
-            return Response::create($this->view->error("error_not_prepared", $cal));
+            return Response::create($this->view->error("error_not_prepared", $calendar));
         }
         return Response::create($this->view->render("view", [
             'src' => $cover,

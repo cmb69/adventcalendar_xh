@@ -83,7 +83,7 @@ class MainController
             }
             $records[$i + 1] = [
                 "coords" => implode(",", $doors[$i]),
-                "href" => "?" . $this->pages->urlOf($page) . "&print",
+                "href" => $request->url()->withPage($this->pages->urlOf($page))->withParam("print")->relative(),
             ];
         }
         return $records;
