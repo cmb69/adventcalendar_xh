@@ -67,45 +67,68 @@ class MainAdminController
         $this->view = $view;
     }
 
-    public function __invoke(Request $request, string $action): Response
+    public function __invoke(Request $request): Response
     {
-        switch ($action) {
+        switch ($request->action()) {
             default:
-                return $this->overview($request);
+                return $this->overview();
             case "prepare":
                 return $this->prepare($request);
+            case "do_prepare":
+                return $this->doPrepare($request);
             case "view":
                 return $this->view($request);
         }
     }
 
-    private function overview(Request $request): Response
+    private function overview(): Response
     {
         return Response::create($this->view->render("admin", [
-            "url" => $request->url()->withPage("adventcalendar")->withParam("admin", "plugin_main")
-                ->withParam("action", "prepare")->relative(),
-            'token' => $this->csrfProtector->token(),
-            'calendars' => $this->repository->findCalendars()
-        ]));
+            "calendars" => $this->calendarRecords(),
+        ]))->withTitle("Adventcalendar – " . $this->view->text("menu_main"));
+    }
+
+    /** @return list<array{id:string,name:string,url:string}> */
+    private function calendarRecords(): array
+    {
+        return array_map(function (string $calendar) {
+            return [
+                "id" => "adventcalendar_label_$calendar",
+                "name" => $calendar,
+                "url" => $this->repository->findImageUrl($calendar),
+            ];
+        }, $this->repository->findCalendars());
     }
 
     private function prepare(Request $request): Response
     {
+        $calendar = $request->url()->param("adventcalendar_name");
+        return Response::create($this->view->render("confirm", [
+            "url" => $this->repository->findImageUrl($calendar),
+            "token" => $this->csrfProtector->token(),
+        ]))->withTitle("Adventcalendar – " . $this->view->text("menu_main"));
+    }
+
+    private function doPrepare(Request $request): Response
+    {
         $this->csrfProtector->check();
-        $cal = $_POST['adventcalendar_name'];
-        $image = $this->repository->findImage($cal);
+        $calendar = $request->url()->param("adventcalendar_name");
+        $image = $this->repository->findImage($calendar);
         if ($image === null) {
-            return Response::create($this->view->error("error_missing_image", $cal));
+            return Response::create($this->view->error("error_missing_image", $calendar))
+                ->withTitle("Adventcalendar – " . $this->view->text("menu_main"));
         }
-        [$data, $doors] = $this->doPrepare($image);
-        if (!$this->repository->saveCover($cal, $data)) {
-            return Response::create($this->view->error("error_save_cover", $cal));
+        [$data, $doors] = $this->doDoPrepare($image);
+        if (!$this->repository->saveCover($calendar, $data)) {
+            return Response::create($this->view->error("error_save_cover", $calendar))
+                ->withTitle("Adventcalendar – " . $this->view->text("menu_main"));
         }
-        if (!$this->repository->saveDoors($cal, $doors)) {
-            return Response::create($this->view->error("error_save_doors", $cal));
+        if (!$this->repository->saveDoors($calendar, $doors)) {
+            return Response::create($this->view->error("error_save_doors", $calendar))
+                ->withTitle("Adventcalendar – " . $this->view->text("menu_main"));
         }
         $location = $request->url()->withPage("adventcalendar")->withParam("admin", "plugin_main")
-            ->withParam("action", "view")->withParam("adventcalendar_name", $cal)->absolute();
+            ->withParam("action", "view")->withParam("adventcalendar_name", $calendar)->absolute();
         return Response::redirect($location);
     }
 
@@ -113,7 +136,7 @@ class MainAdminController
      * @param array{int,int,string} $image
      * @return array{string,array<array{int,int,int,int}>}
      */
-    private function doPrepare(array $image): array
+    private function doDoPrepare(array $image): array
     {
         [$width, $height, $data] = $image;
         $doorWidth = (int) $this->conf['door_width'];
@@ -129,10 +152,11 @@ class MainAdminController
         $calendar = $request->url()->param("adventcalendar_name");
         $cover = $this->repository->findCover($calendar);
         if ($cover === null) {
-            return Response::create($this->view->error("error_not_prepared", $calendar));
+            return Response::create($this->view->error("error_not_prepared", $calendar))
+                ->withTitle("Adventcalendar – " . $this->view->text("menu_main"));
         }
         return Response::create($this->view->render("view", [
             'src' => $cover,
-        ]));
+        ]))->withTitle("Adventcalendar – " . $this->view->text("menu_main"));
     }
 }

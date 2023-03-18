@@ -62,7 +62,7 @@ class InfoController
                 $this->checkWritability($this->pluginFolder . "languages/"),
                 $this->checkWritability($this->repository->dataFolder()),
             ],
-        ]));
+        ]))->withTitle("Adventcalendar 1.0beta6");
     }
 
     /** @return array{class:string,key:string,arg:string,statekey:string} */

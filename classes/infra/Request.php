@@ -38,6 +38,21 @@ class Request
         return new Url(CMSIMPLE_URL, $sn, $su, $_SERVER["QUERY_STRING"]);
     }
 
+    public function action(): string
+    {
+        $action = $this->url()->param("action");
+        if (!is_string($action)) {
+            $action = "";
+        }
+        if (!strncmp($action, "do_", strlen("do_"))) {
+            $action = "";
+        }
+        if (isset($_POST["adventcalendar_do"])) {
+            $action = "do_" . $action;
+        }
+        return $action;
+    }
+
     /** @codeCoverageIgnore */
     public function adm(): bool
     {

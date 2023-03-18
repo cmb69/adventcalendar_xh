@@ -57,6 +57,15 @@ class Repository
         return $calendars;
     }
 
+    public function findImageUrl(string $calendarName): ?string
+    {
+        $filename = $this->dataFolder() . $calendarName . ".jpg";
+        if (!is_readable($filename)) {
+            return null;
+        }
+        return $filename;
+    }
+
     /** @return array<array{int,int,int,int}> */
     public function findDoors(string $calendarName): ?array
     {

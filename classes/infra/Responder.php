@@ -27,9 +27,13 @@ class Responder
 {
     public static function respond(Response $response): string
     {
+        global $title;
         if ($response->location() !== null) {
             header("Location: " . $response->location(), true, 303);
             exit;
+        }
+        if ($response->title() !== null) {
+            $title = $response->title();
         }
         if ($response->javascript()) {
             self::emitJs();

@@ -68,3 +68,17 @@
 .cboxIE #cboxMiddleRight {
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr=#00FFFFFF,endColorstr=#00FFFFFF);
 }
+
+/* admin */
+#adventcalendar_admin table {
+    padding: 1em 0;
+}
+#adventcalendar_admin td {
+    padding: 0.5em;
+}
+#adventcalendar_admin td img {
+    height: 5em;
+}
+#adventcalendar_admin img {
+    max-width: 100%;
+}

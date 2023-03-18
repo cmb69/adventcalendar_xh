@@ -47,6 +47,7 @@ class InfoControllerTest extends TestCase
         $view = new View("./views/", XH_includeVar("./languages/en.php", "plugin_tx")["adventcalendar"]);
         $sut = new InfoController("./plugins/adventcalendar/", $repository, $systemChecker, $view);
         $response = $sut();
+        $this->assertEquals("Adventcalendar 1.0beta6", $response->title());
         Approvals::verifyHtml($response->output());
     }
 }

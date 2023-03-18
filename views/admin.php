@@ -6,21 +6,28 @@ if (!defined("CMSIMPLE_XH_VERSION")) {header("HTTP/1.1 403 Forbidden"); exit;}
 
 /**
  * @var View $this
- * @var list<string> $calendars
+ * @var list<array{id:string,name:string,url:string}> $calendars
  * @var string $url
  * @var string $token
  */
 ?>
 <!-- adventcalendar admin overview -->
-<div id="adventcalendar_admin">Adventcalendar</div>
-<ul>
+<section id="adventcalendar_admin">
+  <h1>Adventcalendar – <?=$this->text('menu_main')?></h1>
+  <form method="get">
+    <input type="hidden" name="selected" value="adventcalendar">
+    <input type="hidden" name="admin" value="plugin_main">
+    <table>
 <?foreach ($calendars as $calendar):?>
-  <li><?=$calendar?>.jpg
-    <form action="<?=$url?>" method="post" style="display: inline">
-      <input type="hidden" name="xh_csrf_token" value="<?=$token?>">
-      <input type="hidden" name="adventcalendar_name" value="<?=$calendar?>">
-      <input type="submit" value="<?=$this->text('prepare_cover')?>">
-    </form>
-  </li>
+      <tr>
+        <td><input id="<?=$calendar['id']?>" type="radio" name="adventcalendar_name" value="<?=$calendar['name']?>"></td>
+        <td><label for="<?=$calendar['id']?>"><?=$calendar['name']?></label></td>
+        <td><label for="<?=$calendar['id']?>"><img src="<?=$calendar['url']?>"></label></td>
+      </tr>
 <?endforeach?>
-</ul>
+    </table>
+    <p>
+      <button name="action" value="prepare"><?=$this->text('prepare_cover')?></button>
+    </p>
+  </form>
+</section>

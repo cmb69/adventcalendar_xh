@@ -49,6 +49,24 @@ class RepositoryTest extends TestCase
         $this->assertEquals(["foo", "qux"], $calendars);
     }
 
+    public function testFindsImageUrl(): void
+    {
+        vfsStream::setup("root");
+        mkdir("vfs://root/repo/");
+        touch("vfs://root/repo/test.jpg");
+        $sut = new Repository("vfs://root/repo/");
+        $url = $sut->findImageUrl("test");
+        $this->assertEquals("vfs://root/repo/test.jpg", $url);
+    }
+
+    public function testReturnsNullOnMissingImage(): void
+    {
+        vfsStream::setup("root");
+        $sut = new Repository("vfs://root/repo/");
+        $url = $sut->findImageUrl("test");
+        $this->assertNull($url);
+    }
+
     public function testFindsDoors(): void
     {
         vfsStream::setup("root");

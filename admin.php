@@ -30,7 +30,6 @@ if (!defined("CMSIMPLE_XH_VERSION")) {
 
 /**
  * @var string $admin
- * @var string $action
  * @var string $o
  */
 
@@ -43,7 +42,7 @@ if (XH_wantsPluginAdministration("adventcalendar")) {
             $o .= Responder::respond(Dic::makeInfoController()());
             break;
         case "plugin_main":
-            $o .= Responder::respond(Dic::makeMainAdminController()(Request::current(), $action));
+            $o .= Responder::respond(Dic::makeMainAdminController()(Request::current()));
             break;
         default:
             $o .= plugin_admin_common();

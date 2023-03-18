@@ -3,6 +3,7 @@
 $plugin_tx['adventcalendar']['adventcalendar']="Advent calendar";
 $plugin_tx['adventcalendar']['day_n']="Day %s";
 $plugin_tx['adventcalendar']['prepare_cover']="Prepare Cover";
+$plugin_tx['adventcalendar']['menu_main']="Administration";
 
 $plugin_tx['adventcalendar']['message_missing_page']="The page \"%s\" does not exist!";
 $plugin_tx['adventcalendar']['error_missing_image']="The image for '%s' cannot be found!";
