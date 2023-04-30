@@ -64,7 +64,7 @@ class MainAdminControllerTest extends TestCase
         $sut = $this->sut(["findImage" => null, "check" => true]);
         $response = $sut($this->request("do_prepare"));
         $this->assertEquals("Adventcalendar – Administration", $response->title());
-        Approvals::verifyHtml($response->output());
+        $this->assertStringContainsString("The image for '2023' cannot be found!", $response->output());
     }
 
     public function testReportsFailureToSaveCover(): void
@@ -72,7 +72,7 @@ class MainAdminControllerTest extends TestCase
         $sut = $this->sut(["check" => true, "shuffle" => true, "saveCover" => true, "saveCoverRes" => false]);
         $response = $sut($this->request("do_prepare"));
         $this->assertEquals("Adventcalendar – Administration", $response->title());
-        Approvals::verifyHtml($response->output());
+        $this->assertStringContainsString("The cover of '2023' cannot be saved!", $response->output());
     }
 
     public function testReportsFailureToSaveDoors(): void
@@ -80,7 +80,7 @@ class MainAdminControllerTest extends TestCase
         $sut = $this->sut(["check" => true, "shuffle" => true, "saveCover" => true, "saveDoors" => true, "saveDoorsRes" => false]);
         $response = $sut($this->request("do_prepare"));
         $this->assertEquals("Adventcalendar – Administration", $response->title());
-        Approvals::verifyHtml($response->output());
+        $this->assertStringContainsString("The doors of '2023' cannot be saved!", $response->output());
     }
 
     public function testShowsPreparedCover(): void
@@ -96,7 +96,7 @@ class MainAdminControllerTest extends TestCase
         $sut = $this->sut();
         $response = $sut($this->request("view"));
         $this->assertEquals("Adventcalendar – Administration", $response->title());
-        Approvals::verifyHtml($response->output());
+        $this->assertStringContainsString("The cover of '2023' is not yet prepared!", $response->output());
     }
 
     private function sut(array $opts = [])

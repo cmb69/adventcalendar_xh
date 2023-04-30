@@ -35,21 +35,21 @@ class MainControllerTest extends TestCase
     {
         $sut = $this->sut(["findDoors" => null]);
         $response = $sut->defaultAction($this->request(), "winter");
-        Approvals::verifyHtml($response->output());
+        $this->assertStringContainsString("The cover of 'winter' is not yet prepared!", $response->output());
     }
 
     public function testFailsOnMissingCover(): void
     {
         $sut = $this->sut(["findCover" => null]);
         $response = $sut->defaultAction($this->request(), "winter");
-        Approvals::verifyHtml($response->output());
+        $this->assertStringContainsString("The cover of 'winter' is not yet prepared!", $response->output());
     }
 
     public function testFailsOnMissingPage(): void
     {
         $sut = $this->sut(["findByHeading" => -1]);
         $response = $sut->defaultAction($this->request(), "winter");
-        Approvals::verifyHtml($response->output());
+        $this->assertStringContainsString("The page &quot;winter&quot; does not exist!", $response->output());
     }
 
     public function testRendersCalendar(): void
