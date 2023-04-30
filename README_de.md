@@ -155,7 +155,7 @@ bestimmten Zweck*. Details finden Sie in der GNU General Public License.
 Sie sollten ein Exemplar der GNU General Public License zusammen mit
 Adventcalendar_XH erhalten haben. Falls nicht, siehe <https://www.gnu.org/licenses/>.
 
-Copyright © 2012-2017 Christoph M. Becker
+Copyright © 2012-2023 Christoph M. Becker
 
 Russische Übersetzung © 2012 Любомир Кудрай
 

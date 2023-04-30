@@ -149,7 +149,7 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with Adventcalendar_XH.  If not, see <https://www.gnu.org/licenses/>.
 
-Copyright © 2012-2017 Christoph M. Becker
+Copyright © 2012-2023 Christoph M. Becker
 
 
 Russian translation © 2012 Любомир Кудрай
