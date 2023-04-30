@@ -55,7 +55,7 @@ class InfoController
             "checks" => [
                 $this->checkPhpVersion("5.4.0"),
                 $this->checkExtension("gd"),
-                $this->checkXhVersion("1.6.3"),
+                $this->checkXhVersion("1.7.0"),
                 $this->checkPlugin("jquery"),
                 $this->checkWritability($this->pluginFolder . "config/"),
                 $this->checkWritability($this->pluginFolder . "css/"),

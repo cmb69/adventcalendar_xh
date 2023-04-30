@@ -23,7 +23,7 @@ Sie wünschen (Lyrik, Bilder, Videos, Produkte usw.)
 ## Voraussetzungen
 
 Adventcalendar_XH ist ein Plugin für [CMSimple_XH](https://cmsimple-xh.org/de/).
-Es benötigt CMSimple_XH ≥ 1.6.3 und PHP ≥ 5.4.0.
+Es benötigt CMSimple_XH ≥ 1.7.0 und PHP ≥ 5.4.0.
 
 ## Download
 
