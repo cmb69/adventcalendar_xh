@@ -34,8 +34,11 @@ class Request
     /** @codeCoverageIgnore */
     public function url(): Url
     {
-        global $sn, $su;
-        return new Url(CMSIMPLE_URL, $sn, $su, $_SERVER["QUERY_STRING"]);
+        $rest = $this->query();
+        if ($rest !== "") {
+            $rest = "?" . $rest;
+        }
+        return Url::from(CMSIMPLE_URL . $rest);
     }
 
     public function action(): string
@@ -47,7 +50,8 @@ class Request
         if (!strncmp($action, "do_", strlen("do_"))) {
             $action = "";
         }
-        if (isset($_POST["adventcalendar_do"])) {
+        $post = $this->post();
+        if (isset($post["adventcalendar_do"])) {
             $action = "do_" . $action;
         }
         return $action;
@@ -60,8 +64,23 @@ class Request
     }
 
     /** @codeCoverageIgnore */
+    protected function query(): string
+    {
+        return $_SERVER["QUERY_STRING"];
+    }
+
+    /** @codeCoverageIgnore */
     public function time(): int
     {
         return (int) $_SERVER["REQUEST_TIME"];
+    }
+
+    /**
+     * @return array<string,string|array<string>>
+     * @codeCoverageIgnore
+     */
+    protected function post(): array
+    {
+        return $_POST;
     }
 }

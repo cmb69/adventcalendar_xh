@@ -24,10 +24,10 @@ namespace Adventcalendar\Value;
 class Url
 {
     /** @var string */
-    private $baseAbs;
+    private $base;
 
     /** @var string */
-    private $baseRel;
+    private $path;
 
     /** @var string */
     private $page;
@@ -35,13 +35,18 @@ class Url
     /** @var array<string,string|array<string>> */
     private $params;
 
-    public function __construct(string $baseAbs, string $baseRel, string $page, string $query)
+    public static function from(string $url): self
     {
-        $this->baseAbs = $baseAbs;
-        $this->baseRel = $baseRel;
-        $this->page = $page;
-        $query = preg_replace('/^[^=]*(&|$)/', "", $query);
-        parse_str($query, $this->params);
+        $that = new self();
+        $parts = parse_url($url);
+        assert(isset($parts["scheme"], $parts["host"], $parts["path"]));
+        $that->base = $parts["scheme"] . "://" . $parts["host"];
+        $that->path = (string) preg_replace('/index\.php$/', "", $parts["path"]);
+        $match = preg_match('/^(?:([^=&]*)(?=&|$))?(.*)/', $parts["query"] ?? "", $matches);
+        assert($match !== false);
+        $that->page = $matches[1];
+        parse_str($matches[2], $that->params);
+        return $that;
     }
 
     public function withPage(string $page): self
@@ -62,36 +67,33 @@ class Url
     /** @return string,string|array<string>|null */
     public function param(string $key)
     {
-        return $this->params[$key];
+        return $this->params[$key] ?? null;
     }
 
     public function relative(): string
     {
-        $result = $this->baseRel;
-        $queryString = $this->queryString();
-        if ($queryString) {
-            $result .= "?$queryString";
+        $query = $this->queryString();
+        if ($query === "") {
+            return $this->path;
         }
-        return $result;
+        return $this->path . "?" . $query;
     }
 
     public function absolute(): string
     {
-        $result = $this->baseAbs;
-        $queryString = $this->queryString();
-        if ($queryString) {
-            $result .= "?$queryString";
+        $query = $this->queryString();
+        if ($query === "") {
+            return $this->base . $this->path;
         }
-        return $result;
+        return $this->base . $this->path . "?" . $query;
     }
 
     private function queryString(): string
     {
-        $result = $this->page;
-        $additional = preg_replace('/=(?=&|$)/', "", http_build_query($this->params, "", "&"));
-        if ($additional) {
-            $result .= "&$additional";
+        $query = preg_replace('/=(?=&|$)/', "", http_build_query($this->params, "", "&"));
+        if ($query === "") {
+            return $this->page;
         }
-        return $result;
+        return $this->page . "&" . $query;
     }
 }

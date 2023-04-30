@@ -24,9 +24,8 @@ namespace Adventcalendar;
 use Adventcalendar\Infra\Jquery;
 use Adventcalendar\Infra\Pages;
 use Adventcalendar\Infra\Repository;
-use Adventcalendar\Infra\Request;
+use Adventcalendar\Infra\RequestStub;
 use Adventcalendar\Infra\View;
-use Adventcalendar\Value\Url;
 use ApprovalTests\Approvals;
 use PHPUnit\Framework\TestCase;
 
@@ -35,35 +34,40 @@ class MainControllerTest extends TestCase
     public function testFailsOnMissingDoors(): void
     {
         $sut = $this->sut(["findDoors" => null]);
-        $response = $sut->defaultAction($this->request(), "winter");
+        $request = new RequestStub();
+        $response = $sut->defaultAction($request, "winter");
         $this->assertStringContainsString("The cover of 'winter' is not yet prepared!", $response->output());
     }
 
     public function testFailsOnMissingCover(): void
     {
         $sut = $this->sut(["findCover" => null]);
-        $response = $sut->defaultAction($this->request(), "winter");
+        $request = new RequestStub();
+        $response = $sut->defaultAction($request, "winter");
         $this->assertStringContainsString("The cover of 'winter' is not yet prepared!", $response->output());
     }
 
     public function testFailsOnMissingPage(): void
     {
         $sut = $this->sut(["findByHeading" => -1]);
-        $response = $sut->defaultAction($this->request(), "winter");
+        $request = new RequestStub();
+        $response = $sut->defaultAction($request, "winter");
         $this->assertStringContainsString("The page &quot;winter&quot; does not exist!", $response->output());
     }
 
     public function testRendersCalendar(): void
     {
         $sut = $this->sut();
-        $response = $sut->defaultAction($this->request(), "winter");
+        $request = new RequestStub(["time" => strtotime("2014-12-02")]);
+        $response = $sut->defaultAction($request, "winter");
         Approvals::verifyHtml($response->output());
     }
 
     public function testAdminSeesAllDoors(): void
     {
         $sut = $this->sut();
-        $response = $sut->defaultAction($this->request(["adm" => true]), "winter");
+        $request = new RequestStub(["adm" => true, "time" => strtotime("2014-12-02")]);
+        $response = $sut->defaultAction($request, "winter");
         Approvals::verifyHtml($response->output());
     }
 
@@ -87,17 +91,5 @@ class MainControllerTest extends TestCase
         $jquery = $this->createMock(Jquery::class);
         $view = new View("./views/", XH_includeVar("./languages/en.php", "plugin_tx")["adventcalendar"]);
         return new MainController("./plugins/adventcalendar/", $conf, $pages, $repository, $jquery, $view);
-    }
-    
-    private function request(array $opts = [])
-    {
-        $opts += [
-            "adm" => false,
-        ];
-        $request = $this->createMock(Request::class);
-        $request->method("time")->willReturn(strtotime("2014-12-02"));
-        $request->method("adm")->willReturn($opts["adm"]);
-        $request->method("url")->willReturn(new Url(CMSIMPLE_URL, "/", "Adventcalendar", "Adventcalendar"));
-        return $request;
     }
 }

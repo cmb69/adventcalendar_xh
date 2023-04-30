@@ -19,24 +19,34 @@
  * along with Adventcalendar_XH.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-const CMSIMPLE_XH_VERSION = "CMSimple_XH 1.7.5";
-const CMSIMPLE_URL = "http://example.com/";
-const ADVENTCALENDAR_VERSION = "1.0beta6";
+namespace Adventcalendar\Infra;
 
-require_once "../../cmsimple/functions.php";
- 
-spl_autoload_register(function (string $className) {
-    $parts = explode("\\", $className);
-    if ($parts[0] !== "Adventcalendar") {
-        return;
+class RequestStub extends Request
+{
+    private $options;
+
+    public function __construct(array $options = [])
+    {
+        $this->options = $options;
     }
-    if (count($parts) === 3) {
-        $parts[1] = strtolower($parts[1]);
+
+    public function adm(): bool
+    {
+        return $this->options["adm"] ?? false;
     }
-    $filename = implode("/", array_slice($parts, 1));
-    if (is_readable("./classes/$filename.php")) {
-        include_once "./classes/$filename.php";
-    } elseif (is_readable("./tests/$filename.php")) {
-        include_once "./tests/$filename.php";
+
+    protected function query(): string
+    {
+        return $this->options["query"] ?? "";
     }
-});
+
+    public function time(): int
+    {
+        return $this->options["time"] ?? 0;
+    }
+
+    protected function post(): array
+    {
+        return $this->options["post"] ?? [];
+    }
+}

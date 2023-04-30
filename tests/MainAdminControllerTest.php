@@ -24,10 +24,9 @@ namespace Adventcalendar;
 use Adventcalendar\Infra\CsrfProtector;
 use Adventcalendar\Infra\DoorDrawer;
 use Adventcalendar\Infra\Repository;
-use Adventcalendar\Infra\Request;
+use Adventcalendar\Infra\RequestStub;
 use Adventcalendar\Infra\Shuffler;
 use Adventcalendar\Infra\View;
-use Adventcalendar\Value\Url;
 use ApprovalTests\Approvals;
 use PHPUnit\Framework\TestCase;
 
@@ -36,7 +35,7 @@ class MainAdminControllerTest extends TestCase
     public function testRendersOverview(): void
     {
         $sut = $this->sut();
-        $response = $sut($this->request(""));
+        $response = $sut(new RequestStub());
         $this->assertEquals("Adventcalendar – Administration", $response->title());
         Approvals::verifyHtml($response->output());
     }
@@ -44,7 +43,8 @@ class MainAdminControllerTest extends TestCase
     public function testRendersPrepareConfirmation(): void
     {
         $sut = $this->sut();
-        $response = $sut($this->request("prepare"));
+        $request = new RequestStub(["query" => "adventcalendar&action=prepare&adventcalendar_name=2023"]);
+        $response = $sut($request);
         $this->assertEquals("Adventcalendar – Administration", $response->title());
         Approvals::verifyHtml($response->output());
     }
@@ -52,7 +52,11 @@ class MainAdminControllerTest extends TestCase
     public function testPreparesCover(): void
     {
         $sut = $this->sut(["check" => true, "shuffle" => true, "saveCover" => true, "saveDoors" => true]);
-        $response = $sut($this->request("do_prepare"));
+        $request = new RequestStub([
+            "query" => "adventcalendar&action=prepare&adventcalendar_name=2023",
+            "post" => ["adventcalendar_do" => ""],
+        ]);
+        $response = $sut($request);
         $this->assertEquals(
             "http://example.com/?adventcalendar&admin=plugin_main&action=view&adventcalendar_name=2023",
             $response->location()
@@ -62,7 +66,11 @@ class MainAdminControllerTest extends TestCase
     public function testReportsMissingImage(): void
     {
         $sut = $this->sut(["findImage" => null, "check" => true]);
-        $response = $sut($this->request("do_prepare"));
+        $request = new RequestStub([
+            "query" => "adventcalendar&action=prepare&adventcalendar_name=2023",
+            "post" => ["adventcalendar_do" => ""],
+        ]);
+        $response = $sut($request);
         $this->assertEquals("Adventcalendar – Administration", $response->title());
         $this->assertStringContainsString("The image for '2023' cannot be found!", $response->output());
     }
@@ -70,7 +78,11 @@ class MainAdminControllerTest extends TestCase
     public function testReportsFailureToSaveCover(): void
     {
         $sut = $this->sut(["check" => true, "shuffle" => true, "saveCover" => true, "saveCoverRes" => false]);
-        $response = $sut($this->request("do_prepare"));
+        $request = new RequestStub([
+            "query" => "adventcalendar&action=prepare&adventcalendar_name=2023",
+            "post" => ["adventcalendar_do" => ""],
+        ]);
+        $response = $sut($request);
         $this->assertEquals("Adventcalendar – Administration", $response->title());
         $this->assertStringContainsString("The cover of '2023' cannot be saved!", $response->output());
     }
@@ -78,7 +90,11 @@ class MainAdminControllerTest extends TestCase
     public function testReportsFailureToSaveDoors(): void
     {
         $sut = $this->sut(["check" => true, "shuffle" => true, "saveCover" => true, "saveDoors" => true, "saveDoorsRes" => false]);
-        $response = $sut($this->request("do_prepare"));
+        $request = new RequestStub([
+            "query" => "adventcalendar&action=prepare&adventcalendar_name=2023",
+            "post" => ["adventcalendar_do" => ""],
+        ]);
+        $response = $sut($request);
         $this->assertEquals("Adventcalendar – Administration", $response->title());
         $this->assertStringContainsString("The doors of '2023' cannot be saved!", $response->output());
     }
@@ -86,7 +102,8 @@ class MainAdminControllerTest extends TestCase
     public function testShowsPreparedCover(): void
     {
         $sut = $this->sut(["findCover" => "./plugins/adventcalendar/data/2023+.jpg"]);
-        $response = $sut($this->request("view"));
+        $request = new RequestStub(["query" => "adventcalendar&action=view&adventcalendar_name=2023"]);
+        $response = $sut($request);
         $this->assertEquals("Adventcalendar – Administration", $response->title());
         Approvals::verifyHtml($response->output());
     }
@@ -94,7 +111,8 @@ class MainAdminControllerTest extends TestCase
     public function testReportsFailureToShowPreparedCover(): void
     {
         $sut = $this->sut();
-        $response = $sut($this->request("view"));
+        $request = new RequestStub(["query" => "adventcalendar&action=view&adventcalendar_name=2023"]);
+        $response = $sut($request);
         $this->assertEquals("Adventcalendar – Administration", $response->title());
         $this->assertStringContainsString("The cover of '2023' is not yet prepared!", $response->output());
     }
@@ -134,15 +152,5 @@ class MainAdminControllerTest extends TestCase
         $image->method("drawDoors")->willReturn("modified image data");
         $view = new View("./views/", XH_includeVar("./languages/en.php", "plugin_tx")["adventcalendar"]);
         return new MainAdminController($conf, $csrfProtector, $repository, $shuffler, $image, $view);
-    }
-
-    private function request(string $action)
-    {
-        $request = $this->createMock(Request::class);
-        $request->method("url")->willReturn(
-            new Url(CMSIMPLE_URL, "/", "adventcalendar", "adventcalendar&adventcalendar_name=2023")
-        );
-        $request->method("action")->willReturn($action);
-        return $request;
     }
 }
