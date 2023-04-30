@@ -38,7 +38,7 @@ class Dic
         return new MainController(
             $pth["folder"]["plugins"] . "adventcalendar/",
             $plugin_cf["adventcalendar"],
-            new Pages,
+            new Pages(),
             self::makeRepository(),
             new Jquery(),
             self::makeView()
@@ -52,7 +52,7 @@ class Dic
         return new InfoController(
             $pth["folder"]["plugins"] . "adventcalendar/",
             self::makeRepository(),
-            new SystemChecker,
+            new SystemChecker(),
             self::makeView()
         );
     }
@@ -63,9 +63,9 @@ class Dic
 
         return new MainAdminController(
             $plugin_cf["adventcalendar"],
-            new CsrfProtector,
+            new CsrfProtector(),
             self::makeRepository(),
-            new Shuffler,
+            new Shuffler(),
             self::makeDoorDrawer(),
             self::makeView()
         );
