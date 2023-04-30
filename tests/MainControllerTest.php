@@ -21,6 +21,7 @@
 
 namespace Adventcalendar;
 
+use Adventcalendar\Infra\Jquery;
 use Adventcalendar\Infra\Pages;
 use Adventcalendar\Infra\Repository;
 use Adventcalendar\Infra\Request;
@@ -83,8 +84,9 @@ class MainControllerTest extends TestCase
         $repository = $this->createMock(Repository::class);
         $repository->method("findDoors")->willReturn($options["findDoors"]);
         $repository->method("findCover")->willReturn($options["findCover"]);
+        $jquery = $this->createMock(Jquery::class);
         $view = new View("./views/", XH_includeVar("./languages/en.php", "plugin_tx")["adventcalendar"]);
-        return new MainController($conf, $pages, $repository, $view, "winter");
+        return new MainController("./plugins/adventcalendar/", $conf, $pages, $repository, $jquery, $view);
     }
     
     private function request(array $opts = [])

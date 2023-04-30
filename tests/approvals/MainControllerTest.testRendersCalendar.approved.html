@@ -1,8 +1,19 @@
 <!-- adventcalendar -->
+<script type="module">
+jQuery("area.adventcalendar").click(function (event) {
+    let map = jQuery(event.currentTarget).parent("map");
+    jQuery.colorbox({
+        iframe: true, href: this.href,
+        maxWidth: "100%", maxHeight: "100%",
+        innerWidth: map.data("width"), innerHeight: map.data("height")
+    });
+    event.preventDefault();
+});
+</script>
 <img src="winter+.jpg" usemap="#adventcalendar" alt="Advent calendar">
-<map name="adventcalendar">
-	<area class="adventcalendar" shape="rect" coords="0,0,20,20" href="/?Day1&amp;print" 
-		  alt="Day 1">
-	<area class="adventcalendar" shape="rect" coords="30,0,20,20" href="/?Day2&amp;print" 
-		  alt="Day 2">
+<map name="adventcalendar" data-width="70%" data-height="70%">
+    <area class="adventcalendar" shape="rect" coords="0,0,20,20" href="/?Day1&amp;print" 
+          alt="Day 1">
+    <area class="adventcalendar" shape="rect" coords="30,0,20,20" href="/?Day2&amp;print" 
+          alt="Day 2">
 </map>

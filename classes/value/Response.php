@@ -43,9 +43,6 @@ class Response
     /** @var string|null */
     private $title;
 
-    /** @var bool */
-    private $javascript = false;
-
     /** @var string|null */
     private $location = null;
 
@@ -53,13 +50,6 @@ class Response
     {
         $that = clone $this;
         $that->title = $title;
-        return $that;
-    }
-
-    public function withJavascript(): self
-    {
-        $that = clone $this;
-        $that->javascript = true;
         return $that;
     }
 
@@ -71,11 +61,6 @@ class Response
     public function title(): ?string
     {
         return $this->title;
-    }
-
-    public function javascript(): bool
-    {
-        return $this->javascript;
     }
 
     public function location(): ?string

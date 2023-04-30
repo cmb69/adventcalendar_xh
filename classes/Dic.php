@@ -23,6 +23,7 @@ namespace Adventcalendar;
 
 use Adventcalendar\Infra\CsrfProtector;
 use Adventcalendar\Infra\DoorDrawer;
+use Adventcalendar\Infra\Jquery;
 use Adventcalendar\Infra\Pages;
 use Adventcalendar\Infra\Repository;
 use Adventcalendar\Infra\Shuffler;
@@ -33,12 +34,13 @@ class Dic
 {
     public static function makeMainController(): MainController
     {
-        global $plugin_cf;
-
+        global $pth, $plugin_cf;
         return new MainController(
+            $pth["folder"]["plugins"] . "adventcalendar/",
             $plugin_cf["adventcalendar"],
             new Pages,
             self::makeRepository(),
+            new Jquery(),
             self::makeView()
         );
     }

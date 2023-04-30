@@ -21,6 +21,7 @@
 
 namespace Adventcalendar;
 
+use Adventcalendar\Infra\Jquery;
 use Adventcalendar\Infra\Pages;
 use Adventcalendar\Infra\Repository;
 use Adventcalendar\Infra\Request;
@@ -29,6 +30,9 @@ use Adventcalendar\Value\Response;
 
 class MainController
 {
+    /** @var string */
+    private $pluginFolder;
+
     /** @var array<string,string> */
     private $conf;
 
@@ -38,15 +42,26 @@ class MainController
     /** @var Repository */
     private $repository;
 
+    /** @var Jquery */
+    private $jquery;
+
     /** @var View */
     private $view;
 
     /** @param array<string,string> $conf */
-    public function __construct(array $conf, Pages $pages, Repository $repository, View $view)
-    {
+    public function __construct(
+        string $pluginFolder,
+        array $conf,
+        Pages $pages,
+        Repository $repository,
+        Jquery $jquery,
+        View $view
+    ) {
+        $this->pluginFolder = $pluginFolder;
         $this->conf = $conf;
         $this->pages = $pages;
         $this->repository = $repository;
+        $this->jquery = $jquery;
         $this->view = $view;
     }
 
@@ -64,10 +79,14 @@ class MainController
         if ($page < 0) {
             return Response::create($this->view->error("message_missing_page", $calendar));
         }
+        $this->jquery->include();
+        $this->jquery->includePlugin("colorbox", $this->pluginFolder . "colorbox/jquery.colorbox-min.js");
         return Response::create($this->view->render("main", [
             "src" => $cover,
             "doors" => $this->doorRecords($request, $page, $doors),
-        ]))->withJavascript();
+            "width" => $this->conf["lightbox_width"],
+            "height" => $this->conf["lightbox_height"],
+        ]));
     }
 
     /**
