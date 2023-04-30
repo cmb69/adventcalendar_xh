@@ -53,7 +53,7 @@ class InfoController
         return Response::create($this->view->render("info", [
             "version" => ADVENTCALENDAR_VERSION,
             "checks" => [
-                $this->checkPhpVersion("5.4.0"),
+                $this->checkPhpVersion("7.1.0"),
                 $this->checkExtension("gd"),
                 $this->checkXhVersion("1.7.0"),
                 $this->checkPlugin("jquery"),
