@@ -1,232 +1,112 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru" xml:lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>Adventcalendar_XH – Ð ÑÐºÐ¾Ð²Ð¾Ð´ÑÑÐ²Ð¾ Ð¿Ð¾Ð»ÑÐ·Ð¾Ð²Ð°ÑÐµÐ»Ñ</title>
+  <style type="text/css">
+    body {
+        font-family: Georgia, serif;
+        line-height: 1.5;
+        margin-left: auto;
+        margin-right: auto;
+        padding-left: 0.5em;
+        padding-right: 0.5em;
+        background: #ffffe1;
+        max-width: 32em;
+    }
+    p {
+        text-align: justify;
+    }
+    pre {
+        color: black;
+        background: #ffe;
+        overflow: auto;
+        padding: 0.2em 0.5em;
+        border: 1px solid silver;
+    }
+  </style>
+</head>
+<body>
 <!--
  * Copyright (c) 2012 Lybomyr Kydray aka Old
  *
  * Translation are licensed under the GNU General Public License, version 2 or
  * later.
  -->
-<!DOCTYPE html>
-<html lang="ru">
-
-<head>
-<meta http-equiv="content-type" content="text/html;charset=utf-8">
-<title>Adventcalendar_XH – <ins>User Manual</ins></title>
-<link rel="stylesheet" type="text/css" href="./stylesheet.css">
-</head>
-
-<body>
-
-<article>
-
-<h1>Adventcalendar_XH – <ins>User Manual</ins></h1>
-<img src="../adventcalendar.png" class="logo" alt="рождественский венок">
-<p>
-    Adventcalendar_XH позволяет легко разместить календарь рождественского поста
-    на Вашем сайте. Небольшие двери могут быть открыты посетителями только при
-    наступлении определенной даты. Хранящиеся за дверью тайны - это содержимое
-    страниц CMSimple, таким образом, Вы можете разместить на них все, что
-    пожелаете (стихи, изображения, видео, произведения и пр.)
-</p>
-
-<nav id="nav">
-<h2><ins>Table of Contents</ins></h2>
+<h1 id="adventcalendar_xh">Adventcalendar_XH</h1>
+<p>Adventcalendar_XH позволяет легко разместить календарь рождественского поста на Вашем сайте. Небольшие двери могут быть открыты посетителями только при наступлении определенной даты. Хранящиеся за дверью тайны - это содержимое страниц CMSimple_XH, таким образом, Вы можете разместить на них все, что пожелаете (стихи, изображения, видео, произведения и пр.)</p>
 <ul>
-<li><a href="#notice">Важно</a></li>
-<li><a href="#requirements">Требования</a></li>
-<li><a href="#installation">Установка</a></li>
-<li><a href="#settings">Настройки</a></li>
-<li><a href="#usage">Использование</a>
+<li><a href="#требования">Требования</a></li>
+<li><a href="#download">Download</a></li>
+<li><a href="#установка">Установка</a></li>
+<li><a href="#настройки">Настройки</a></li>
+<li><a href="#использование">Использование</a>
 <ul>
-<li><a href="#usage-cover">Подготовка обложки</a></li>
-<li><a href="#usage-secrets">Подготовка "тайн"</a></li>
-<li><a href="#usage-display">Отображение календаря</a></li>
+<li><a href="#quickstart-guide">Quickstart Guide</a></li>
+<li><a href="#подготовка-обложки">Подготовка обложки</a></li>
+<li><a href="#подготовка-тайн">Подготовка “тайн”</a></li>
+<li><a href="#отображение-календаря">Отображение календаря</a></li>
 </ul></li>
-<!--<li><a href="#limitations">Limitations</a></li>-->
-<li><a href="#license">Лицензия</a></li>
-<li><a href="#credits">Благодарности</a></li>
-<li><a href="help.htm">English Help</a></li>
+<li><a href="#limitations">Limitations</a></li>
+<li><a href="#troubleshooting">Troubleshooting</a></li>
+<li><a href="#лицензия">Лицензия</a></li>
+<li><a href="#благодарности">Благодарности</a></li>
 </ul>
-</nav>
-
-<section id="notice">
-<h2>Важно</h2>
-<p class="important">
-    Adventcalendar_XH не был тестирован во всех возможных условиях, и является
-    БЕТА-версией. Используйте плагин с необходимыми предосторожностями
-</p>
-</section>
-
-<section id="requirements">
-<h2>Требования</h2>
-<p>
-    <ins>Adventcalendar_XH requires CMSimple_XH ≥ 1.6.3, and PHP ≥
-    5.4.0.</ins>
-</p>
-</section>
-
-<section id="installation">
-<h2>Установка</h2>
-<p>
-    Установка плагина не отличается от установки многих других плагинов
-    CMSimple_XH. Более подробно с особенностями установки можно ознакомиться на
-    странице <a
-    href="http://www.cmsimple-xh.com/wiki/doku.php/manuals:users_manual:plugins:installation">
-    CMSimple_XH wiki</a>.
-</p>
-<ol>
-<li class="important">
-    Создайте резервную копию вашего сайта.
-</li>
-<li>
-    Разархивируйте дистрибутив в папку на вашем компьютере.
-</li>
-<li>
-    Загрузите каталог <code>adventcalendar/</code> на серевер в директорию
-    плагинов CMSimple_XH.
-</li>
-<li>
-    Укажите права доступа для подкаталогов <code>data/</code>,
-    <code>config/</code>, <code>css/</code> и <code>languages/</code>.
-</li>
-<li class="important">
-    Перейдите в режим администрирования <i>Плагины</i> → <i>Adventcalendar</i>
-    для проверки соответствия требованиям.
-</li>
+<h2 id="требования">Требования</h2>
+<p>Adventcalendar_XH is a plugin for <a href="https://cmsimple-xh.org/">CMSimple_XH</a>. It requires CMSimple_XH ≥ 1.6.3, and PHP ≥ 5.4.0.</p>
+<h2 id="download">Download</h2>
+<p>The <a href="https://github.com/cmb69/adventcalendar_xh/releases/latest">lastest release</a> is available for download on Github.</p>
+<h2 id="установка">Установка</h2>
+<p>The installation is done as with many other CMSimple_XH plugins. See the <a href="https://wiki.cmsimple-xh.org/?for-users/working-with-the-cms/plugins">CMSimple_XH Wiki</a> for further details.</p>
+<ol type="1">
+<li><strong>Создайте резервную копию вашего сайта.</strong></li>
+<li>Разархивируйте дистрибутив в папку на вашем компьютере.</li>
+<li>Загрузите каталог <code>adventcalendar/</code> на серевер в директорию плагинов CMSimple_XH.</li>
+<li>Укажите права доступа для подкаталогов <code>data/</code>, <code>config/</code>, <code>css/</code> и <code>languages/</code>.</li>
+<li>Перейдите в режим администрирования <code>Плагины</code> → <code>Adventcalendar</code> для проверки соответствия требованиям.</li>
 </ol>
-</section>
-
-<section id="settings">
-<h2>Настройки</h2>
-<p>
-    Конфигурирование плагина в режиме администратора не отличается от конфигурирования большинства других плагинов CMSimple_XH..
-Выберите <i>Adventcalendar</i> в меню <i>Плагины</i>.
-</p>
-<p>
-    Вы можете изменить настройки Adventcalendar_XH  на вкладке
-    <i>Конфигурация</i>. Поместив курсор мыши на иконке помощи, можно посмотреть
-    подсказки для соотвествующей опции.
-</p>
-<p>
-    Локализация доступна на вкладке <i>Язык</i>. Вы можете перевести языковые
-    строки на ваш язык, или изменить строки в соответствии с вашими
-    потребностями.
-</p>
-<p>
-    Настройки стиля плагина Adventcalendar_XH доступны на вкладке <i>Стиль</i>.
-</p>
-</section>
-
-<section id="usage">
-<h2>Использование</h2>
-<p>
-    Вы можете разместить неограниченное количество рождественских календарей для
-    одной установленной CMSimple_XH. Но для каждого рождественского календаря
-    необходимо указать уникальное имя. Имя должно содержать исключительно
-    латинские символы и цифры, и <b>не должно повторять</b> заголовок любой из
-    страниц.
-</p>
-
-<section id="usage-cover">
-<h3>Подготовка обложки</h3>
-<p>
-    Найдите соответствующее фоновое изображение для Вашего рождественского
-    календаря, при необходимости, измените его размеры (по умолчанию, ширина
-    изображения должна соответствовать ширине блока контента вашего шаблона), и
-    загрузите изображение в папку данных плагина (data/). После этого перейдите
-    на страницу <i>Плагины</i> → <i>Adventcalendar</i> → <i>Управление</i>, где
-    Вы можете подготовить изображение для использования в качестве обложки
-    рождественского календаря. После нажатия кнопки <i>Подготовить обложку</i>
-    будут созданы небольшие двери с сответствующими датами. Для изображения,
-    расположенного горизонтально, будут созданы 4 строки по 6 дверей в каждой,
-    для изображения, расположенного вертикально, будет создано 6 строк по 4
-    двери в каждой. Размер дверей и желаемые цвета можно указать в настройках
-    плагина. Порядок дверей определяется в случайном порядке, если данный
-    порядок вас не устраивает, процедуру подготовки изображения следует
-    повторить.
-</p>
-</section>
-
-<section id="usage-secrets">
-<h3>Подготовка "тайн"</h3>
-<p>
-    Создайте новую страницу CMSimple_XH с именем рождественского календаря в
-    качестве заголовка (уровень меню страницы не имеет значения). Создайте
-    страницу уровнем ниже (суб-страницу) для каждого дня (первая суб-страница -
-    для дня №1, вторая для дня №2 и т.д.).Вы можете заполнить страницу любым
-    содержимым в соответствии с вашими предпочтениями, использовав, в том числе,
-    и вызовы плагинов. В общем случае, Вы пожелаете <a
-    href="http://www.cmsimple-xh.org/wiki/doku.php/cmsimple_scripting#show_in_menu">скрыть</a>
-    эти страницы в меню. При желании, Вы можете использовать существующую
-    страницу в качестве хранящейся за дверью "тайны", для этого достаточно
-    использовать <a
-    href="http://www.cmsimple-xh.org/wiki/doku.php/cmsimple_scripting#redirect_page">перенаправление</a>
-    соответствующей суб-страницы на существующую страницу, и добавить
-    "&amp;print" к URL.
-</p>
-</section>
-
-<section id="usage-display">
-<h3>Отображение календаря</h3>
-<p>
-    Для отображения рождественского календаря на любой из страниц достаточно
-    вызвать плагин:
-</p>
-<pre>{{{adventcalendar('name_of_the_calendar')}}}</pre>
-<p>
-    Естественно, <i>name_of_the_calendar</i> необходимо изменить на текущее имя
-    Вашего рождественского календаря.
-</p>
-</section>
-
-</section>
-
-<!--
-<section id="limitations">
-<h2>Limitations</h2>
-</section>
--->
-
-<section id="license">
-<h2>Лицензия</h2>
-<p>
-    Adventcalendar_XH распространяется по лицензии
-    <a href="http://www.gnu.org/licenses/gpl.html">GPLv3</a>.
-</p>
-<p>
-    <ins>Copyright</ins> © 2012 Christoph M. Becker
-</p>
-<p>
-    <ins>Russian translation © 2012 Любомир Кудрай</ins>
-</p>
-</section>
-
-<section id="credits">
-<h2>Благодарности</h2>
-<p>
-    Adventcalendar_XH использует <a
-    href="http://www.jacklmoore.com/colorbox">Colorbox</a>. Выражаем
-    благодарность Jack Moore за предоставление великолепного клона лайтбокса по
-    лицензии MIT.
-</p>
-<p>
-    Иконка плагина создана <a href="http://enhancedlabs.com/">Enhanced Labs
-    Design Studio</a>. Выражаем благодарность за публикацию иконки по
-    либеральной лицензии.
-</p>
-<p>
-    Особая благодарность сообществу <a
-    href="http://www.cmsimpleforum.com">CMSimple_XH форума</a> за
-    советы,предложения и тестирование.
-</p>
-<p>
-    И последняя, но не менее искренняя благодарность <a
-    href="http://www.harteg.dk">Peter Harteg</a>, "отцу" CMSimple, и всем
-    разработчикам <a href="http://www.cmsimple-xh.org">CMSimple_XH</a>, без
-    которых эта удивительная CMS не могла бы существовать.
-</p>
-</section>
-
-</article>
-
+<h2 id="настройки">Настройки</h2>
+<p>Конфигурирование плагина в режиме администратора не отличается от конфигурирования большинства других плагинов CMSimple_XH. Выберите <code>Adventcalendar</code> в меню <code>Плагины</code>.</p>
+<p>Вы можете изменить настройки Adventcalendar_XH на вкладке <code>Конфигурация</code>. Поместив курсор мыши на иконке помощи, можно посмотреть подсказки для соотвествующей опции.</p>
+<p>Локализация доступна на вкладке <code>Язык</code>. Вы можете перевести языковые строки на ваш язык, или изменить строки в соответствии с вашими потребностями.</p>
+<p>Настройки стиля плагина Adventcalendar_XH доступны на вкладке <code>Стиль</code>.</p>
+<h2 id="использование">Использование</h2>
+<p>Вы можете разместить неограниченное количество рождественских календарей для одной установленной CMSimple_XH. Но для каждого рождественского календаря необходимо указать уникальное имя. Имя должно содержать исключительно латинские символы и цифры, и <strong>не должно повторять</strong> заголовок любой из страниц.</p>
+<p>Visitors of your site will not be able to open doors of future days, according to the configuration option <code>Date</code> → <code>Start</code>. When you are logged in as administrator you can access all doors for testing purposes.</p>
+<h3 id="quickstart-guide">Quickstart Guide</h3>
+<p>To quickly set up a working demo, just follow these steps:</p>
+<ol type="1">
+<li><p>Navigate to <code>Plugins</code> → <code>Adventcalendar</code> → <code>Administration</code>, select the cover image <code>winter</code>, and press <code>Prepare Cover</code>.</p></li>
+<li><p>Create a new hidden CMSimple_XH page with the heading <code>winter</code> (letter case is important) and without content.</p></li>
+<li><p>Create some hidden subpages of this page with arbitrary headings and content.</p></li>
+<li><p>Enter the following plugin call on another page:</p>
+<pre><code>{{{adventcalendar(&#39;winter&#39;)}}}</code></pre></li>
+<li><p>Switch to view mode and enjoy the advent calendar. Note, that you can only open as much doors, as you have created subpages of the calendar page.</p></li>
+</ol>
+<h3 id="подготовка-обложки">Подготовка обложки</h3>
+<p>Найдите соответствующее фоновое изображение для Вашего рождественского календаря, при необходимости, измените его размеры (по умолчанию, ширина изображения должна соответствовать ширине блока контента вашего шаблона), и загрузите изображение в папку данных плагина (data/). После этого перейдите на страницу <code>Плагины</code> → <code>Adventcalendar</code> → <code>Управление</code>, где Вы можете подготовить изображение для использования в качестве обложки рождественского календаря. После нажатия кнопки <code>Подготовить обложку</code> будут созданы небольшие двери с сответствующими датами. Для изображения, расположенного горизонтально, будут созданы 4 строки по 6 дверей в каждой, для изображения, расположенного вертикально, будет создано 6 строк по 4 двери в каждой. Размер дверей и желаемые цвета можно указать в настройках плагина. Порядок дверей определяется в случайном порядке, если данный порядок вас не устраивает, процедуру подготовки изображения следует повторить.</p>
+<h3 id="подготовка-тайн">Подготовка “тайн”</h3>
+<p>Создайте новую страницу CMSimple_XH с именем рождественского календаря в качестве заголовка (уровень меню страницы не имеет значения). Создайте страницу уровнем ниже (суб-страницу) для каждого дня (первая суб-страница - для дня №1, вторая для дня №2 и т.д.).Вы можете заполнить страницу любым содержимым в соответствии с вашими предпочтениями, использовав, в том числе, и вызовы плагинов. В общем случае, Вы пожелаете скрыть эти страницы в меню. При желании, Вы можете использовать существующую страницу в качестве хранящейся за дверью “тайны”, для этого достаточно использовать перенаправление соответствующей суб-страницы на существующую страницу, и добавить <code>&amp;print</code> к URL.</p>
+<h3 id="отображение-календаря">Отображение календаря</h3>
+<p>Для отображения рождественского календаря на любой из страниц достаточно вызвать плагин:</p>
+<pre><code>{{{adventcalendar(&#39;%CALENDAR_NAME%&#39;)}}}</code></pre>
+<p>Естественно, <code>%CALENDAR_NAME%</code> необходимо изменить на текущее имя Вашего рождественского календаря.</p>
+<h2 id="limitations">Limitations</h2>
+<p>The lightbox requires a contemporary browser; on old browsers, the contents of the secret pages will be shown as separate page.</p>
+<h2 id="troubleshooting">Troubleshooting</h2>
+<p>Report bugs and ask for support either on <a href="https://github.com/cmb69/adventcalendar_xh/issues">Github</a> or in the <a href="https://cmsimpleforum.com/">CMSimple_XH Forum</a>.</p>
+<h2 id="лицензия">Лицензия</h2>
+<p>Adventcalendar_XH является свободным программным обеспечением: Вы можете распространять ее и (или) изменять, соблюдая условия Генеральной публичной лицензии GNU, опубликованной Фондом свободного программного обеспечения; либо редакции 3 Лицензии, либо (на Ваше усмотрение) любой редакции, выпущенной позже.</p>
+<p>Adventcalendar_XH распространяется в расчете на то, что она окажется полезной, но БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ, включая подразумеваемую гарантию КАЧЕСТВА либо ПРИГОДНОСТИ ДЛЯ ОПРЕДЕЛЕННЫХ ЦЕЛЕЙ. Ознакомьтесь с Генеральной публичной лицензией GNU для получения более подробной информации.</p>
+<p>Вы должны были получить копию Генеральной публичной лицензии GNU вместе с Adventcalendar_XH. Если Вы ее не получили, то перейдите по адресу: <a href="https://www.gnu.org/licenses/" class="uri">https://www.gnu.org/licenses/</a>.</p>
+<p>Copyright © 2012 Christoph M. Becker</p>
+<p>Russian translation © 2012 Любомир Кудрай</p>
+<h2 id="благодарности">Благодарности</h2>
+<p>Adventcalendar_XH использует <a href="https://www.jacklmoore.com/colorbox/">Colorbox</a>. Выражаем благодарность Jack Moore за предоставление великолепного клона лайтбокса по лицензии MIT.</p>
+<p>Иконка плагина создана <a href="https://icon-icons.com/es/users/z3XFBTtNIwiSUFnQ70KGw/icon-sets/">Enhanced Labs Design Studio</a>. Выражаем благодарность за публикацию иконки по либеральной лицензии.</p>
+<p>Особая благодарность сообществу <a href="https://www.cmsimpleforum.com/">CMSimple_XH форума</a> за советы,предложения и тестирование. Especially I want to thank <em>Korvell</em> for pushing 1beta5 just in time before December 2013.</p>
+<p>И последняя, но не менее искренняя благодарность <a href="https://www.harteg.dk/">Peter Harteg</a>, “отцу” CMSimple, и всем разработчикам <a href="https://www.cmsimple-xh.org">CMSimple_XH</a>, без которых эта удивительная CMS не могла бы существовать.</p>
 </body>
-
 </html>
