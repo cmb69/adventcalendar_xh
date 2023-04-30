@@ -65,18 +65,15 @@ class MainController
         $this->view = $view;
     }
 
-    public function defaultAction(Request $request, string $calendar): Response
+    public function __invoke(Request $request, string $calendar): Response
     {
-        $doors = $this->repository->findDoors($calendar);
-        if ($doors === null) {
+        if (($doors = $this->repository->findDoors($calendar)) === null) {
             return Response::create($this->view->error("error_not_prepared", $calendar));
         }
-        $cover = $this->repository->findCover($calendar);
-        if ($cover === null) {
+        if (($cover = $this->repository->findCover($calendar)) === null) {
             return Response::create($this->view->error("error_not_prepared", $calendar));
         }
-        $page = $this->pages->findByHeading($calendar);
-        if ($page < 0) {
+        if (($page = $this->pages->findByHeading($calendar)) < 0) {
             return Response::create($this->view->error("message_missing_page", $calendar));
         }
         $this->jquery->include();
@@ -91,29 +88,26 @@ class MainController
 
     /**
      * @param array<array{int,int,int,int}> $doors
-     * @return array<array{coords:string,href:string}>
+     * @return array<array{day:int,coords:string,href:string}>
      */
     private function doorRecords(Request $request, int $page, array $doors): array
     {
-        $records = [];
-        foreach ($this->pages->childrenOf($page) as $i => $page) {
-            if ($i >= $this->getCurrentDay($request)) {
-                break;
-            }
-            $records[$i + 1] = [
+        $subPages = array_slice($this->pages->childrenOf($page), 0, $this->currentDay($request));
+        return array_map(function (int $i, int $page) use ($request, $doors) {
+            return [
+                "day" => $i + 1,
                 "coords" => implode(",", $doors[$i]),
                 "href" => $request->url()->withPage($this->pages->urlOf($page))->withParam("print")->relative(),
             ];
-        }
-        return $records;
+        }, array_keys($subPages), array_values($subPages));
     }
 
-    private function getCurrentDay(Request $request): int
+    private function currentDay(Request $request): int
     {
         if ($request->adm()) {
             return 24;
         } else {
-            $start = strtotime($this->conf['date_start']);
+            $start = strtotime($this->conf["date_start"]);
             return (int) floor(($request->time() - $start) / 86400) + 1;
         }
     }

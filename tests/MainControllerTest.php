@@ -35,7 +35,7 @@ class MainControllerTest extends TestCase
     {
         $sut = $this->sut(["findDoors" => null]);
         $request = new RequestStub();
-        $response = $sut->defaultAction($request, "winter");
+        $response = $sut($request, "winter");
         $this->assertStringContainsString("The cover of 'winter' is not yet prepared!", $response->output());
     }
 
@@ -43,7 +43,7 @@ class MainControllerTest extends TestCase
     {
         $sut = $this->sut(["findCover" => null]);
         $request = new RequestStub();
-        $response = $sut->defaultAction($request, "winter");
+        $response = $sut($request, "winter");
         $this->assertStringContainsString("The cover of 'winter' is not yet prepared!", $response->output());
     }
 
@@ -51,7 +51,7 @@ class MainControllerTest extends TestCase
     {
         $sut = $this->sut(["findByHeading" => -1]);
         $request = new RequestStub();
-        $response = $sut->defaultAction($request, "winter");
+        $response = $sut($request, "winter");
         $this->assertStringContainsString("The page &quot;winter&quot; does not exist!", $response->output());
     }
 
@@ -59,7 +59,7 @@ class MainControllerTest extends TestCase
     {
         $sut = $this->sut();
         $request = new RequestStub(["time" => strtotime("2014-12-02")]);
-        $response = $sut->defaultAction($request, "winter");
+        $response = $sut($request, "winter");
         Approvals::verifyHtml($response->output());
     }
 
@@ -67,7 +67,7 @@ class MainControllerTest extends TestCase
     {
         $sut = $this->sut();
         $request = new RequestStub(["adm" => true, "time" => strtotime("2014-12-02")]);
-        $response = $sut->defaultAction($request, "winter");
+        $response = $sut($request, "winter");
         Approvals::verifyHtml($response->output());
     }
 

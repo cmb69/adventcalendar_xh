@@ -7,7 +7,7 @@ if (!defined("CMSIMPLE_XH_VERSION")) {header("HTTP/1.1 403 Forbidden"); exit;}
 /**
  * @var View $this
  * @var string $src
- * @var array<array{coords:string,href:string}> $doors
+ * @var array<array{day:int,coords:string,href:string}> $doors
  * @var string $width
  * @var string $height
  */
@@ -26,8 +26,8 @@ jQuery("area.adventcalendar").click(function (event) {
 </script>
 <img src="<?=$src?>" usemap="#adventcalendar" alt="<?=$this->text('adventcalendar')?>">
 <map name="adventcalendar" data-width="<?=$width?>" data-height="<?=$height?>">
-<?foreach ($doors as $i => $door):?>
+<?foreach ($doors as $door):?>
     <area class="adventcalendar" shape="rect" coords="<?=$door['coords']?>" href="<?=$door['href']?>" 
-          alt="<?=$this->text('day_n', $i)?>">
+          alt="<?=$this->text('day_n', $door['day'])?>">
 <?endforeach?>
 </map>

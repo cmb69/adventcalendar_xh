@@ -31,5 +31,5 @@ const ADVENTCALENDAR_VERSION = "1.0beta6";
  */
 function adventcalendar($cal)
 {
-    return Responder::respond(Dic::makeMainController()->defaultAction(Request::current(), $cal));
+    return Responder::respond(Dic::makeMainController()(Request::current(), $cal));
 }
